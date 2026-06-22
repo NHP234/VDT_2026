@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  repository-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required documents
+        run: |
+          test -f AGENTS.md
+          test -f README.md
+          test -f docs/requirement.md
+          test -f docs/progress-checklist.md
+          test -f docs/changelog.md
+          test -f docs/traceability.md
+          test -f docs/backend-structure.md
+          test -f docs/frontend-structure.md
+          test -f docs/agent-collaboration.md
+
+      - name: Validate Docker Compose configuration
+        run: docker compose --env-file .env.example config
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Backend checks when projects exist
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for service in backend/inbox-service backend/channel-service; do
+            if [ -x "$service/mvnw" ]; then
+              (cd "$service" && bash ./mvnw test)
+            elif [ -f "$service/mvnw" ]; then
+              (cd "$service" && bash ./mvnw test)
+            else
+              echo "Skipping $service: Maven project has not been scaffolded yet."
+            fi
+          done
+
+      - name: Frontend checks when project exists
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -f frontend/package.json ]; then
+            cd frontend
+            npm ci
+            npm run lint --if-present
+            npm run test --if-present -- --run
+            npm run build --if-present
+          else
+            echo "Skipping frontend: React project has not been scaffolded yet."
+          fi

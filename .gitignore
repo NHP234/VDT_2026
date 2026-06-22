@@ -1,0 +1,36 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+
+# Logs and local runtime data
+*.log
+logs/
+tmp/
+temp/
+data/
+
+# Java / Maven
+target/
+
+# Node / frontend
+node_modules/
+dist/
+coverage/
+.vite/
+
+# IDE and OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Docker and generated artifacts
+docker-compose.override.yml
+.docker-cli/
+*.pid

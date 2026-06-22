@@ -1,0 +1,42 @@
+server:
+  port: ${CHANNEL_SERVICE_PORT:8081}
+
+spring:
+  application:
+    name: channel-service
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  redis:
+    dedup-ttl-seconds: ${REDIS_DEDUP_TTL_SECONDS:86400}
+  facebook:
+    mode: ${FACEBOOK_MODE:simulator}
+    page-id: ${FACEBOOK_PAGE_ID:local-page-id}
+    verify-token: ${FACEBOOK_VERIFY_TOKEN:}
+  email:
+    mode: ${EMAIL_MODE:simulator}
+    mail-from: ${MAIL_FROM:demo@example.test}
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{correlationId:-}]"
