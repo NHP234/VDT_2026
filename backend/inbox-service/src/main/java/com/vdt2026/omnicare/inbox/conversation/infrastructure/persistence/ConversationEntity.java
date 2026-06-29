@@ -161,6 +161,14 @@ public class ConversationEntity {
         return id;
     }
 
+    public CustomerEntity customer() {
+        return customer;
+    }
+
+    public ChannelIdentityEntity channelIdentity() {
+        return channelIdentity;
+    }
+
     public ConversationStatus status() {
         return status;
     }
@@ -183,5 +191,25 @@ public class ConversationEntity {
 
     public String externalConversationId() {
         return externalConversationId;
+    }
+
+    public String subject() {
+        return subject;
+    }
+
+    public String lastMessagePreview() {
+        return lastMessagePreview;
+    }
+
+    public Instant lastActivityAt() {
+        return lastActivityAt;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
+    }
+
+    public Instant updatedAt() {
+        return updatedAt;
     }
 }

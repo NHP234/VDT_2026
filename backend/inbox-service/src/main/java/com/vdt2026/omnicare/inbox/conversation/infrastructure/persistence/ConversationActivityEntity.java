@@ -81,4 +81,20 @@ public class ConversationActivityEntity {
     public ConversationActivityType activityType() {
         return activityType;
     }
+
+    public AgentEntity actorAgent() {
+        return actorAgent;
+    }
+
+    public String oldValue() {
+        return oldValue;
+    }
+
+    public String newValue() {
+        return newValue;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
+    }
 }

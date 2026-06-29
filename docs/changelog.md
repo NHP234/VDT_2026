@@ -19,6 +19,31 @@ việc phát sinh.
 - Việc vẫn cần chú ý.
 ```
 
+## 2026-06-29
+
+### Tóm Tắt
+
+- Planned: commit mốc `feat(inbox): add domain schema and authentication`
+  (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
+  persistence foundation và backend authentication trước khi làm API kế tiếp.
+  Requirement: `FR-01` đến `FR-06`, `FR-11`, `FR-12`, `NFR-04`, `NFR-05`.
+  Verification: commit created.
+- Planned: triển khai backend conversation list/detail API cho Inbox service.
+  `GET /api/v1/conversations` hỗ trợ pagination, filter theo `channel`,
+  `status`, `assignee=me|unassigned|{uuid}` và search theo customer display
+  name hoặc exact channel identity. `GET /api/v1/conversations/{id}` trả
+  conversation detail kèm messages và activities theo chronological order.
+  Requirement: `FR-02`, `FR-03`, `NFR-05`. Verification: `backend/inbox-service`
+  tests passed; manual HTTP smoke trên port `18080` passed với 2 seeded
+  conversations, `channel=FACEBOOK` trả 1, `assignee=me` trả 1, exact identity
+  search `tran.b@example.test` trả 1, detail trả 1 message và 1 activity;
+  `.\scripts\check.ps1` passed.
+
+### Rủi Ro Hoặc Follow-up
+
+- Conversation list/detail API đã có backend, nhưng frontend Unified Inbox vẫn
+  chưa scaffold nên `FR-02` và `FR-03` chưa complete ở cấp sản phẩm.
+
 ## 2026-06-22
 
 ### Tóm Tắt

@@ -99,6 +99,10 @@ public class MessageEntity {
         return id;
     }
 
+    public Channel channel() {
+        return channel;
+    }
+
     public DeliveryStatus deliveryStatus() {
         return deliveryStatus;
     }
@@ -109,5 +113,17 @@ public class MessageEntity {
 
     public String externalMessageId() {
         return externalMessageId;
+    }
+
+    public String content() {
+        return content;
+    }
+
+    public Instant occurredAt() {
+        return occurredAt;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
     }
 }

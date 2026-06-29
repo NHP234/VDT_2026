@@ -26,8 +26,8 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 ## 2. Inbox Domain Và REST API
 
-- [ ] Triển khai danh sách conversation có filter, search và pagination. `FR-02`
-- [ ] Triển khai conversation detail với messages và activities. `FR-03`
+- [x] Triển khai danh sách conversation có filter, search và pagination. `FR-02`
+- [x] Triển khai conversation detail với messages và activities. `FR-03`
 - [ ] Triển khai đổi status và ghi audit activity. `FR-04`, `FR-11`
 - [ ] Triển khai manual assignment và ghi audit activity. `FR-05`, `FR-11`
 - [ ] Triển khai tạo reply dưới dạng outbound message trạng thái `QUEUED`. `FR-06`, `FR-09`
