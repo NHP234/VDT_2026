@@ -1,31 +1,40 @@
 # Frontend Workspace
 
-The React TypeScript app should be created here by the frontend agent.
+React TypeScript Vite app for the agent-facing Omnichannel Customer Care workspace.
 
-Before editing this directory, read:
+## Scope
 
-- [`../AGENTS.md`](../AGENTS.md)
-- [`../docs/requirement.md`](../docs/requirement.md)
-- [`../docs/frontend-structure.md`](../docs/frontend-structure.md)
-- [`../docs/agent-collaboration.md`](../docs/agent-collaboration.md)
-
-The frontend scope is limited to:
+The frontend is intentionally limited to:
 
 1. Login.
 2. Unified inbox.
 
 Do not add dashboards, settings, analytics, tags, notes, rich text, attachments,
-or other out-of-scope UI.
+or other out-of-scope UI without updating `docs/requirement.md` first.
 
-## Expected Initial Setup
+## Commands
 
-Gemini should create a Vite React TypeScript app in this directory and add:
+```powershell
+npm ci
+npm run dev
+npm run lint
+npm test
+npm run build
+```
 
-- React Router.
-- TanStack Query.
-- ESLint and Prettier.
-- Vitest and React Testing Library.
-- API client modules matching `docs/requirement.md`.
+Use `VITE_API_BASE_URL` to point at a backend other than `http://localhost:8080`.
 
-See [`../docs/templates/gemini-frontend-setup-prompt.md`](../docs/templates/gemini-frontend-setup-prompt.md)
-for a ready-to-use frontend prompt.
+## Structure
+
+```text
+src/
+|-- api/       # HTTP client and backend API modules
+|-- app/       # providers and routing
+|-- features/  # auth and inbox UI
+|-- styles/    # global app CSS
+|-- test/      # Vitest setup and component tests
+`-- types/     # shared API/domain types
+```
+
+Before changing this app, read `../AGENTS.md`, `../docs/requirement.md`,
+`../docs/frontend-structure.md`, and `../docs/agent-collaboration.md`.

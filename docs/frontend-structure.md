@@ -1,7 +1,7 @@
 # Cấu Trúc Frontend
 
-Frontend dự kiến được triển khai bởi một frontend agent riêng (Gemini). File này
-là handoff contract cho phần việc đó.
+Frontend được triển khai bởi một frontend agent riêng (Gemini). File này vừa là
+handoff contract, vừa mô tả cấu trúc hiện tại của `frontend/`.
 
 Phạm vi web app chỉ gồm hai màn hình trong `docs/requirement.md`:
 
@@ -12,11 +12,12 @@ Không thêm dashboard, settings, agent management, customer management, mobile
 app, analytics, tags, notes, SLA controls, chatbot UI, rich text, attachments
 hoặc tính năng ngoài phạm vi khác.
 
-## Layout Dự Kiến
+## Layout Hiện Tại
 
 ```text
 frontend/
 |-- package.json
+|-- package-lock.json
 |-- vite.config.ts
 |-- tsconfig.json
 |-- src/
@@ -32,14 +33,24 @@ frontend/
 |   |-- features/
 |   |   |-- auth/
 |   |   |-- inbox/
-|   |   |-- conversation-detail/
-|   |   |-- assignment/
-|   |   `-- reply/
-|   |-- components/
 |   |-- types/
 |   |-- styles/
 |   `-- test/
 ```
+
+## Lệnh Frontend
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+npm run lint
+npm test
+npm run build
+```
+
+`VITE_API_BASE_URL` cấu hình backend base URL. Nếu không đặt biến này, frontend
+mặc định gọi `http://localhost:8080`.
 
 ## Màn Hình Bắt Buộc
 

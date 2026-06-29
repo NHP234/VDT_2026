@@ -23,6 +23,20 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: Thiết lập Frontend Workspace trong `frontend/`. `FR-01` đến `FR-06`, `NFR-01`, `NFR-04`, `NFR-05`.
+  - Khởi tạo thành công React TypeScript Vite app bằng `create-vite`.
+  - Thiết lập và định nghĩa đầy đủ các kiểu dữ liệu của domain tại `src/types/index.ts`.
+  - Cài đặt cấu hình API Client (`httpClient.ts`, `authApi.ts`, `conversationsApi.ts`, `agentsApi.ts`) hỗ trợ Bearer Token và Problem Details.
+  - Triển khai theme sáng cho workspace vận hành, dùng bố cục dày thông tin và font monospace cho các định danh kỹ thuật.
+  - Triển khai màn hình Login và Unified Inbox với bố cục 3 cột chuyên dụng (Bộ lọc & danh sách, timeline trò chuyện & soạn thảo phản hồi, bảng thuộc tính chi tiết & lịch sử hoạt động).
+  - Thiết lập môi trường kiểm thử Vitest và viết 12 test cases bao quát mọi hành vi (Login, phân trang danh sách, bộ lọc kênh/trạng thái, gán agent, gửi phản hồi, hiển thị tin nhắn lỗi và nút thử lại).
+  - Verification: `npm run lint`, `npm test`, `npm run build` và `.\scripts\check.ps1` đều pass; frontend có 12/12 test pass.
+- Unplanned: thêm cấu hình CORS cho Inbox service với `FRONTEND_ALLOWED_ORIGINS`
+  để Vite dev server (`http://localhost:5173`) gọi được backend API.
+  Reason: review frontend phát hiện browser preflight tới `POST /api/v1/auth/login`
+  đang bị `403 Invalid CORS request`. Requirement hoặc maintenance link:
+  `FR-01`, `NFR-04`. Verification: manual CORS preflight trên port `18080`
+  trả `200` và `Access-Control-Allow-Origin: http://localhost:5173`.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.

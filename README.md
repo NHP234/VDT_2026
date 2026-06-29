@@ -5,11 +5,10 @@ Mini project for Viettel Digital Talent 2026. The product scope is locked in
 
 ## Current Status
 
-The repository has the base documentation, folder skeleton, local infrastructure
-Compose file, environment template, CI placeholder, and root check scripts.
-The local dependency stack has been validated with Docker. Backend Spring Boot
-service scaffolds are in place. Frontend application scaffolding is still
-pending for the Gemini frontend agent.
+The repository has base documentation, local infrastructure, backend Spring Boot
+services, and a React TypeScript frontend scaffold. The current vertical slice
+covers backend authentication, conversation APIs, assignment/status updates,
+reply queueing, retry, and a frontend login/unified inbox workspace.
 
 ## Quick Start
 
@@ -32,10 +31,8 @@ Local infrastructure defaults:
 | Mailpit SMTP | `localhost:1025` |
 | Mailpit UI | `http://localhost:8025` |
 
-`scripts/check.ps1` validates Docker Compose and skips backend/frontend tests
-when the corresponding projects do not exist. It currently runs both backend
-Maven Wrapper test suites and skips frontend checks until the React project is
-created.
+`scripts/check.ps1` validates Docker Compose, runs both backend Maven Wrapper
+test suites, and runs frontend install/lint/test/build checks.
 
 Backend run commands:
 
@@ -49,8 +46,17 @@ cd ..\channel-service
 .\mvnw.cmd spring-boot:run
 ```
 
-Frontend dev commands and full demo reset/inject commands will be added when
-those parts are scaffolded.
+Frontend dev commands:
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+Set `VITE_API_BASE_URL` when the Inbox service is not running at
+`http://localhost:8080`. Set `FRONTEND_ALLOWED_ORIGINS` for backend CORS when
+the frontend dev server uses a non-default origin.
 
 ## Verified Setup Checks
 
@@ -60,6 +66,7 @@ Current verified checks:
 - `.\scripts\check.ps1`
 - `backend/inbox-service`: Maven Wrapper test suite.
 - `backend/channel-service`: Maven Wrapper test suite.
+- `frontend`: Vitest unit tests, ESLint checker, and build compilation.
 - PostgreSQL readiness probe inside the container.
 - Redis `PING`.
 - Kafka topic-list probe inside the container.

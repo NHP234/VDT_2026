@@ -12,7 +12,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Tạo skeleton repository: `backend/`, `frontend/`, `infra/`, `scripts/`, và tài liệu cần thiết. `NFR-01`
 - [x] Thêm `.env.example` cho hạ tầng local và credential dịch vụ. `NFR-01`, `NFR-04`
 - [x] Thêm Docker Compose cho PostgreSQL, Kafka, Redis và Mailpit. `FR-07`, `FR-09`, `FR-10`, `NFR-01`
-- [~] Thêm lệnh format, lint và test cho backend/frontend. `NFR-05`
+- [x] Thêm lệnh format, lint và test cho backend/frontend. `NFR-05`
 - [~] Ghi lệnh setup, run, test và demo trong `README.md`. `NFR-01`, `FR-12`
 
 ## 1. Nền Tảng Backend
@@ -36,13 +36,13 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 ## 3. Frontend Agent Workspace
 
-- [ ] Tạo React TypeScript Vite app. `FR-01` đến `FR-06`
-- [ ] Triển khai login screen và session handling. `FR-01`
-- [ ] Triển khai layout desktop 3 vùng cho unified inbox. `FR-02`, `FR-03`
-- [ ] Triển khai filter, exact identity search và pagination. `FR-02`
-- [ ] Triển khai thao tác assignment, status, reply và retry. `FR-04`, `FR-05`, `FR-06`
-- [ ] Triển khai loading, empty, error và failed-delivery states. `FR-02`, `FR-03`, `FR-06`
-- [ ] Đảm bảo không render trực tiếp external HTML. `FR-03`, `NFR-04`
+- [x] Tạo React TypeScript Vite app. `FR-01` đến `FR-06`
+- [x] Triển khai login screen và session handling. `FR-01`
+- [x] Triển khai layout desktop 3 vùng cho unified inbox. `FR-02`, `FR-03`
+- [x] Triển khai filter, exact identity search và pagination. `FR-02`
+- [x] Triển khai thao tác assignment, status, reply và retry. `FR-04`, `FR-05`, `FR-06`
+- [x] Triển khai loading, empty, error và failed-delivery states. `FR-02`, `FR-03`, `FR-06`
+- [x] Đảm bảo không render trực tiếp external HTML. `FR-03`, `NFR-04`
 
 ## 4. Facebook Adapter
 
