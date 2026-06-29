@@ -17,6 +17,11 @@ spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
 
+security:
+  token:
+    secret: ${JWT_SECRET:replace-with-a-long-random-local-secret}
+    ttl-seconds: ${JWT_TTL_SECONDS:86400}
+
 management:
   endpoints:
     web:

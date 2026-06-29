@@ -20,9 +20,9 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Tạo Spring Boot project cho Inbox service với Java 21 và Maven Wrapper. `FR-01` đến `FR-06`, `FR-11`
 - [x] Tạo Spring Boot project cho Channel service với Java 21 và Maven Wrapper. `FR-07`, `FR-08`, `FR-09`, `FR-10`
 - [x] Thêm tài liệu event contract dùng chung cho Kafka topic. `FR-09`
-- [ ] Thêm Flyway migration cho domain model đã khóa. `FR-02` đến `FR-06`, `FR-11`
-- [ ] Seed demo agents và dữ liệu baseline. `FR-01`, `FR-12`
-- [ ] Thêm authentication và protected API behavior. `FR-01`, `NFR-04`
+- [x] Thêm Flyway migration cho domain model đã khóa. `FR-02` đến `FR-06`, `FR-11`
+- [x] Seed demo agents và dữ liệu baseline. `FR-01`, `FR-12`
+- [x] Thêm authentication và protected API behavior. `FR-01`, `NFR-04`
 
 ## 2. Inbox Domain Và REST API
 
@@ -82,7 +82,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 ## 8. Tests Và Quality
 
-- [ ] Unit test status transitions và reopening rules. `FR-04`, `NFR-05`
+- [x] Unit test status transitions và reopening rules. `FR-04`, `NFR-05`
 - [ ] Unit/integration test assignment audit recording. `FR-05`, `NFR-05`
 - [ ] Test Facebook deduplication. `FR-08`, `NFR-05`
 - [ ] Test email deduplication và threading. `FR-07`, `NFR-05`

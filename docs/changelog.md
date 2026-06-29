@@ -35,6 +35,23 @@ việc phát sinh.
   `RESOLVED` tự động chuyển conversation về `OPEN`. Reason: tránh
   backend/frontend agents diễn giải khác nhau trước khi implement domain và UI.
   Requirement hoặc maintenance link: `FR-03`, `FR-04`, `FR-05`, `FR-08`.
+- Planned: thêm Inbox service Flyway migrations cho locked domain model, seed
+  demo agents/baseline conversations, JPA persistence foundation cho agents,
+  customers, channel identities, conversations, messages, activities,
+  processed events và outbox events. Thêm domain policy tests cho status reopen
+  và peer-to-peer assignment. Requirement: `FR-01` đến `FR-06`, `FR-11`,
+  `FR-12`, `NFR-05`. Verification: PostgreSQL temp database migration check
+  passed với 3 agents, 2 conversations, 2 messages; Inbox service non-web
+  startup validated Flyway v2 và Hibernate mapping trên PostgreSQL;
+  `.\scripts\check.ps1` passed.
+- Planned: triển khai backend authentication foundation cho Inbox service:
+  bcrypt password verification với seeded agents, stateless HMAC Bearer token,
+  protected APIs, `POST /api/v1/auth/login`, `GET /api/v1/auth/me`,
+  `POST /api/v1/auth/logout` và `GET /api/v1/agents`. Requirement: `FR-01`,
+  `NFR-04`, `NFR-05`. Verification: `backend/inbox-service` tests passed;
+  manual HTTP smoke trên port `18080` passed với health `UP`, unauth `/me`
+  trả `401`, login trả Bearer token, `/me` trả `agent@example.test`,
+  `/agents` trả 3 agents và logout trả `204`; `.\scripts\check.ps1` passed.
 
 ### Rủi Ro Hoặc Follow-up
 
