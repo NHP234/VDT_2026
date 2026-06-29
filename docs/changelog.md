@@ -56,6 +56,14 @@ việc phát sinh.
   tests passed; manual HTTP smoke trên port `18080` tạo reply `QUEUED`, giả lập
   `FAILED` trong PostgreSQL local, retry về `QUEUED` và thấy 2 outbox events
   cho message đó; `.\scripts\check.ps1` passed.
+- Planned: chuẩn hóa validation/error response cho Inbox service theo
+  `application/problem+json`. Security filter trả Problem Details cho lỗi
+  `401/403`; global exception handler trả Problem Details cho validation,
+  malformed body, missing parameter, invalid enum và not found/business rule
+  errors. Requirement: `FR-01` đến `FR-06`, `NFR-04`. Verification:
+  `backend/inbox-service` tests passed; manual HTTP smoke trên port `18080`
+  xác nhận unauthenticated, failed login, invalid enum, blank reply và not found
+  đều trả `application/problem+json` với status/title đúng.
 
 ### Rủi Ro Hoặc Follow-up
 

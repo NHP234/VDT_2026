@@ -32,7 +32,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Triển khai manual assignment và ghi audit activity. `FR-05`, `FR-11`
 - [x] Triển khai tạo reply dưới dạng outbound message trạng thái `QUEUED`. `FR-06`, `FR-09`
 - [x] Triển khai endpoint retry cho outbound message bị failed. `FR-06`
-- [ ] Trả validation/error response thống nhất. `FR-01` đến `FR-06`, `NFR-04`
+- [x] Trả validation/error response thống nhất. `FR-01` đến `FR-06`, `NFR-04`
 
 ## 3. Frontend Agent Workspace
 
