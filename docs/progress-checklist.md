@@ -28,8 +28,8 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 - [x] Triển khai danh sách conversation có filter, search và pagination. `FR-02`
 - [x] Triển khai conversation detail với messages và activities. `FR-03`
-- [ ] Triển khai đổi status và ghi audit activity. `FR-04`, `FR-11`
-- [ ] Triển khai manual assignment và ghi audit activity. `FR-05`, `FR-11`
+- [x] Triển khai đổi status và ghi audit activity. `FR-04`, `FR-11`
+- [x] Triển khai manual assignment và ghi audit activity. `FR-05`, `FR-11`
 - [ ] Triển khai tạo reply dưới dạng outbound message trạng thái `QUEUED`. `FR-06`, `FR-09`
 - [ ] Triển khai endpoint retry cho outbound message bị failed. `FR-06`
 - [ ] Trả validation/error response thống nhất. `FR-01` đến `FR-06`, `NFR-04`

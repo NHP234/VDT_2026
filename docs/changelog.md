@@ -38,6 +38,15 @@ việc phát sinh.
   conversations, `channel=FACEBOOK` trả 1, `assignee=me` trả 1, exact identity
   search `tran.b@example.test` trả 1, detail trả 1 message và 1 activity;
   `.\scripts\check.ps1` passed.
+- Planned: triển khai backend status và assignment mutation API cho Inbox
+  service. `PATCH /api/v1/conversations/{id}/status` đổi status và ghi
+  `STATUS_CHANGED`; `PATCH /api/v1/conversations/{id}/assignee` hỗ trợ
+  peer-to-peer assign/reassign/unassign và ghi `ASSIGNMENT_CHANGED`.
+  Requirement: `FR-04`, `FR-05`, `FR-11`, `NFR-05`. Verification:
+  `backend/inbox-service` tests passed; manual HTTP smoke trên port `18080`
+  passed với status đổi sang `PENDING`, assignment sang
+  `minh.agent@example.test`, unassign về null và activities tăng;
+  `.\scripts\check.ps1` passed.
 
 ### Rủi Ro Hoặc Follow-up
 

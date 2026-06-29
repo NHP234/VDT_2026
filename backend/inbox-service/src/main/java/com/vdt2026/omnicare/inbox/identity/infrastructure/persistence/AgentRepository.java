@@ -9,4 +9,6 @@ public interface AgentRepository extends JpaRepository<AgentEntity, UUID> {
     Optional<AgentEntity> findByEmailIgnoreCase(String email);
 
     java.util.List<AgentEntity> findByActiveTrueOrderByDisplayNameAsc();
+
+    Optional<AgentEntity> findByIdAndActiveTrue(UUID id);
 }
