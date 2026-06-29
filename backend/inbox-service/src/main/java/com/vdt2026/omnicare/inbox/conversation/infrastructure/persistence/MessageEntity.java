@@ -99,6 +99,10 @@ public class MessageEntity {
         return id;
     }
 
+    public ConversationEntity conversation() {
+        return conversation;
+    }
+
     public Channel channel() {
         return channel;
     }
@@ -113,6 +117,10 @@ public class MessageEntity {
 
     public String externalMessageId() {
         return externalMessageId;
+    }
+
+    public String providerAccountId() {
+        return providerAccountId;
     }
 
     public String content() {

@@ -47,6 +47,15 @@ việc phát sinh.
   passed với status đổi sang `PENDING`, assignment sang
   `minh.agent@example.test`, unassign về null và activities tăng;
   `.\scripts\check.ps1` passed.
+- Planned: triển khai backend reply queue và retry API cho Inbox service.
+  `POST /api/v1/conversations/{id}/replies` tạo outbound message trạng thái
+  `QUEUED`, cập nhật last message, ghi `REPLY_QUEUED` activity và tạo outbox
+  event. `POST /api/v1/messages/{id}/retry` chỉ cho outbound `FAILED` message,
+  chuyển về `QUEUED`, ghi `DELIVERY_STATUS_CHANGED` và tạo retry outbox event.
+  Requirement: `FR-06`, `FR-09`, `NFR-05`. Verification: `backend/inbox-service`
+  tests passed; manual HTTP smoke trên port `18080` tạo reply `QUEUED`, giả lập
+  `FAILED` trong PostgreSQL local, retry về `QUEUED` và thấy 2 outbox events
+  cho message đó; `.\scripts\check.ps1` passed.
 
 ### Rủi Ro Hoặc Follow-up
 

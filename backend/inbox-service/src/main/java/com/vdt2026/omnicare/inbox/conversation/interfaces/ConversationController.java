@@ -5,6 +5,7 @@ import com.vdt2026.omnicare.inbox.conversation.application.ConversationListItem;
 import com.vdt2026.omnicare.inbox.conversation.application.ConversationCommandService;
 import com.vdt2026.omnicare.inbox.conversation.application.ConversationQueryService;
 import com.vdt2026.omnicare.inbox.conversation.application.PageView;
+import com.vdt2026.omnicare.inbox.conversation.application.ReplyCommandService;
 import com.vdt2026.omnicare.inbox.conversation.domain.ConversationStatus;
 import com.vdt2026.omnicare.inbox.identity.application.AuthenticatedAgent;
 import com.vdt2026.omnicare.inbox.shared.domain.Channel;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,10 +27,16 @@ class ConversationController {
 
     private final ConversationQueryService conversationQueryService;
     private final ConversationCommandService conversationCommandService;
+    private final ReplyCommandService replyCommandService;
 
-    ConversationController(ConversationQueryService conversationQueryService, ConversationCommandService conversationCommandService) {
+    ConversationController(
+        ConversationQueryService conversationQueryService,
+        ConversationCommandService conversationCommandService,
+        ReplyCommandService replyCommandService
+    ) {
         this.conversationQueryService = conversationQueryService;
         this.conversationCommandService = conversationCommandService;
+        this.replyCommandService = replyCommandService;
     }
 
     @GetMapping
@@ -66,6 +74,16 @@ class ConversationController {
         @RequestBody ChangeAssigneeRequest request
     ) {
         conversationCommandService.changeAssignee(id, request.assignedAgentId(), currentAgent);
+        return conversationQueryService.detail(id);
+    }
+
+    @PostMapping("/{id}/replies")
+    ConversationDetailView createReply(
+        @AuthenticationPrincipal AuthenticatedAgent currentAgent,
+        @PathVariable UUID id,
+        @Valid @RequestBody CreateReplyRequest request
+    ) {
+        replyCommandService.queueReply(id, request.content(), currentAgent);
         return conversationQueryService.detail(id);
     }
 }
