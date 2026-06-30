@@ -32,6 +32,7 @@ app:
   facebook:
     mode: ${FACEBOOK_MODE:simulator}
     page-id: ${FACEBOOK_PAGE_ID:local-page-id}
+    app-secret: ${FACEBOOK_APP_SECRET:}
     verify-token: ${FACEBOOK_VERIFY_TOKEN:}
   email:
     mode: ${EMAIL_MODE:simulator}

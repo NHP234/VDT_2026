@@ -53,6 +53,14 @@ việc phát sinh.
   Verification: `backend/channel-service` tests passed với 11/11 tests, gồm
   service unit tests và controller contract tests; manual HTTP smoke trên port
   `18081` xác nhận valid token trả `challenge-42` và wrong token trả `403`.
+- Planned: validate Meta webhook signatures trong real-provider mode bằng
+  `X-Hub-Signature-256` (`sha256=<hmac>`), HMAC-SHA256 trên raw body với
+  `FACEBOOK_APP_SECRET`. Simulator mode bỏ qua signature để local fixtures vẫn
+  chạy nhẹ. Requirement: `FR-08`, `NFR-04`. Verification:
+  `backend/channel-service` tests passed với 17/17 tests, gồm valid signature,
+  invalid signature, missing app secret và unsigned real-mode webhook rejection;
+  manual HTTP smoke trên port `18081` xác nhận signed real-mode POST trả `202`
+  còn unsigned POST trả `403`.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.

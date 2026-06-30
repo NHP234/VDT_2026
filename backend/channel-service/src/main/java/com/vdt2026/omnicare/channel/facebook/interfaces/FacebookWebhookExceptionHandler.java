@@ -1,6 +1,7 @@
 package com.vdt2026.omnicare.channel.facebook.interfaces;
 
 import com.vdt2026.omnicare.channel.facebook.application.FacebookWebhookVerificationException;
+import com.vdt2026.omnicare.channel.facebook.application.FacebookWebhookSignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,15 @@ class FacebookWebhookExceptionHandler {
     ProblemDetail handleVerificationFailure(FacebookWebhookVerificationException exception, HttpServletRequest request) {
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
         problem.setTitle("Facebook webhook verification failed");
+        problem.setDetail(exception.getMessage());
+        problem.setInstance(URI.create(request.getRequestURI()));
+        return problem;
+    }
+
+    @ExceptionHandler(FacebookWebhookSignatureException.class)
+    ProblemDetail handleSignatureFailure(FacebookWebhookSignatureException exception, HttpServletRequest request) {
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        problem.setTitle("Facebook webhook signature verification failed");
         problem.setDetail(exception.getMessage());
         problem.setInstance(URI.create(request.getRequestURI()));
         return problem;
