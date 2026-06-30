@@ -88,14 +88,14 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Test email deduplication và threading. `FR-07`, `NFR-05`
 - [x] Test reply delivery status transitions và retry behavior. `FR-06`, `NFR-05`
 - [x] Test authorization cho protected endpoints. `FR-01`, `NFR-05`
-- [ ] Test migrations và durable uniqueness constraints. `FR-07`, `FR-08`, `NFR-05`
+- [x] Test migrations và durable uniqueness constraints. `FR-07`, `FR-08`, `NFR-05`
 - [x] Thêm một end-to-end hoặc cross-service smoke test dùng simulators. `FR-12`, `NFR-05`
 
 ## 9. Deliverables Cuối
 
-- [ ] Thêm C4-style context/container/component diagrams khi hữu ích. `FR-12`
-- [ ] Thêm sequence diagrams cho Facebook inbound, email inbound và outbound reply. `FR-07`, `FR-08`, `FR-09`
-- [ ] Hoàn thiện traceability table. `NFR-05`
+- [x] Thêm C4-style context/container/component diagrams khi hữu ích. `FR-12`
+- [x] Thêm sequence diagrams cho Facebook inbound, email inbound và outbound reply. `FR-07`, `FR-08`, `FR-09`
+- [x] Hoàn thiện traceability table. `NFR-05`
 - [ ] Chụp screenshot demo không chứa dữ liệu nhạy cảm. `FR-12`, `NFR-04`
 - [ ] Viết report khoảng 15 trang. `FR-12`
 - [ ] Tạo slide deck khoảng 15 slide. `FR-12`

@@ -19,6 +19,33 @@ việc phát sinh.
 - Việc vẫn cần chú ý.
 ```
 
+## 2026-07-01
+
+### Tóm Tắt
+
+- Planned: thêm Testcontainers PostgreSQL migration tests cho Inbox service.
+  Test chạy Flyway V1/V2 trên PostgreSQL 16 thật, verify seed data và các
+  durable uniqueness constraints cho `processed_events.event_id`,
+  provider `messages.external_message_id`, `channel_identities`, `conversations`
+  và case-insensitive agent email. Requirement: `FR-07`, `FR-08`, `NFR-05`.
+- Planned: thêm Mermaid architecture diagrams và sequence diagrams trong
+  `docs/diagrams/` cho C4 context/container/component, Facebook inbound, email
+  inbound và outbound reply/delivery result. Requirement: `FR-07`, `FR-08`,
+  `FR-09`, `FR-12`.
+- Unplanned: harden `scripts/check.ps1` để native command warnings từ Maven/npm
+  không làm PowerShell 7 fail khi exit code thật vẫn là `0`. Reason: cần giữ
+  local check reproducible sau khi Maven/Mockito ghi warning ra stderr.
+  Requirement: `NFR-01`, `NFR-05`.
+- Verification: `.\scripts\check.ps1` passed with Inbox 42/42, Channel 52/52,
+  frontend 12/12 + production build.
+
+### Rủi Ro Hoặc Follow-up
+
+- Test này yêu cầu Docker daemon khi chạy Maven tests vì dùng Testcontainers.
+- Frontend check pass trên Node v23.10.0 nhưng npm có cảnh báo engine cho một
+  dependency ESLint; nếu muốn môi trường ổn định hơn, dùng Node LTS theo
+  `frontend/package.json`/tooling recommendation.
+
 ## 2026-06-30
 
 ### Tóm Tắt

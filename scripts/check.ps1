@@ -4,6 +4,9 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+if ($PSVersionTable.PSVersion.Major -ge 7) {
+    $PSNativeCommandUseErrorActionPreference = $false
+}
 
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 Push-Location $root
@@ -41,9 +44,16 @@ function Invoke-NativeChecked {
         [string] $Description
     )
 
-    & $Command
-    if ($LASTEXITCODE -ne 0) {
-        throw "$Description failed with exit code $LASTEXITCODE."
+    $previousErrorActionPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = "Continue"
+        & $Command
+        if ($LASTEXITCODE -ne 0) {
+            throw "$Description failed with exit code $LASTEXITCODE."
+        }
+    }
+    finally {
+        $ErrorActionPreference = $previousErrorActionPreference
     }
 }
 

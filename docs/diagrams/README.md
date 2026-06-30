@@ -4,13 +4,10 @@ Lưu architecture và flow diagrams tại đây.
 
 Sơ đồ bắt buộc hoặc khuyến nghị:
 
-- C4 context diagram.
-- C4 container diagram.
-- Component diagram cho Inbox service.
-- Component diagram cho Channel service.
-- Sequence diagram cho Facebook inbound event.
-- Sequence diagram cho email inbound event.
-- Sequence diagram cho outbound reply và delivery result.
+- `architecture.md`: C4 context, C4 container, Inbox component và Channel
+  component diagrams.
+- `sequence-flows.md`: sequence diagram cho Facebook inbound, email inbound và
+  outbound reply/delivery result.
 
 Quy tắc:
 
