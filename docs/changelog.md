@@ -23,6 +23,25 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: triển khai IMAP polling foundation cho email inbound. Channel service
+  có `EmailImapPollingService` bật bằng `EMAIL_IMAP_ENABLED=true`, đọc unseen
+  messages từ folder cấu hình, map `MimeMessage` qua `EmailInboundMessageMapper`,
+  lấy sender, recipient, subject, `Message-ID`, `References`, `In-Reply-To`,
+  plain-text body, bỏ qua attachments, rồi dispatch qua cùng `EmailInboundNormalizer`
+  và Redis/Kafka path. Requirement: `FR-07`, `FR-09`, `FR-10`. Verification:
+  `.\scripts\check.ps1` pass, gồm `backend/inbox-service` tests 26/26,
+  `backend/channel-service` tests 50/50, frontend lint/test/build.
+
+### Rủi Ro Hoặc Follow-up
+
+- IMAP polling mặc định tắt để local demo không tự connect mailbox. Chưa có
+  runtime smoke với protocol-compatible IMAP server; Mailpit hiện dùng cho SMTP
+  local, còn IMAP smoke cần test server hoặc mailbox cấu hình riêng.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: triển khai SMTP outbound delivery cho email replies. Inbox reply
   request payload giờ có thêm `externalIdentityId` và `subject`; Channel delivery
   routing chọn sender theo channel, Facebook vẫn dùng simulator/Graph adapter,

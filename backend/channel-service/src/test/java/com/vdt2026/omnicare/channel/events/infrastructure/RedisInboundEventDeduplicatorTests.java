@@ -77,6 +77,25 @@ class RedisInboundEventDeduplicatorTests {
             .isEqualTo("dedup:inbound:facebook:local-page-id:comment:comment-1");
     }
 
+    @Test
+    void buildsStableEmailDeduplicationKey() {
+        NormalizedInboundMessagePayload payload = new NormalizedInboundMessagePayload(
+            "EMAIL",
+            "EMAIL",
+            "Demo@Example.Test",
+            "email:demo@example.test:<root@example.test>",
+            "<Message-1@Example.Test>",
+            "customer@example.test",
+            "Customer",
+            "Email subject",
+            "hello",
+            Instant.parse("2026-06-30T00:00:00Z")
+        );
+
+        assertThat(RedisInboundEventDeduplicator.deduplicationKey(payload))
+            .isEqualTo("dedup:inbound:email:demo@example.test:email:<message-1@example.test>");
+    }
+
     @SuppressWarnings("unchecked")
     private RedisFixture redisFixture() {
         StringRedisTemplate redisTemplate = mock(StringRedisTemplate.class);

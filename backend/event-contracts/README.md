@@ -85,12 +85,15 @@ Facebook conversation key rules:
 Email conversation key rules:
 
 - Email messages use channel `EMAIL` and source type `EMAIL`.
-- Simulator email events group by provider mailbox and thread root message ID:
+- Simulator and IMAP email events group by provider mailbox and thread root message ID:
   `email:{providerAccountId}:{rootMessageId}`.
 - The thread root is resolved from the first `References` header when present,
   then `In-Reply-To`, then the message's own `Message-ID`.
 - Subject is optional and stored only as normalized conversation metadata; it is
   not used to merge threads.
+- IMAP polling reads unseen messages from the configured folder, maps only safe
+  plain-text content, ignores attachments, publishes through the same
+  deduplicated Kafka path, and marks processed or invalid messages as seen.
 
 ## `inbox.reply-requested.v1`
 

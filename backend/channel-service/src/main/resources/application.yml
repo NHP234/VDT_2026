@@ -50,6 +50,16 @@ app:
   email:
     mode: ${EMAIL_MODE:simulator}
     mailbox: ${EMAIL_MAILBOX:demo@example.test}
+    imap:
+      enabled: ${EMAIL_IMAP_ENABLED:false}
+      host: ${IMAP_HOST:localhost}
+      port: ${IMAP_PORT:1143}
+      username: ${IMAP_USERNAME:demo@example.test}
+      password: ${IMAP_PASSWORD:}
+      folder: ${IMAP_FOLDER:INBOX}
+      protocol: ${IMAP_PROTOCOL:imap}
+      poll-fixed-delay-ms: ${IMAP_POLL_FIXED_DELAY_MS:10000}
+      max-messages-per-poll: ${IMAP_MAX_MESSAGES_PER_POLL:10}
     smtp:
       enabled: ${EMAIL_SMTP_ENABLED:true}
     mail-from: ${MAIL_FROM:demo@example.test}
