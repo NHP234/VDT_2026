@@ -47,7 +47,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 ## 4. Facebook Adapter
 
 - [x] Thêm simulator endpoints và fixtures cho Messenger/comment events. `FR-08`, `FR-12`
-- [ ] Triển khai Meta webhook verification. `FR-08`
+- [x] Triển khai Meta webhook verification. `FR-08`
 - [ ] Validate Meta webhook signatures trong real-provider mode. `FR-08`, `NFR-04`
 - [~] Normalize Facebook inbound payload, không để provider DTO lọt vào domain. `FR-08`
 - [ ] Deduplicate Facebook inbound events bằng Redis và PostgreSQL. `FR-08`, `FR-10`, `NFR-03`

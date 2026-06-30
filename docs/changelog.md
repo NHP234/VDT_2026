@@ -46,6 +46,13 @@ việc phát sinh.
   normalizer fixture tests và controller API tests; manual HTTP smoke trên port
   `18081` trả normalized Messenger và comment payload đúng topic/source type/
   external conversation ID.
+- Planned: triển khai Meta webhook verification cho Channel service.
+  `GET /webhooks/facebook` kiểm tra `hub.mode=subscribe`, `hub.verify_token`
+  khớp `FACEBOOK_VERIFY_TOKEN` và trả plain-text `hub.challenge`; token sai hoặc
+  cấu hình thiếu trả Problem Details `403`. Requirement: `FR-08`, `NFR-04`.
+  Verification: `backend/channel-service` tests passed với 11/11 tests, gồm
+  service unit tests và controller contract tests; manual HTTP smoke trên port
+  `18081` xác nhận valid token trả `challenge-42` và wrong token trả `403`.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.
