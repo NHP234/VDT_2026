@@ -23,6 +23,23 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: thêm `SecurityConfigTests` cho Inbox service để verify protected
+  endpoint trả Problem Details `401` khi thiếu/invalid Bearer token, token của
+  inactive agent bị từ chối, token hợp lệ truy cập được endpoint protected, và
+  `/actuator/health`, `/actuator/metrics`, `/actuator/prometheus`,
+  `/api/v1/auth/login` public đúng như cấu hình. Test app loại JPA/Flyway để
+  không phụ thuộc PostgreSQL. Requirement: `FR-01`, `NFR-04`, `NFR-05`.
+  Verification: `.\scripts\check.ps1` pass với Inbox tests 37/37, Channel tests
+  52/52, frontend tests 12/12 và frontend build pass.
+
+### Rủi Ro Hoặc Follow-up
+
+- Migration/unique constraint tests là mục backend test còn lại trong checklist.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: thêm unit test cho assignment audit trong Inbox service. Test verify
   assign/unassign cập nhật conversation, ghi activity `ASSIGNMENT_CHANGED` với
   actor, old/new assignee value và timestamp cố định; đồng thời không ghi audit
@@ -31,8 +48,8 @@ việc phát sinh.
 
 ### Rủi Ro Hoặc Follow-up
 
-- Authorization endpoint tests và migration/unique constraint tests vẫn là hai
-  mục backend test còn lại trong checklist.
+- Migration/unique constraint tests vẫn là mục backend test còn lại trong
+  checklist.
 
 ## 2026-06-30
 
