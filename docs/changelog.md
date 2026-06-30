@@ -23,6 +23,29 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: thêm script smoke cross-service `scripts/smoke-cross-service.ps1`
+  cho deterministic demo path: Channel Facebook simulator publish inbound
+  event, Inbox consume/persist, agent login, reply queued, Channel consume reply
+  request và Inbox nhận delivery result `SENT`. Requirement: `FR-12`, `NFR-05`.
+  Verification: chạy `.\scripts\smoke-cross-service.ps1` pass với conversation
+  `936dc6b8-aa20-4473-b267-9e13a39dbfbb`, outbound message
+  `b51652c2-eeb2-42dd-b5be-cbece56ca60c` chuyển sang `SENT`.
+- Planned: manual Kafka DLT smoke cho bounded retry vừa thêm. Publish malformed
+  record vào `inbox.message-received.v1`, sau retry record xuất hiện trong
+  `inbox.message-received.v1.dlq` với token `bad-smoke-20260630155836`.
+  Requirement: `FR-09`, `NFR-03`. Verification: `kafka-console-consumer`
+  đọc được record trong DLT topic.
+
+### Rủi Ro Hoặc Follow-up
+
+- Channel health endpoint hiện `UP` nhưng có thể mất khoảng 10 giây do
+  `MailHealthIndicator`; nên tối ưu health/readiness trước demo nếu cần check
+  nhanh.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: cấu hình bounded retry và dead-letter handling cho Kafka consumers.
   Inbox service và Channel service dùng `DefaultErrorHandler` với số lần thử
   hữu hạn, fixed backoff cấu hình qua `.env.example`, rồi publish record lỗi

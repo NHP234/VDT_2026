@@ -89,7 +89,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Test reply delivery status transitions và retry behavior. `FR-06`, `NFR-05`
 - [ ] Test authorization cho protected endpoints. `FR-01`, `NFR-05`
 - [ ] Test migrations và durable uniqueness constraints. `FR-07`, `FR-08`, `NFR-05`
-- [ ] Thêm một end-to-end hoặc cross-service smoke test dùng simulators. `FR-12`, `NFR-05`
+- [x] Thêm một end-to-end hoặc cross-service smoke test dùng simulators. `FR-12`, `NFR-05`
 
 ## 9. Deliverables Cuối
 

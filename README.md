@@ -18,6 +18,7 @@ From PowerShell:
 Copy-Item .env.example .env
 .\scripts\dev-up.ps1
 .\scripts\check.ps1
+.\scripts\smoke-cross-service.ps1
 .\scripts\dev-down.ps1
 ```
 
@@ -71,6 +72,7 @@ Current verified checks:
 - Redis `PING`.
 - Kafka topic-list probe inside the container.
 - Mailpit HTTP response at `http://localhost:8025`.
+- Cross-service simulator smoke path using `.\scripts\smoke-cross-service.ps1`.
 
 ## Documentation Map
 
