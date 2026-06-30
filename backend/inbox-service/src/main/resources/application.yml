@@ -16,6 +16,11 @@ spring:
     open-in-view: false
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    consumer:
+      group-id: ${INBOX_KAFKA_GROUP_ID:inbox-service}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 security:
   token:
@@ -25,6 +30,9 @@ security:
 app:
   cors:
     allowed-origins: ${FRONTEND_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+  kafka:
+    consumers:
+      enabled: ${INBOX_KAFKA_CONSUMERS_ENABLED:true}
 
 management:
   endpoints:

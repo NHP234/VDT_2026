@@ -70,6 +70,18 @@ việc phát sinh.
   gồm test Kafka publisher topic/key/value và controller test xác nhận simulator
   gọi publisher; manual Kafka smoke consume được event mới từ topic với
   `occurredAt` dạng `"2026-06-30T02:25:00Z"`.
+- Planned: consume inbound events idempotently trong Inbox service. Thêm
+  `InboundMessageIngestionService` để xử lý `inbox.message-received.v1`, tạo
+  customer/channel identity/conversation/message khi cần, reopen conversation
+  `PENDING` hoặc `RESOLVED`, ghi `MESSAGE_RECEIVED` activity, và lưu
+  `processed_events` để bỏ qua redelivery. Kafka listener đọc JSON string từ
+  topic rồi delegate vào application service; external message ID vẫn được
+  kiểm tra trước khi ghi để chống duplicate từ provider. Requirement: `FR-09`,
+  `NFR-03`, `FR-02`, `FR-03`, `FR-11`. Verification: `backend/inbox-service`
+  tests passed với 16/16 tests, gồm test tạo mới inbound message, reopen
+  conversation cũ, duplicate event và duplicate external message; manual Kafka
+  smoke với consumer group mới publish event vào `inbox.message-received.v1` và
+  xác nhận PostgreSQL có message `mid.local.inbox.consume.*`.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.

@@ -44,6 +44,10 @@ conversation ID as the record key, so messages for the same conversation remain
 ordered within a partition. Timestamp fields are serialized as ISO 8601 UTC
 strings, not numeric epoch timestamps.
 
+Inbox service consumes this topic and persists the payload idempotently. It
+records processed envelope IDs in `processed_events` and also checks the
+provider `externalMessageId` before inserting a new inbound message.
+
 Payload fields:
 
 ```json
