@@ -3,11 +3,15 @@ package com.vdt2026.omnicare.channel.delivery.application;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,19 +21,28 @@ public class ReplyDeliveryService {
     static final String SUCCEEDED_TOPIC = "channel.reply-delivery-succeeded.v1";
     static final String FAILED_TOPIC = "channel.reply-delivery-failed.v1";
     private static final String SOURCE = "channel-service.reply-delivery";
+    private static final String OUTBOUND_DELIVERIES_METRIC = "omnicare.outbound.deliveries";
 
     private final DeliveryResultPublisher deliveryResultPublisher;
     private final List<OutboundReplySender> outboundReplySenders;
     private final ObjectMapper objectMapper;
     private final Clock clock;
+    private final MeterRegistry meterRegistry;
 
     @Autowired
     public ReplyDeliveryService(
         DeliveryResultPublisher deliveryResultPublisher,
         List<OutboundReplySender> outboundReplySenders,
-        ObjectMapper objectMapper
+        ObjectMapper objectMapper,
+        ObjectProvider<MeterRegistry> meterRegistryProvider
     ) {
-        this(deliveryResultPublisher, outboundReplySenders, objectMapper, Clock.systemUTC());
+        this(
+            deliveryResultPublisher,
+            outboundReplySenders,
+            objectMapper,
+            Clock.systemUTC(),
+            meterRegistryProvider.getIfAvailable(() -> Metrics.globalRegistry)
+        );
     }
 
     ReplyDeliveryService(
@@ -38,10 +51,21 @@ public class ReplyDeliveryService {
         ObjectMapper objectMapper,
         Clock clock
     ) {
+        this(deliveryResultPublisher, outboundReplySenders, objectMapper, clock, Metrics.globalRegistry);
+    }
+
+    ReplyDeliveryService(
+        DeliveryResultPublisher deliveryResultPublisher,
+        List<OutboundReplySender> outboundReplySenders,
+        ObjectMapper objectMapper,
+        Clock clock,
+        MeterRegistry meterRegistry
+    ) {
         this.deliveryResultPublisher = deliveryResultPublisher;
         this.outboundReplySenders = outboundReplySenders;
         this.objectMapper = objectMapper;
         this.clock = clock;
+        this.meterRegistry = meterRegistry;
     }
 
     public DeliveryResult deliver(ReplyRequestEvent event) {
@@ -62,6 +86,7 @@ public class ReplyDeliveryService {
         String key = event.payload().messageId().toString();
 
         deliveryResultPublisher.publish(topic, key, eventJson);
+        incrementOutboundMetric(failed ? "failed" : "sent", event.payload());
         return new DeliveryResult(topic, key, eventType);
     }
 
@@ -146,6 +171,20 @@ public class ReplyDeliveryService {
         if (!StringUtils.hasText(value)) {
             throw new IllegalArgumentException(message);
         }
+    }
+
+    private void incrementOutboundMetric(String result, ReplyRequestPayload payload) {
+        Counter.builder(OUTBOUND_DELIVERIES_METRIC)
+            .description("Outbound reply deliveries published by channel-service")
+            .tag("result", result)
+            .tag("channel", tagValue(payload.channel()))
+            .tag("sourceType", tagValue(payload.sourceType()))
+            .register(meterRegistry)
+            .increment();
+    }
+
+    private String tagValue(String value) {
+        return StringUtils.hasText(value) ? value : "unknown";
     }
 
     public record DeliveryResult(String topic, String key, String eventType) {

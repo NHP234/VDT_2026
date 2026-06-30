@@ -35,6 +35,18 @@ function Ensure-JavaHome {
     }
 }
 
+function Invoke-NativeChecked {
+    param(
+        [scriptblock] $Command,
+        [string] $Description
+    )
+
+    & $Command
+    if ($LASTEXITCODE -ne 0) {
+        throw "$Description failed with exit code $LASTEXITCODE."
+    }
+}
+
 try {
     if (-not $SkipDocker) {
         if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
@@ -47,7 +59,9 @@ try {
         }
         $env:DOCKER_CONFIG = $dockerConfig
 
-        & docker compose --env-file ".env.example" config | Out-Null
+        Invoke-NativeChecked -Description "Docker Compose configuration validation" -Command {
+            & docker compose --env-file ".env.example" config | Out-Null
+        }
         Write-Host "Docker Compose configuration is valid."
     }
 
@@ -58,7 +72,9 @@ try {
         -Action {
             Push-Location "backend/inbox-service"
             try {
-                .\mvnw.cmd -B test
+                Invoke-NativeChecked -Description "inbox-service Maven tests" -Command {
+                    .\mvnw.cmd -B test
+                }
             }
             finally {
                 Pop-Location
@@ -71,7 +87,9 @@ try {
         -Action {
             Push-Location "backend/channel-service"
             try {
-                .\mvnw.cmd -B test
+                Invoke-NativeChecked -Description "channel-service Maven tests" -Command {
+                    .\mvnw.cmd -B test
+                }
             }
             finally {
                 Pop-Location
@@ -84,10 +102,18 @@ try {
         -Action {
             Push-Location "frontend"
             try {
-                npm ci
-                npm run lint --if-present
-                npm run test --if-present -- --run
-                npm run build --if-present
+                Invoke-NativeChecked -Description "frontend npm ci" -Command {
+                    npm ci
+                }
+                Invoke-NativeChecked -Description "frontend lint" -Command {
+                    npm run lint --if-present
+                }
+                Invoke-NativeChecked -Description "frontend tests" -Command {
+                    npm run test --if-present -- --run
+                }
+                Invoke-NativeChecked -Description "frontend build" -Command {
+                    npm run build --if-present
+                }
             }
             finally {
                 Pop-Location

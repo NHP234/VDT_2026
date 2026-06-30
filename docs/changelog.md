@@ -23,6 +23,33 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: hoàn thiện observability foundation cho backend services: HTTP
+  `X-Correlation-Id` filter cho Inbox/Channel, MDC `correlationId`/`traceId` khi
+  consume Kafka event, Prometheus registry dependency, và Channel counters cho
+  inbound published/duplicate cùng outbound sent/failed. Requirement: `FR-11`,
+  `NFR-03`. Verification: `.\scripts\check.ps1` pass với Inbox tests 28/28 và
+  Channel tests 52/52; runtime health check returned `UP` for Inbox/Channel;
+  `.\scripts\smoke-cross-service.ps1 -TimeoutSeconds 120` pass với
+  `correlationId=smoke-20260630203437`; Channel metric details returned
+  `omnicare.inbound.events` count `1.0`, `omnicare.outbound.deliveries` count
+  `1.0`, và `/actuator/prometheus` exposed both Prometheus series.
+- Unplanned: sửa `scripts/check.ps1` để native commands như Docker, Maven và
+  npm làm script fail thật khi trả exit code khác 0. Reason: trong Windows
+  PowerShell, Maven test failure có thể để lại surefire errors nhưng script tổng
+  vẫn exit `0` nếu không kiểm tra `$LASTEXITCODE`. Requirement hoặc maintenance
+  link: `NFR-05`.
+
+### Rủi Ro Hoặc Follow-up
+
+- Inbox retry counter riêng chưa thêm vì retry đã visible qua audit/message
+  status; chỉ cần bổ sung nếu muốn dashboard retry riêng.
+- Channel `/actuator/health` local có thể mất khoảng 10 giây do Mail health
+  indicator, nên smoke/runtime verification nên dùng timeout ít nhất 20 giây.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: thêm `scripts/smoke-email-flow.ps1` để verify runtime email demo path
   với service đang chạy: email simulator inbound, duplicate rejection, Inbox
   persistence, agent reply, Channel SMTP outbound và Mailpit receipt. Requirement:

@@ -14,7 +14,13 @@ class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                .requestMatchers(
+                    "/actuator/health",
+                    "/actuator/health/**",
+                    "/actuator/metrics",
+                    "/actuator/metrics/**",
+                    "/actuator/prometheus"
+                ).permitAll()
                 .requestMatchers("/webhooks/**").permitAll()
                 .requestMatchers("/simulators/**").permitAll()
                 .anyRequest().authenticated()

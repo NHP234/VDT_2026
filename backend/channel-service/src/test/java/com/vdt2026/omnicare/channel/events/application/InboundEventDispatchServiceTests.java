@@ -2,6 +2,7 @@ package com.vdt2026.omnicare.channel.events.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,25 +14,39 @@ class InboundEventDispatchServiceTests {
     @Test
     void publishesAcceptedEvent() {
         RecordingPublisher publisher = new RecordingPublisher();
-        InboundEventDispatchService service = new InboundEventDispatchService(event -> true, publisher);
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        InboundEventDispatchService service = new InboundEventDispatchService(event -> true, publisher, meterRegistry);
         EventEnvelope<NormalizedInboundMessagePayload> event = event("mid-accepted");
 
         InboundEventDispatchService.DispatchResult result = service.dispatch(event);
 
         assertThat(result).isEqualTo(InboundEventDispatchService.DispatchResult.PUBLISHED);
         assertThat(publisher.events()).containsExactly(event);
+        assertThat(meterRegistry.get("omnicare.inbound.events")
+            .tag("result", "published")
+            .tag("channel", "FACEBOOK")
+            .tag("sourceType", "MESSAGE")
+            .counter()
+            .count()).isEqualTo(1.0);
     }
 
     @Test
     void doesNotPublishDuplicateEvent() {
         RecordingPublisher publisher = new RecordingPublisher();
-        InboundEventDispatchService service = new InboundEventDispatchService(event -> false, publisher);
+        SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
+        InboundEventDispatchService service = new InboundEventDispatchService(event -> false, publisher, meterRegistry);
         EventEnvelope<NormalizedInboundMessagePayload> event = event("mid-duplicate");
 
         InboundEventDispatchService.DispatchResult result = service.dispatch(event);
 
         assertThat(result).isEqualTo(InboundEventDispatchService.DispatchResult.DUPLICATE);
         assertThat(publisher.events()).isEmpty();
+        assertThat(meterRegistry.get("omnicare.inbound.events")
+            .tag("result", "duplicate")
+            .tag("channel", "FACEBOOK")
+            .tag("sourceType", "MESSAGE")
+            .counter()
+            .count()).isEqualTo(1.0);
     }
 
     private EventEnvelope<NormalizedInboundMessagePayload> event(String externalMessageId) {

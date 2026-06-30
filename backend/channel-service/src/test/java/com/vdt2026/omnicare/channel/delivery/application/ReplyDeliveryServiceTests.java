@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -18,11 +19,13 @@ class ReplyDeliveryServiceTests {
     private final RecordingDeliveryResultPublisher publisher = new RecordingDeliveryResultPublisher();
     private final SimulatedOutboundReplySender outboundReplySender = new SimulatedOutboundReplySender();
     private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
+    private final SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
     private final ReplyDeliveryService service = new ReplyDeliveryService(
         publisher,
         List.of(outboundReplySender),
         objectMapper,
-        Clock.fixed(Instant.parse("2026-06-30T03:30:00Z"), ZoneOffset.UTC)
+        Clock.fixed(Instant.parse("2026-06-30T03:30:00Z"), ZoneOffset.UTC),
+        meterRegistry
     );
 
     @Test
@@ -44,6 +47,12 @@ class ReplyDeliveryServiceTests {
         assertThat(envelope.path("correlationId").asText()).isEqualTo("corr-reply-1");
         assertThat(envelope.path("payload").path("providerMessageId").asText())
             .isEqualTo("simulated:50000000-0000-0000-0000-000000000001");
+        assertThat(meterRegistry.get("omnicare.outbound.deliveries")
+            .tag("result", "sent")
+            .tag("channel", "FACEBOOK")
+            .tag("sourceType", "MESSAGE")
+            .counter()
+            .count()).isEqualTo(1.0);
     }
 
     @Test
@@ -57,6 +66,12 @@ class ReplyDeliveryServiceTests {
         assertThat(envelope.path("eventType").asText()).isEqualTo("reply-delivery-failed");
         assertThat(envelope.path("payload").path("failureReason").asText())
             .isEqualTo("Simulated provider delivery failure");
+        assertThat(meterRegistry.get("omnicare.outbound.deliveries")
+            .tag("result", "failed")
+            .tag("channel", "FACEBOOK")
+            .tag("sourceType", "MESSAGE")
+            .counter()
+            .count()).isEqualTo(1.0);
     }
 
     private ReplyRequestEvent event(String content) {

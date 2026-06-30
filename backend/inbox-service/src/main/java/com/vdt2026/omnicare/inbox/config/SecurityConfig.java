@@ -45,7 +45,13 @@ class SecurityConfig {
                 )
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                .requestMatchers(
+                    "/actuator/health",
+                    "/actuator/health/**",
+                    "/actuator/metrics",
+                    "/actuator/metrics/**",
+                    "/actuator/prometheus"
+                ).permitAll()
                 .requestMatchers("/api/v1/auth/login").permitAll()
                 .anyRequest().authenticated()
             )

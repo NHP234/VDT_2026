@@ -74,11 +74,11 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 ## 7. Observability Và Operations
 
-- [ ] Thêm correlation IDs xuyên suốt HTTP, logs và Kafka events. `FR-11`, `NFR-03`
-- [~] Expose health endpoints cho backend services. `FR-11`
-- [ ] Expose counters cho inbound, duplicate, sent và failed events. `FR-11`
+- [x] Thêm correlation IDs xuyên suốt HTTP, logs và Kafka events. `FR-11`, `NFR-03`
+- [x] Expose health endpoints cho backend services. `FR-11`
+- [x] Expose counters cho inbound, duplicate, sent và failed events. `FR-11`
 - [~] Thêm demo reset và run scripts. `FR-12`, `NFR-01`
-- [ ] Ghi operational checks trong `docs/monitoring-and-operations.md`. `FR-11`, `FR-12`
+- [x] Ghi operational checks trong `docs/monitoring-and-operations.md`. `FR-11`, `FR-12`
 
 ## 8. Tests Và Quality
 

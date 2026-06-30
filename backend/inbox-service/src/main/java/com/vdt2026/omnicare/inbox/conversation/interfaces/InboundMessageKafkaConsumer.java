@@ -4,15 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vdt2026.omnicare.inbox.conversation.application.InboundMessageIngestionService;
 import com.vdt2026.omnicare.inbox.conversation.application.InboundMessageReceivedEvent;
+import org.slf4j.MDC;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 @ConditionalOnProperty(name = "app.kafka.consumers.enabled", havingValue = "true", matchIfMissing = true)
 class InboundMessageKafkaConsumer {
 
     static final String TOPIC = "inbox.message-received.v1";
+    private static final String CORRELATION_ID_KEY = "correlationId";
+    private static final String TRACE_ID_KEY = "traceId";
 
     private final ObjectMapper objectMapper;
     private final InboundMessageIngestionService ingestionService;
@@ -25,6 +29,22 @@ class InboundMessageKafkaConsumer {
     @KafkaListener(topics = TOPIC, groupId = "${spring.kafka.consumer.group-id}")
     void consume(String eventJson) throws JsonProcessingException {
         InboundMessageReceivedEvent event = objectMapper.readValue(eventJson, InboundMessageReceivedEvent.class);
-        ingestionService.ingest(event);
+        withCorrelation(event.correlationId(), () -> ingestionService.ingest(event));
+    }
+
+    private void withCorrelation(String correlationId, Runnable action) {
+        if (!StringUtils.hasText(correlationId)) {
+            action.run();
+            return;
+        }
+        MDC.put(CORRELATION_ID_KEY, correlationId);
+        MDC.put(TRACE_ID_KEY, correlationId);
+        try {
+            action.run();
+        }
+        finally {
+            MDC.remove(CORRELATION_ID_KEY);
+            MDC.remove(TRACE_ID_KEY);
+        }
     }
 }
