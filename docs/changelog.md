@@ -23,6 +23,25 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: thêm `scripts/smoke-email-flow.ps1` để verify runtime email demo path
+  với service đang chạy: email simulator inbound, duplicate rejection, Inbox
+  persistence, agent reply, Channel SMTP outbound và Mailpit receipt. Requirement:
+  `FR-07`, `FR-12`, `NFR-05`. Verification: `.\scripts\smoke-email-flow.ps1`
+  pass với `correlationId=email-smoke-20260630193516`, duplicate publish
+  `false`, outbound message `SENT`, provider ID
+  `smtp:9bc42972-b431-4461-9e6e-a6051619ce60`, Mailpit message
+  `Dgzv2C66QRjuwdS9miGzyA`.
+
+### Rủi Ro Hoặc Follow-up
+
+- Script yêu cầu Inbox service, Channel service và Mailpit đang chạy. IMAP
+  live-server smoke vẫn là follow-up riêng vì local Mailpit đang dùng cho SMTP
+  test inbox, không phải IMAP mailbox.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: triển khai IMAP polling foundation cho email inbound. Channel service
   có `EmailImapPollingService` bật bằng `EMAIL_IMAP_ENABLED=true`, đọc unseen
   messages từ folder cấu hình, map `MimeMessage` qua `EmailInboundMessageMapper`,

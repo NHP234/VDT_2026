@@ -19,6 +19,7 @@ Copy-Item .env.example .env
 .\scripts\dev-up.ps1
 .\scripts\check.ps1
 .\scripts\smoke-cross-service.ps1
+.\scripts\smoke-email-flow.ps1
 .\scripts\dev-down.ps1
 ```
 
@@ -73,6 +74,7 @@ Current verified checks:
 - Kafka topic-list probe inside the container.
 - Mailpit HTTP response at `http://localhost:8025`.
 - Cross-service simulator smoke path using `.\scripts\smoke-cross-service.ps1`.
+- Email simulator, SMTP and Mailpit smoke path using `.\scripts\smoke-email-flow.ps1`.
 
 ## Documentation Map
 
