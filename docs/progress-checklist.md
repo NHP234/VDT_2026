@@ -83,7 +83,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 ## 8. Tests Và Quality
 
 - [x] Unit test status transitions và reopening rules. `FR-04`, `NFR-05`
-- [ ] Unit/integration test assignment audit recording. `FR-05`, `NFR-05`
+- [x] Unit/integration test assignment audit recording. `FR-05`, `NFR-05`
 - [x] Test Facebook deduplication. `FR-08`, `NFR-05`
 - [x] Test email deduplication và threading. `FR-07`, `NFR-05`
 - [x] Test reply delivery status transitions và retry behavior. `FR-06`, `NFR-05`

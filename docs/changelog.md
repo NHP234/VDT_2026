@@ -23,6 +23,21 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: thêm unit test cho assignment audit trong Inbox service. Test verify
+  assign/unassign cập nhật conversation, ghi activity `ASSIGNMENT_CHANGED` với
+  actor, old/new assignee value và timestamp cố định; đồng thời không ghi audit
+  nếu target assignee không tồn tại. Requirement: `FR-05`, `NFR-05`.
+  Verification: `backend/inbox-service` Maven tests pass 31/31.
+
+### Rủi Ro Hoặc Follow-up
+
+- Authorization endpoint tests và migration/unique constraint tests vẫn là hai
+  mục backend test còn lại trong checklist.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: hoàn thiện observability foundation cho backend services: HTTP
   `X-Correlation-Id` filter cho Inbox/Channel, MDC `correlationId`/`traceId` khi
   consume Kafka event, Prometheus registry dependency, và Channel counters cho
