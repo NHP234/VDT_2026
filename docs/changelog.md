@@ -23,6 +23,27 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: thêm Redis-backed deduplication cho Facebook inbound events trong
+  Channel service trước khi publish Kafka. `InboundEventDispatchService` chỉ
+  publish khi `InboundEventDeduplicator` accept event; Redis adapter dùng key
+  ngắn hạn theo channel, provider account, source type và external message ID.
+  Nếu Redis lỗi, Channel fail-open và dựa vào PostgreSQL idempotency ở Inbox để
+  không mất event. Requirement: `FR-08`, `FR-10`, `NFR-03`. Verification:
+  `backend/channel-service` tests pass 32/32, gồm duplicate simulator event,
+  dispatch service và Redis dedup adapter tests; runtime smoke với Docker pass:
+  gửi trùng `mid.dedup-smoke-20260630162145-84e1a7d2` trả `published=true` ở
+  lần đầu, `published=false` ở lần hai, Kafka chỉ có 1 record.
+
+### Rủi Ro Hoặc Follow-up
+
+- Real Meta webhook POST hiện mới verify signature và chưa parse/publish payload
+  thật, nên dedup path hiện áp dụng cho simulator/normalized Facebook inbound
+  flow. Khi parse real webhook được thêm vào, dùng cùng dispatch service này.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: thêm script smoke cross-service `scripts/smoke-cross-service.ps1`
   cho deterministic demo path: Channel Facebook simulator publish inbound
   event, Inbox consume/persist, agent login, reply queued, Channel consume reply

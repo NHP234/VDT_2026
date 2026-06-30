@@ -1,7 +1,7 @@
 package com.vdt2026.omnicare.channel.simulator.interfaces;
 
 import com.vdt2026.omnicare.channel.events.application.EventEnvelope;
-import com.vdt2026.omnicare.channel.events.application.InboundEventPublisher;
+import com.vdt2026.omnicare.channel.events.application.InboundEventDispatchService;
 import com.vdt2026.omnicare.channel.events.application.NormalizedInboundMessagePayload;
 import com.vdt2026.omnicare.channel.facebook.application.FacebookInboundNormalizer;
 import jakarta.validation.Valid;
@@ -20,11 +20,11 @@ import org.springframework.util.StringUtils;
 class FacebookSimulatorController {
 
     private final FacebookInboundNormalizer normalizer;
-    private final InboundEventPublisher inboundEventPublisher;
+    private final InboundEventDispatchService dispatchService;
 
-    FacebookSimulatorController(FacebookInboundNormalizer normalizer, InboundEventPublisher inboundEventPublisher) {
+    FacebookSimulatorController(FacebookInboundNormalizer normalizer, InboundEventDispatchService dispatchService) {
         this.normalizer = normalizer;
-        this.inboundEventPublisher = inboundEventPublisher;
+        this.dispatchService = dispatchService;
     }
 
     @PostMapping("/events")
@@ -34,7 +34,7 @@ class FacebookSimulatorController {
     ) {
         String effectiveCorrelationId = StringUtils.hasText(correlationId) ? correlationId : UUID.randomUUID().toString();
         EventEnvelope<NormalizedInboundMessagePayload> event = normalizer.normalize(request.toCommand(), effectiveCorrelationId);
-        inboundEventPublisher.publish(event);
-        return new FacebookSimulatorResponse(normalizer.topic(), true, event);
+        InboundEventDispatchService.DispatchResult result = dispatchService.dispatch(event);
+        return new FacebookSimulatorResponse(normalizer.topic(), result == InboundEventDispatchService.DispatchResult.PUBLISHED, event);
     }
 }

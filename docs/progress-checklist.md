@@ -50,7 +50,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Triển khai Meta webhook verification. `FR-08`
 - [x] Validate Meta webhook signatures trong real-provider mode. `FR-08`, `NFR-04`
 - [~] Normalize Facebook inbound payload, không để provider DTO lọt vào domain. `FR-08`
-- [ ] Deduplicate Facebook inbound events bằng Redis và PostgreSQL. `FR-08`, `FR-10`, `NFR-03`
+- [x] Deduplicate Facebook inbound events bằng Redis và PostgreSQL. `FR-08`, `FR-10`, `NFR-03`
 - [ ] Triển khai outbound Messenger/comment reply adapter với mocked contract tests. `FR-08`
 
 ## 5. Email Adapter
@@ -70,7 +70,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Publish outbound reply requests từ Inbox service. `FR-09`
 - [x] Publish outbound delivery results từ Channel service. `FR-09`
 - [x] Triển khai bounded retry và dead-letter handling. `FR-09`, `NFR-03`
-- [ ] Chỉ dùng Redis cho short-lived deduplication và integration state. `FR-10`
+- [x] Chỉ dùng Redis cho short-lived deduplication và integration state. `FR-10`
 
 ## 7. Observability Và Operations
 
@@ -84,7 +84,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 - [x] Unit test status transitions và reopening rules. `FR-04`, `NFR-05`
 - [ ] Unit/integration test assignment audit recording. `FR-05`, `NFR-05`
-- [ ] Test Facebook deduplication. `FR-08`, `NFR-05`
+- [x] Test Facebook deduplication. `FR-08`, `NFR-05`
 - [ ] Test email deduplication và threading. `FR-07`, `NFR-05`
 - [x] Test reply delivery status transitions và retry behavior. `FR-06`, `NFR-05`
 - [ ] Test authorization cho protected endpoints. `FR-01`, `NFR-05`

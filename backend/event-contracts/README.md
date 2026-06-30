@@ -51,6 +51,11 @@ strings, not numeric epoch timestamps.
 Inbox service consumes this topic and persists the payload idempotently. It
 records processed envelope IDs in `processed_events` and also checks the
 provider `externalMessageId` before inserting a new inbound message.
+Channel service also performs short-lived Redis deduplication before publishing
+Facebook simulator/webhook inbound events. The Redis key is derived from
+channel, provider account, source type, and provider message/comment ID. If
+Redis is unavailable, Channel publishes anyway and relies on Inbox PostgreSQL
+idempotency to avoid losing customer events.
 
 Payload fields:
 
