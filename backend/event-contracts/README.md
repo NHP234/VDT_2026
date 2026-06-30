@@ -109,6 +109,9 @@ demo can exercise retry and failure visibility without real provider
 credentials.
 
 The Kafka record key is the internal outbound message ID.
+Inbox service consumes the result event idempotently, updates the outbound
+message delivery status to `SENT`, stores `providerMessageId`, and records a
+`DELIVERY_STATUS_CHANGED` activity when the status changes.
 
 Payload fields:
 
@@ -128,6 +131,8 @@ Payload fields:
 ## `channel.reply-delivery-failed.v1`
 
 Uses the same payload as the success event and adds `failureReason`.
+Inbox service updates the outbound message delivery status to `FAILED` and
+records the failure reason in the audit activity value.
 
 ```json
 {

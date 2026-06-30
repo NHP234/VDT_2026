@@ -95,6 +95,11 @@ public class MessageEntity {
         deliveryStatus = status;
     }
 
+    public void markDeliveryResult(DeliveryStatus status, String providerMessageId) {
+        deliveryStatus = status;
+        externalMessageId = providerMessageId;
+    }
+
     public UUID id() {
         return id;
     }

@@ -103,6 +103,14 @@ việc phát sinh.
   delivery envelope và Kafka publisher topic/key/value; manual Kafka smoke
   produce một `reply-requested` event và consume được
   `channel.reply-delivery-succeeded.v1` chứa message ID tương ứng.
+- Planned: consume outbound delivery results trong Inbox service. Thêm consumer
+  cho `channel.reply-delivery-succeeded.v1` và
+  `channel.reply-delivery-failed.v1`, application service cập nhật outbound
+  message từ `QUEUED` sang `SENT` hoặc `FAILED`, lưu provider message ID, ghi
+  `DELIVERY_STATUS_CHANGED` activity và lưu `processed_events` để bỏ qua
+  duplicate result event. Requirement: `FR-06`, `FR-09`, `NFR-03`, `NFR-05`.
+  Verification: `backend/inbox-service` tests passed với 22/22 tests, gồm
+  success, failed, duplicate event và no-op khi status đã khớp.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.
