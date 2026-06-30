@@ -60,7 +60,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [~] Normalize plain-text email fields và bỏ qua attachments. `FR-07`, `NFR-04`
 - [~] Triển khai email threading bằng `In-Reply-To` và `References`. `FR-07`
 - [~] Deduplicate email messages bằng Redis và PostgreSQL. `FR-07`, `FR-10`, `NFR-03`
-- [ ] Triển khai SMTP outbound delivery với reply headers. `FR-07`
+- [x] Triển khai SMTP outbound delivery với reply headers. `FR-07`
 
 ## 6. Kafka, Redis Và Reliability
 

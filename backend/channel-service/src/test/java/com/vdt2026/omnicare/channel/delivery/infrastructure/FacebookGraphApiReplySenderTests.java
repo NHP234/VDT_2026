@@ -96,6 +96,8 @@ class FacebookGraphApiReplySenderTests {
             "MESSAGE",
             "local-page-id",
             "facebook:messenger:local-page-id:fb-user-a",
+            null,
+            null,
             "Hello Messenger customer"
         );
     }
@@ -108,6 +110,8 @@ class FacebookGraphApiReplySenderTests {
             "COMMENT",
             "local-page-id",
             "facebook:comment:local-page-id:post-1:comment-root-1",
+            null,
+            null,
             "Hello comment customer"
         );
     }

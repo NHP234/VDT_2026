@@ -20,7 +20,7 @@ class ReplyDeliveryServiceTests {
     private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
     private final ReplyDeliveryService service = new ReplyDeliveryService(
         publisher,
-        outboundReplySender,
+        List.of(outboundReplySender),
         objectMapper,
         Clock.fixed(Instant.parse("2026-06-30T03:30:00Z"), ZoneOffset.UTC)
     );
@@ -73,6 +73,8 @@ class ReplyDeliveryServiceTests {
                 "MESSAGE",
                 "local-page-id",
                 "messenger:fb-user-a",
+                null,
+                null,
                 content
             )
         );

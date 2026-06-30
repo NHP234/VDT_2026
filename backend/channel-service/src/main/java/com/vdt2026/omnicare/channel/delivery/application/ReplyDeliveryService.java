@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,27 +19,27 @@ public class ReplyDeliveryService {
     private static final String SOURCE = "channel-service.reply-delivery";
 
     private final DeliveryResultPublisher deliveryResultPublisher;
-    private final OutboundReplySender outboundReplySender;
+    private final List<OutboundReplySender> outboundReplySenders;
     private final ObjectMapper objectMapper;
     private final Clock clock;
 
     @Autowired
     public ReplyDeliveryService(
         DeliveryResultPublisher deliveryResultPublisher,
-        OutboundReplySender outboundReplySender,
+        List<OutboundReplySender> outboundReplySenders,
         ObjectMapper objectMapper
     ) {
-        this(deliveryResultPublisher, outboundReplySender, objectMapper, Clock.systemUTC());
+        this(deliveryResultPublisher, outboundReplySenders, objectMapper, Clock.systemUTC());
     }
 
     ReplyDeliveryService(
         DeliveryResultPublisher deliveryResultPublisher,
-        OutboundReplySender outboundReplySender,
+        List<OutboundReplySender> outboundReplySenders,
         ObjectMapper objectMapper,
         Clock clock
     ) {
         this.deliveryResultPublisher = deliveryResultPublisher;
-        this.outboundReplySender = outboundReplySender;
+        this.outboundReplySenders = outboundReplySenders;
         this.objectMapper = objectMapper;
         this.clock = clock;
     }
@@ -48,7 +49,7 @@ public class ReplyDeliveryService {
         OutboundReplyResult providerResult = null;
         OutboundReplyDeliveryException failure = null;
         try {
-            providerResult = outboundReplySender.send(event.payload());
+            providerResult = outboundReplySender(event.payload()).send(event.payload());
         }
         catch (OutboundReplyDeliveryException ex) {
             failure = ex;
@@ -130,6 +131,15 @@ public class ReplyDeliveryService {
         requireText(payload.providerAccountId(), "Reply request provider account ID is required");
         requireText(payload.externalConversationId(), "Reply request external conversation ID is required");
         requireText(payload.content(), "Reply request content is required");
+    }
+
+    private OutboundReplySender outboundReplySender(ReplyRequestPayload payload) {
+        return outboundReplySenders.stream()
+            .filter(sender -> sender.supports(payload))
+            .findFirst()
+            .orElseThrow(() -> new OutboundReplyDeliveryException(
+                "No outbound reply sender for channel %s and source type %s".formatted(payload.channel(), payload.sourceType())
+            ));
     }
 
     private void requireText(String value, String message) {

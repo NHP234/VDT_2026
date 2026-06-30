@@ -18,6 +18,7 @@ import com.vdt2026.omnicare.inbox.shared.infrastructure.persistence.OutboxEventE
 import com.vdt2026.omnicare.inbox.shared.infrastructure.persistence.OutboxEventRepository;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,15 +170,17 @@ public class ReplyCommandService {
 
     private String payload(ConversationEntity conversation, MessageEntity message) {
         try {
-            return objectMapper.writeValueAsString(Map.of(
-                "messageId", message.id(),
-                "conversationId", conversation.id(),
-                "channel", conversation.channel(),
-                "sourceType", conversation.sourceType(),
-                "providerAccountId", conversation.providerAccountId(),
-                "externalConversationId", conversation.externalConversationId(),
-                "content", message.content()
-            ));
+            Map<String, Object> payload = new LinkedHashMap<>();
+            payload.put("messageId", message.id());
+            payload.put("conversationId", conversation.id());
+            payload.put("channel", conversation.channel());
+            payload.put("sourceType", conversation.sourceType());
+            payload.put("providerAccountId", conversation.providerAccountId());
+            payload.put("externalConversationId", conversation.externalConversationId());
+            payload.put("externalIdentityId", conversation.channelIdentity().externalIdentityId());
+            payload.put("subject", conversation.subject());
+            payload.put("content", message.content());
+            return objectMapper.writeValueAsString(payload);
         }
         catch (JsonProcessingException ex) {
             throw new IllegalStateException("Could not serialize reply outbox payload", ex);

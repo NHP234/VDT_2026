@@ -44,6 +44,11 @@ class FacebookGraphApiReplySender implements OutboundReplySender {
     }
 
     @Override
+    public boolean supports(ReplyRequestPayload payload) {
+        return "FACEBOOK".equals(payload.channel());
+    }
+
+    @Override
     public OutboundReplyResult send(ReplyRequestPayload payload) {
         requireText(pageAccessToken, "Facebook page access token is required");
 

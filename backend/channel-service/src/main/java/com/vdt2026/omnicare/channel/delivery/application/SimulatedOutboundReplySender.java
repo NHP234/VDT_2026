@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 class SimulatedOutboundReplySender implements OutboundReplySender {
 
     @Override
+    public boolean supports(ReplyRequestPayload payload) {
+        return "FACEBOOK".equals(payload.channel());
+    }
+
+    @Override
     public OutboundReplyResult send(ReplyRequestPayload payload) {
         if (payload.content().contains("[fail]")) {
             throw new OutboundReplyDeliveryException(

@@ -112,11 +112,17 @@ Payload fields:
   "sourceType": "MESSAGE",
   "providerAccountId": "local-page-id",
   "externalConversationId": "messenger:fb-user-a",
+  "externalIdentityId": "fb-user-a",
+  "subject": null,
   "content": "Plain text reply"
 }
 ```
 
 `inbox.reply-retry-requested.v1` currently uses the same payload shape.
+For email replies, `externalIdentityId` is the recipient email address and
+`subject` is used only for the SMTP subject line. Email SMTP delivery derives
+`In-Reply-To` and `References` from the normalized email conversation ID:
+`email:{providerAccountId}:{rootMessageId}`.
 
 ## `channel.reply-delivery-succeeded.v1`
 
@@ -127,7 +133,9 @@ deterministic sender: normal content succeeds, and content containing `[fail]`
 publishes the failed topic so the demo can exercise retry and failure
 visibility without real provider credentials. Real Facebook mode uses the Graph
 API adapter contract: Messenger replies call `/{pageId}/messages`, while public
-comment replies call `/{commentId}/comments`.
+comment replies call `/{commentId}/comments`. Email replies are sent through
+SMTP using the configured `spring.mail` host and preserve `In-Reply-To` and
+`References` headers from the normalized thread root.
 
 The Kafka record key is the internal outbound message ID.
 Inbox service consumes the result event idempotently, updates the outbound

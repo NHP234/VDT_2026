@@ -50,6 +50,8 @@ app:
   email:
     mode: ${EMAIL_MODE:simulator}
     mailbox: ${EMAIL_MAILBOX:demo@example.test}
+    smtp:
+      enabled: ${EMAIL_SMTP_ENABLED:true}
     mail-from: ${MAIL_FROM:demo@example.test}
 
 logging:

@@ -23,6 +23,26 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: triển khai SMTP outbound delivery cho email replies. Inbox reply
+  request payload giờ có thêm `externalIdentityId` và `subject`; Channel delivery
+  routing chọn sender theo channel, Facebook vẫn dùng simulator/Graph adapter,
+  còn email dùng `EmailSmtpReplySender` qua `JavaMailSender`. SMTP email set
+  recipient từ channel identity, subject dạng `Re: ...`, và giữ `In-Reply-To` /
+  `References` từ normalized email conversation ID. Requirement: `FR-06`,
+  `FR-07`, `FR-09`. Verification: `.\scripts\check.ps1` pass, gồm
+  `backend/inbox-service` tests 26/26, `backend/channel-service` tests 46/46,
+  frontend lint/test/build.
+
+### Rủi Ro Hoặc Follow-up
+
+- Chưa smoke test Mailpit runtime cho outbound email và chưa có IMAP polling.
+  Provider message ID trong local SMTP path là deterministic `smtp:{messageId}`
+  để demo/idempotency dễ kiểm soát.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: thêm inbound email simulator path có fixture xác định. Channel service
   có `EmailInboundNormalizer`, `/simulators/email/events`, fixture
   `fixtures/email/inbound-message.json`, optional `subject` trong inbound event

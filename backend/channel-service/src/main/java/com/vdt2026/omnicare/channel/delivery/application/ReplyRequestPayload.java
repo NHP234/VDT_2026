@@ -9,6 +9,8 @@ public record ReplyRequestPayload(
     String sourceType,
     String providerAccountId,
     String externalConversationId,
+    String externalIdentityId,
+    String subject,
     String content
 ) {
 }
