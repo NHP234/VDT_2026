@@ -19,6 +19,22 @@ việc phát sinh.
 - Việc vẫn cần chú ý.
 ```
 
+## 2026-06-30
+
+### Tóm Tắt
+
+- Planned: cấu hình bounded retry và dead-letter handling cho Kafka consumers.
+  Inbox service và Channel service dùng `DefaultErrorHandler` với số lần thử
+  hữu hạn, fixed backoff cấu hình qua `.env.example`, rồi publish record lỗi
+  sang topic nguồn cộng suffix `.dlq` cùng partition. Requirement: `FR-09`,
+  `NFR-03`. Verification: thêm unit tests cho retry backoff và DLT topic
+  resolver ở cả hai service.
+
+### Rủi Ro Hoặc Follow-up
+
+- Cần manual Kafka smoke khi Docker daemon sẵn sàng để xác nhận record lỗi thật
+  đi vào topic `.dlq` sau khi retry hết lượt.
+
 ## 2026-06-29
 
 ### Tóm Tắt

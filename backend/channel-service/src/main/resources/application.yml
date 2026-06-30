@@ -35,6 +35,9 @@ app:
   kafka:
     consumers:
       enabled: ${CHANNEL_KAFKA_CONSUMERS_ENABLED:true}
+    retry:
+      max-attempts: ${KAFKA_CONSUMER_RETRY_MAX_ATTEMPTS:3}
+      backoff-ms: ${KAFKA_CONSUMER_RETRY_BACKOFF_MS:1000}
   redis:
     dedup-ttl-seconds: ${REDIS_DEDUP_TTL_SECONDS:86400}
   facebook:

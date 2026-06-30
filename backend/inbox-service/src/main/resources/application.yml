@@ -36,6 +36,9 @@ app:
   kafka:
     consumers:
       enabled: ${INBOX_KAFKA_CONSUMERS_ENABLED:true}
+    retry:
+      max-attempts: ${KAFKA_CONSUMER_RETRY_MAX_ATTEMPTS:3}
+      backoff-ms: ${KAFKA_CONSUMER_RETRY_BACKOFF_MS:1000}
   outbox:
     publisher:
       enabled: ${INBOX_OUTBOX_PUBLISHER_ENABLED:true}

@@ -34,8 +34,11 @@ Rules:
 | `channel.reply-delivery-succeeded.v1` | Channel service | Inbox service | Provider accepted or completed outbound delivery. | `FR-06`, `FR-09` |
 | `channel.reply-delivery-failed.v1` | Channel service | Inbox service | Provider delivery failed and should be visible to the agent. | `FR-06`, `FR-09` |
 
-Dead-letter topic names should append `.dlq` to the source topic name unless an
-ADR chooses a different convention.
+Kafka consumers use bounded retry before handing a failed record to a
+dead-letter topic. Local defaults are 3 total delivery attempts with a 1000 ms
+fixed backoff. Dead-letter topic names append `.dlq` to the source topic name
+and keep the original partition, for example
+`inbox.message-received.v1.dlq`.
 
 ## `inbox.message-received.v1`
 
