@@ -98,3 +98,47 @@ Payload fields:
 ```
 
 `inbox.reply-retry-requested.v1` currently uses the same payload shape.
+
+## `channel.reply-delivery-succeeded.v1`
+
+Channel service currently uses a deterministic simulator delivery adapter for
+the MVP. It consumes `inbox.reply-requested.v1` and
+`inbox.reply-retry-requested.v1`, then publishes a delivery result. Normal
+content succeeds; content containing `[fail]` publishes the failed topic so the
+demo can exercise retry and failure visibility without real provider
+credentials.
+
+The Kafka record key is the internal outbound message ID.
+
+Payload fields:
+
+```json
+{
+  "messageId": "50000000-0000-0000-0000-000000000001",
+  "conversationId": "40000000-0000-0000-0000-000000000001",
+  "channel": "FACEBOOK",
+  "sourceType": "MESSAGE",
+  "providerAccountId": "local-page-id",
+  "externalConversationId": "messenger:fb-user-a",
+  "providerMessageId": "simulated:50000000-0000-0000-0000-000000000001",
+  "deliveredAt": "2026-06-30T03:30:00Z"
+}
+```
+
+## `channel.reply-delivery-failed.v1`
+
+Uses the same payload as the success event and adds `failureReason`.
+
+```json
+{
+  "messageId": "50000000-0000-0000-0000-000000000001",
+  "conversationId": "40000000-0000-0000-0000-000000000001",
+  "channel": "FACEBOOK",
+  "sourceType": "MESSAGE",
+  "providerAccountId": "local-page-id",
+  "externalConversationId": "messenger:fb-user-a",
+  "providerMessageId": "simulated:50000000-0000-0000-0000-000000000001",
+  "deliveredAt": "2026-06-30T03:30:00Z",
+  "failureReason": "Simulated provider delivery failure"
+}
+```

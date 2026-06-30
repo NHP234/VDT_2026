@@ -10,6 +10,11 @@ spring:
       port: ${REDIS_PORT:6379}
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    consumer:
+      group-id: ${CHANNEL_KAFKA_GROUP_ID:channel-service}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   mail:
     host: ${SMTP_HOST:localhost}
     port: ${SMTP_PORT:1025}
@@ -27,6 +32,9 @@ management:
         enabled: true
 
 app:
+  kafka:
+    consumers:
+      enabled: ${CHANNEL_KAFKA_CONSUMERS_ENABLED:true}
   redis:
     dedup-ttl-seconds: ${REDIS_DEDUP_TTL_SECONDS:86400}
   facebook:

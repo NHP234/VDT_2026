@@ -3,6 +3,7 @@ package com.vdt2026.omnicare.channel.events.infrastructure;
 import com.vdt2026.omnicare.channel.events.application.EventEnvelope;
 import com.vdt2026.omnicare.channel.events.application.InboundEventPublisher;
 import com.vdt2026.omnicare.channel.events.application.NormalizedInboundMessagePayload;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,9 @@ class KafkaInboundEventPublisher implements InboundEventPublisher {
 
     private final KafkaTemplate<String, EventEnvelope<NormalizedInboundMessagePayload>> kafkaTemplate;
 
-    KafkaInboundEventPublisher(KafkaTemplate<String, EventEnvelope<NormalizedInboundMessagePayload>> kafkaTemplate) {
+    KafkaInboundEventPublisher(
+        @Qualifier("inboundEventKafkaTemplate") KafkaTemplate<String, EventEnvelope<NormalizedInboundMessagePayload>> kafkaTemplate
+    ) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

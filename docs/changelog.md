@@ -92,6 +92,17 @@ việc phát sinh.
   `reply-requested`, topic/key/value và status transition; manual Kafka smoke
   insert một outbox row pending, scheduler publish vào `inbox.reply-requested.v1`
   và PostgreSQL row chuyển sang `PUBLISHED`.
+- Planned: publish outbound delivery results từ Channel service. Thêm consumer
+  cho `inbox.reply-requested.v1` và `inbox.reply-retry-requested.v1`, mock
+  provider delivery service, Kafka publisher adapter và delivery result events
+  `channel.reply-delivery-succeeded.v1` / `channel.reply-delivery-failed.v1`.
+  Nội dung reply bình thường publish success; nội dung chứa `[fail]` publish
+  failed để demo failure/retry path không cần Meta credentials thật.
+  Requirement: `FR-09`, `FR-06`, `FR-08`, `FR-12`. Verification:
+  `backend/channel-service` tests passed với 22/22 tests, gồm success/failure
+  delivery envelope và Kafka publisher topic/key/value; manual Kafka smoke
+  produce một `reply-requested` event và consume được
+  `channel.reply-delivery-succeeded.v1` chứa message ID tương ứng.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.

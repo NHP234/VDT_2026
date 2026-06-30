@@ -12,9 +12,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
+@EnableKafka
 class KafkaProducerConfig {
 
     @Bean
@@ -39,5 +41,14 @@ class KafkaProducerConfig {
         ProducerFactory<String, EventEnvelope<NormalizedInboundMessagePayload>> producerFactory
     ) {
         return new KafkaTemplate<>(producerFactory);
+    }
+
+    @Bean
+    KafkaTemplate<String, String> deliveryResultKafkaTemplate(KafkaProperties kafkaProperties) {
+        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(
+            kafkaProperties.buildProducerProperties(),
+            new StringSerializer(),
+            new StringSerializer()
+        ));
     }
 }
