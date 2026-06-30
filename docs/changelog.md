@@ -23,6 +23,26 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: triển khai Facebook outbound reply adapter boundary cho Messenger và
+  Page comment replies. `ReplyDeliveryService` nhận Kafka reply request rồi gọi
+  `OutboundReplySender`; simulator mode dùng `SimulatedOutboundReplySender`,
+  real Facebook mode dùng `FacebookGraphApiReplySender` với mocked HTTP
+  contract tests cho `POST /{pageId}/messages` và `POST /{commentId}/comments`.
+  Requirement: `FR-08`, `FR-09`. Verification: `.\scripts\check.ps1` pass,
+  gồm `backend/inbox-service` tests 25/25, `backend/channel-service` tests 37/37,
+  frontend lint/test/build, Messenger contract, comment contract và Graph API
+  error mapping.
+
+### Rủi Ro Hoặc Follow-up
+
+- Chưa gọi Meta thật vì cần Page access token, permissions và app review/demo
+  account. Adapter đã có boundary và contract tests; real smoke sẽ làm sau khi
+  có credential hợp lệ.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: thêm Redis-backed deduplication cho Facebook inbound events trong
   Channel service trước khi publish Kafka. `InboundEventDispatchService` chỉ
   publish khi `InboundEventDeduplicator` accept event; Redis adapter dùng key

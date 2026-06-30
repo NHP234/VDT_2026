@@ -11,40 +11,65 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class SimulatedReplyDeliveryService {
+public class ReplyDeliveryService {
 
     static final String SUCCEEDED_TOPIC = "channel.reply-delivery-succeeded.v1";
     static final String FAILED_TOPIC = "channel.reply-delivery-failed.v1";
-    private static final String SOURCE = "channel-service.delivery-simulator";
+    private static final String SOURCE = "channel-service.reply-delivery";
 
     private final DeliveryResultPublisher deliveryResultPublisher;
+    private final OutboundReplySender outboundReplySender;
     private final ObjectMapper objectMapper;
     private final Clock clock;
 
     @Autowired
-    public SimulatedReplyDeliveryService(DeliveryResultPublisher deliveryResultPublisher, ObjectMapper objectMapper) {
-        this(deliveryResultPublisher, objectMapper, Clock.systemUTC());
+    public ReplyDeliveryService(
+        DeliveryResultPublisher deliveryResultPublisher,
+        OutboundReplySender outboundReplySender,
+        ObjectMapper objectMapper
+    ) {
+        this(deliveryResultPublisher, outboundReplySender, objectMapper, Clock.systemUTC());
     }
 
-    SimulatedReplyDeliveryService(DeliveryResultPublisher deliveryResultPublisher, ObjectMapper objectMapper, Clock clock) {
+    ReplyDeliveryService(
+        DeliveryResultPublisher deliveryResultPublisher,
+        OutboundReplySender outboundReplySender,
+        ObjectMapper objectMapper,
+        Clock clock
+    ) {
         this.deliveryResultPublisher = deliveryResultPublisher;
+        this.outboundReplySender = outboundReplySender;
         this.objectMapper = objectMapper;
         this.clock = clock;
     }
 
     public DeliveryResult deliver(ReplyRequestEvent event) {
         validate(event);
-        boolean failed = event.payload().content().contains("[fail]");
+        OutboundReplyResult providerResult = null;
+        OutboundReplyDeliveryException failure = null;
+        try {
+            providerResult = outboundReplySender.send(event.payload());
+        }
+        catch (OutboundReplyDeliveryException ex) {
+            failure = ex;
+        }
+
+        boolean failed = failure != null;
         String topic = failed ? FAILED_TOPIC : SUCCEEDED_TOPIC;
         String eventType = failed ? "reply-delivery-failed" : "reply-delivery-succeeded";
-        String eventJson = toEnvelopeJson(event, eventType, failed);
+        String eventJson = toEnvelopeJson(event, eventType, providerMessageId(event, providerResult, failure), failure);
         String key = event.payload().messageId().toString();
 
         deliveryResultPublisher.publish(topic, key, eventJson);
         return new DeliveryResult(topic, key, eventType);
     }
 
-    private String toEnvelopeJson(ReplyRequestEvent requestEvent, String eventType, boolean failed) {
+    private String toEnvelopeJson(
+        ReplyRequestEvent requestEvent,
+        String eventType,
+        String providerMessageId,
+        OutboundReplyDeliveryException failure
+    ) {
         Instant now = Instant.now(clock);
         try {
             ObjectNode payload = objectMapper.createObjectNode();
@@ -54,10 +79,10 @@ public class SimulatedReplyDeliveryService {
             payload.put("sourceType", requestEvent.payload().sourceType());
             payload.put("providerAccountId", requestEvent.payload().providerAccountId());
             payload.put("externalConversationId", requestEvent.payload().externalConversationId());
-            payload.put("providerMessageId", providerMessageId(requestEvent));
+            payload.put("providerMessageId", providerMessageId);
             payload.put("deliveredAt", now.toString());
-            if (failed) {
-                payload.put("failureReason", "Simulated provider delivery failure");
+            if (failure != null) {
+                payload.put("failureReason", failure.getMessage());
             }
 
             ObjectNode envelope = objectMapper.createObjectNode();
@@ -74,8 +99,18 @@ public class SimulatedReplyDeliveryService {
         }
     }
 
-    private String providerMessageId(ReplyRequestEvent requestEvent) {
-        return "simulated:" + requestEvent.payload().messageId();
+    private String providerMessageId(
+        ReplyRequestEvent requestEvent,
+        OutboundReplyResult providerResult,
+        OutboundReplyDeliveryException failure
+    ) {
+        if (providerResult != null && StringUtils.hasText(providerResult.providerMessageId())) {
+            return providerResult.providerMessageId();
+        }
+        if (failure != null && StringUtils.hasText(failure.providerMessageId())) {
+            return failure.providerMessageId();
+        }
+        return "failed:" + requestEvent.payload().messageId();
     }
 
     private void validate(ReplyRequestEvent event) {

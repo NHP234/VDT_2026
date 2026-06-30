@@ -45,6 +45,8 @@ app:
     page-id: ${FACEBOOK_PAGE_ID:local-page-id}
     app-secret: ${FACEBOOK_APP_SECRET:}
     verify-token: ${FACEBOOK_VERIFY_TOKEN:}
+    page-access-token: ${FACEBOOK_PAGE_ACCESS_TOKEN:}
+    graph-api-base-url: ${FACEBOOK_GRAPH_API_BASE_URL:https://graph.facebook.com/v20.0}
   email:
     mode: ${EMAIL_MODE:simulator}
     mail-from: ${MAIL_FROM:demo@example.test}

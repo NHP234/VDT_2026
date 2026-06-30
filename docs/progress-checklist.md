@@ -51,7 +51,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Validate Meta webhook signatures trong real-provider mode. `FR-08`, `NFR-04`
 - [~] Normalize Facebook inbound payload, không để provider DTO lọt vào domain. `FR-08`
 - [x] Deduplicate Facebook inbound events bằng Redis và PostgreSQL. `FR-08`, `FR-10`, `NFR-03`
-- [ ] Triển khai outbound Messenger/comment reply adapter với mocked contract tests. `FR-08`
+- [x] Triển khai outbound Messenger/comment reply adapter với mocked contract tests. `FR-08`
 
 ## 5. Email Adapter
 

@@ -2,8 +2,8 @@ package com.vdt2026.omnicare.channel.delivery.interfaces;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vdt2026.omnicare.channel.delivery.application.ReplyDeliveryService;
 import com.vdt2026.omnicare.channel.delivery.application.ReplyRequestEvent;
-import com.vdt2026.omnicare.channel.delivery.application.SimulatedReplyDeliveryService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -16,9 +16,9 @@ class ReplyRequestKafkaConsumer {
     static final String REPLY_RETRY_REQUESTED_TOPIC = "inbox.reply-retry-requested.v1";
 
     private final ObjectMapper objectMapper;
-    private final SimulatedReplyDeliveryService deliveryService;
+    private final ReplyDeliveryService deliveryService;
 
-    ReplyRequestKafkaConsumer(ObjectMapper objectMapper, SimulatedReplyDeliveryService deliveryService) {
+    ReplyRequestKafkaConsumer(ObjectMapper objectMapper, ReplyDeliveryService deliveryService) {
         this.objectMapper = objectMapper;
         this.deliveryService = deliveryService;
     }

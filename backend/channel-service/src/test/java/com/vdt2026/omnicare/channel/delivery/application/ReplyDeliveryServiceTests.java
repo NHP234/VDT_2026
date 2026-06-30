@@ -13,12 +13,14 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
-class SimulatedReplyDeliveryServiceTests {
+class ReplyDeliveryServiceTests {
 
     private final RecordingDeliveryResultPublisher publisher = new RecordingDeliveryResultPublisher();
+    private final SimulatedOutboundReplySender outboundReplySender = new SimulatedOutboundReplySender();
     private final ObjectMapper objectMapper = JsonMapper.builder().findAndAddModules().build();
-    private final SimulatedReplyDeliveryService service = new SimulatedReplyDeliveryService(
+    private final ReplyDeliveryService service = new ReplyDeliveryService(
         publisher,
+        outboundReplySender,
         objectMapper,
         Clock.fixed(Instant.parse("2026-06-30T03:30:00Z"), ZoneOffset.UTC)
     );
@@ -27,7 +29,7 @@ class SimulatedReplyDeliveryServiceTests {
     void publishesSucceededDeliveryResultForNormalReply() throws Exception {
         ReplyRequestEvent event = event("Hello customer");
 
-        SimulatedReplyDeliveryService.DeliveryResult result = service.deliver(event);
+        ReplyDeliveryService.DeliveryResult result = service.deliver(event);
 
         assertThat(result.topic()).isEqualTo("channel.reply-delivery-succeeded.v1");
         assertThat(result.key()).isEqualTo("50000000-0000-0000-0000-000000000001");
@@ -48,7 +50,7 @@ class SimulatedReplyDeliveryServiceTests {
     void publishesFailedDeliveryResultWhenContentContainsFailMarker() throws Exception {
         ReplyRequestEvent event = event("Please [fail] this delivery");
 
-        SimulatedReplyDeliveryService.DeliveryResult result = service.deliver(event);
+        ReplyDeliveryService.DeliveryResult result = service.deliver(event);
 
         assertThat(result.topic()).isEqualTo("channel.reply-delivery-failed.v1");
         JsonNode envelope = objectMapper.readTree(publisher.events().getFirst().eventJson());

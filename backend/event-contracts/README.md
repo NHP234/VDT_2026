@@ -109,12 +109,14 @@ Payload fields:
 
 ## `channel.reply-delivery-succeeded.v1`
 
-Channel service currently uses a deterministic simulator delivery adapter for
-the MVP. It consumes `inbox.reply-requested.v1` and
-`inbox.reply-retry-requested.v1`, then publishes a delivery result. Normal
-content succeeds; content containing `[fail]` publishes the failed topic so the
-demo can exercise retry and failure visibility without real provider
-credentials.
+Channel service consumes `inbox.reply-requested.v1` and
+`inbox.reply-retry-requested.v1`, sends the reply through the configured
+outbound sender, then publishes a delivery result. Local simulator mode uses a
+deterministic sender: normal content succeeds, and content containing `[fail]`
+publishes the failed topic so the demo can exercise retry and failure
+visibility without real provider credentials. Real Facebook mode uses the Graph
+API adapter contract: Messenger replies call `/{pageId}/messages`, while public
+comment replies call `/{commentId}/comments`.
 
 The Kafka record key is the internal outbound message ID.
 Inbox service consumes the result event idempotently, updates the outbound

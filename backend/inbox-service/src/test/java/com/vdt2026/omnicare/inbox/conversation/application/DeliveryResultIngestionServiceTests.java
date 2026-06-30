@@ -145,7 +145,7 @@ class DeliveryResultIngestionServiceTests {
             eventType,
             Instant.parse("2026-06-30T03:59:00Z"),
             "corr-delivery-1",
-            "channel-service.delivery-simulator",
+            "channel-service.reply-delivery",
             new DeliveryResultPayload(
                 UUID.fromString("50000000-0000-0000-0000-000000000001"),
                 UUID.fromString("40000000-0000-0000-0000-000000000001"),
