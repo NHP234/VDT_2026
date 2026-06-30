@@ -45,6 +45,7 @@ class KafkaProducerConfigTests {
             "mid.local.facebook.messenger.1001",
             "fb-user-c",
             "Le Van C",
+            null,
             "Shop oi san pham nay con hang khong?",
             occurredAt
         );

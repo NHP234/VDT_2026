@@ -50,6 +50,7 @@ class InboundEventDispatchServiceTests {
                 externalMessageId,
                 "fb-user",
                 "Facebook User",
+                null,
                 "hello",
                 occurredAt
             )

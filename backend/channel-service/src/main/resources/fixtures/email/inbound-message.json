@@ -1,0 +1,10 @@
+{
+  "providerAccountId": "demo@example.test",
+  "fromEmail": "tran.b@example.test",
+  "fromDisplayName": "Tran Thi B",
+  "toEmail": "demo@example.test",
+  "messageId": "<email-demo-1001@example.test>",
+  "subject": "Can ho tro don hang #42",
+  "textContent": "Minh can ho tro ve don hang #42",
+  "occurredAt": "2026-06-29T04:15:00Z"
+}

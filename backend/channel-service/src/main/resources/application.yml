@@ -49,6 +49,7 @@ app:
     graph-api-base-url: ${FACEBOOK_GRAPH_API_BASE_URL:https://graph.facebook.com/v20.0}
   email:
     mode: ${EMAIL_MODE:simulator}
+    mailbox: ${EMAIL_MAILBOX:demo@example.test}
     mail-from: ${MAIL_FROM:demo@example.test}
 
 logging:

@@ -10,6 +10,7 @@ public record NormalizedInboundMessagePayload(
     String externalMessageId,
     String externalIdentityId,
     String customerDisplayName,
+    String subject,
     String content,
     Instant occurredAt
 ) {

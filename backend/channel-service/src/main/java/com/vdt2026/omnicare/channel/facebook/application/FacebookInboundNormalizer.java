@@ -62,6 +62,7 @@ public class FacebookInboundNormalizer {
             command.messageId(),
             command.senderId(),
             defaultDisplayName(command.senderDisplayName(), command.senderId()),
+            null,
             command.content(),
             occurredAt
         );
@@ -82,6 +83,7 @@ public class FacebookInboundNormalizer {
             command.commentId(),
             command.commenterId(),
             defaultDisplayName(command.commenterDisplayName(), command.commenterId()),
+            null,
             command.content(),
             occurredAt
         );

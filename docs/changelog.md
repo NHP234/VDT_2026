@@ -23,6 +23,26 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: thêm inbound email simulator path có fixture xác định. Channel service
+  có `EmailInboundNormalizer`, `/simulators/email/events`, fixture
+  `fixtures/email/inbound-message.json`, optional `subject` trong inbound event
+  payload, và Inbox lưu subject khi tạo conversation email mới. Thread key trong
+  simulator ưu tiên `References`, sau đó `In-Reply-To`, cuối cùng là
+  `Message-ID`; event vẫn đi qua Redis dedup và Kafka dispatch chung.
+  Requirement: `FR-07`, `FR-09`, `FR-10`, `FR-12`. Verification:
+  `.\scripts\check.ps1` pass, gồm `backend/inbox-service` tests 26/26,
+  `backend/channel-service` tests 43/43, frontend lint/test/build.
+
+### Rủi Ro Hoặc Follow-up
+
+- Chưa có IMAP polling và SMTP outbound thật. Simulator đã chứng minh normalize,
+  subject và threading contract, nhưng email adapter protocol thực tế vẫn là
+  bước kế tiếp.
+
+## 2026-06-30
+
+### Tóm Tắt
+
 - Planned: triển khai Facebook outbound reply adapter boundary cho Messenger và
   Page comment replies. `ReplyDeliveryService` nhận Kafka reply request rồi gọi
   `OutboundReplySender`; simulator mode dùng `SimulatedOutboundReplySender`,

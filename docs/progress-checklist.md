@@ -55,11 +55,11 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 ## 5. Email Adapter
 
-- [ ] Thêm đường đi inbound email fixture xác định. `FR-07`, `FR-12`
+- [x] Thêm đường đi inbound email fixture xác định. `FR-07`, `FR-12`
 - [ ] Triển khai IMAP polling cho một mailbox. `FR-07`
-- [ ] Normalize plain-text email fields và bỏ qua attachments. `FR-07`, `NFR-04`
-- [ ] Triển khai email threading bằng `In-Reply-To` và `References`. `FR-07`
-- [ ] Deduplicate email messages bằng Redis và PostgreSQL. `FR-07`, `FR-10`, `NFR-03`
+- [~] Normalize plain-text email fields và bỏ qua attachments. `FR-07`, `NFR-04`
+- [~] Triển khai email threading bằng `In-Reply-To` và `References`. `FR-07`
+- [~] Deduplicate email messages bằng Redis và PostgreSQL. `FR-07`, `FR-10`, `NFR-03`
 - [ ] Triển khai SMTP outbound delivery với reply headers. `FR-07`
 
 ## 6. Kafka, Redis Và Reliability
@@ -85,7 +85,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Unit test status transitions và reopening rules. `FR-04`, `NFR-05`
 - [ ] Unit/integration test assignment audit recording. `FR-05`, `NFR-05`
 - [x] Test Facebook deduplication. `FR-08`, `NFR-05`
-- [ ] Test email deduplication và threading. `FR-07`, `NFR-05`
+- [~] Test email deduplication và threading. `FR-07`, `NFR-05`
 - [x] Test reply delivery status transitions và retry behavior. `FR-06`, `NFR-05`
 - [ ] Test authorization cho protected endpoints. `FR-01`, `NFR-05`
 - [ ] Test migrations và durable uniqueness constraints. `FR-07`, `FR-08`, `NFR-05`

@@ -68,6 +68,7 @@ class RedisInboundEventDeduplicatorTests {
             "Comment-1",
             "fb-user",
             "Facebook User",
+            null,
             "hello",
             Instant.parse("2026-06-30T00:00:00Z")
         );
@@ -100,6 +101,7 @@ class RedisInboundEventDeduplicatorTests {
                 externalMessageId,
                 "fb-user",
                 "Facebook User",
+                null,
                 "hello",
                 occurredAt
             )

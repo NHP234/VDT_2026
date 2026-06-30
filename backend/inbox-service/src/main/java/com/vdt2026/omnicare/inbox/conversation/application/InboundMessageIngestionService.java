@@ -168,7 +168,7 @@ public class InboundMessageIngestionService {
                 null,
                 payload.providerAccountId(),
                 payload.externalConversationId(),
-                null,
+                subject(payload),
                 preview(payload.content().trim()),
                 payload.occurredAt(),
                 now,
@@ -228,6 +228,13 @@ public class InboundMessageIngestionService {
 
     private String preview(String content) {
         return limit(content, 500);
+    }
+
+    private String subject(InboundMessageReceivedPayload payload) {
+        if (!StringUtils.hasText(payload.subject())) {
+            return null;
+        }
+        return limit(payload.subject().trim(), 300);
     }
 
     private String limit(String value, int maxLength) {

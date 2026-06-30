@@ -153,6 +153,35 @@ class InboundMessageIngestionServiceTests {
     }
 
     @Test
+    void storesSubjectWhenCreatingEmailConversation() {
+        InboundMessageReceivedEvent event = emailEvent();
+        when(processedEventRepository.findByEventId(event.eventId().toString())).thenReturn(Optional.empty());
+        when(messageRepository.findByChannelAndProviderAccountIdAndExternalMessageId(
+            Channel.EMAIL,
+            "demo@example.test",
+            "<email-demo-1001@example.test>"
+        )).thenReturn(Optional.empty());
+        when(channelIdentityRepository.findByChannelAndProviderAccountIdAndExternalIdentityId(
+            Channel.EMAIL,
+            "demo@example.test",
+            "tran.b@example.test"
+        )).thenReturn(Optional.empty());
+        when(conversationRepository.findByChannelAndProviderAccountIdAndSourceTypeAndExternalConversationId(
+            Channel.EMAIL,
+            "demo@example.test",
+            ConversationSourceType.EMAIL,
+            "email:demo@example.test:<email-demo-1001@example.test>"
+        )).thenReturn(Optional.empty());
+
+        IngestionResult result = service.ingest(event);
+
+        assertThat(result).isEqualTo(IngestionResult.CREATED);
+        ArgumentCaptor<ConversationEntity> conversationCaptor = ArgumentCaptor.forClass(ConversationEntity.class);
+        verify(conversationRepository).save(conversationCaptor.capture());
+        assertThat(conversationCaptor.getValue().subject()).isEqualTo("Can ho tro don hang #42");
+    }
+
+    @Test
     void ignoresAlreadyProcessedEvent() {
         InboundMessageReceivedEvent event = event("70000000-0000-0000-0000-000000000003", "fb-user-c", "mid.local.facebook.1003");
         when(processedEventRepository.findByEventId(event.eventId().toString())).thenReturn(Optional.of(new ProcessedEventEntity(
@@ -212,7 +241,30 @@ class InboundMessageIngestionServiceTests {
                 externalMessageId,
                 externalIdentityId,
                 "Le Van C",
+                null,
                 " Shop oi san pham nay con hang khong? ",
+                Instant.parse("2026-06-30T02:25:00Z")
+            )
+        );
+    }
+
+    private InboundMessageReceivedEvent emailEvent() {
+        return new InboundMessageReceivedEvent(
+            UUID.fromString("70000000-0000-0000-0000-000000000005"),
+            "message-received",
+            Instant.parse("2026-06-30T02:25:00Z"),
+            "corr-email-test-1",
+            "channel-service.email-simulator",
+            new InboundMessageReceivedPayload(
+                Channel.EMAIL,
+                ConversationSourceType.EMAIL,
+                "demo@example.test",
+                "email:demo@example.test:<email-demo-1001@example.test>",
+                "<email-demo-1001@example.test>",
+                "tran.b@example.test",
+                "Tran Thi B",
+                "Can ho tro don hang #42",
+                " Minh can ho tro ve don hang #42 ",
                 Instant.parse("2026-06-30T02:25:00Z")
             )
         );

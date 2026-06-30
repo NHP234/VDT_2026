@@ -52,10 +52,10 @@ Inbox service consumes this topic and persists the payload idempotently. It
 records processed envelope IDs in `processed_events` and also checks the
 provider `externalMessageId` before inserting a new inbound message.
 Channel service also performs short-lived Redis deduplication before publishing
-Facebook simulator/webhook inbound events. The Redis key is derived from
-channel, provider account, source type, and provider message/comment ID. If
-Redis is unavailable, Channel publishes anyway and relies on Inbox PostgreSQL
-idempotency to avoid losing customer events.
+simulator/webhook inbound events. The Redis key is derived from channel,
+provider account, source type, and provider message/comment ID. If Redis is
+unavailable, Channel publishes anyway and relies on Inbox PostgreSQL idempotency
+to avoid losing customer events.
 
 Payload fields:
 
@@ -68,6 +68,7 @@ Payload fields:
   "externalMessageId": "mid.local.facebook.messenger.1001",
   "externalIdentityId": "fb-user-c",
   "customerDisplayName": "Le Van C",
+  "subject": null,
   "content": "Plain text content",
   "occurredAt": "2026-06-29T02:15:00Z"
 }
@@ -80,6 +81,16 @@ Facebook conversation key rules:
 - Page comments group by Facebook Page, post, and root comment:
   `facebook:comment:{pageId}:{postId}:{rootCommentId}`.
 - Messenger and comment conversations never merge.
+
+Email conversation key rules:
+
+- Email messages use channel `EMAIL` and source type `EMAIL`.
+- Simulator email events group by provider mailbox and thread root message ID:
+  `email:{providerAccountId}:{rootMessageId}`.
+- The thread root is resolved from the first `References` header when present,
+  then `In-Reply-To`, then the message's own `Message-ID`.
+- Subject is optional and stored only as normalized conversation metadata; it is
+  not used to merge threads.
 
 ## `inbox.reply-requested.v1`
 
