@@ -35,3 +35,33 @@ Rules:
 
 Dead-letter topic names should append `.dlq` to the source topic name unless an
 ADR chooses a different convention.
+
+## `inbox.message-received.v1`
+
+The first checked-in producer path is the Facebook simulator in Channel service.
+It currently returns the normalized event without publishing it to Kafka; Kafka
+publication is tracked as a separate checklist item.
+
+Payload fields:
+
+```json
+{
+  "channel": "FACEBOOK",
+  "sourceType": "MESSAGE",
+  "providerAccountId": "local-page-id",
+  "externalConversationId": "facebook:messenger:local-page-id:fb-user-c",
+  "externalMessageId": "mid.local.facebook.messenger.1001",
+  "externalIdentityId": "fb-user-c",
+  "customerDisplayName": "Le Van C",
+  "content": "Plain text content",
+  "occurredAt": "2026-06-29T02:15:00Z"
+}
+```
+
+Facebook conversation key rules:
+
+- Messenger messages group by Facebook Page and sender identity:
+  `facebook:messenger:{pageId}:{senderId}`.
+- Page comments group by Facebook Page, post, and root comment:
+  `facebook:comment:{pageId}:{postId}:{rootCommentId}`.
+- Messenger and comment conversations never merge.

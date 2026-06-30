@@ -1,0 +1,9 @@
+{
+  "type": "MESSENGER_MESSAGE",
+  "pageId": "local-page-id",
+  "senderId": "fb-user-c",
+  "senderDisplayName": "Le Van C",
+  "messageId": "mid.local.facebook.messenger.1001",
+  "content": "Shop oi san pham nay con hang khong?",
+  "occurredAt": "2026-06-29T02:15:00Z"
+}

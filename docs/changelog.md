@@ -37,6 +37,15 @@ việc phát sinh.
   đang bị `403 Invalid CORS request`. Requirement hoặc maintenance link:
   `FR-01`, `NFR-04`. Verification: manual CORS preflight trên port `18080`
   trả `200` và `Access-Control-Allow-Origin: http://localhost:5173`.
+- Planned: thêm Facebook simulator endpoint và checked-in fixtures cho Channel
+  service. `POST /simulators/facebook/events` nhận Messenger message hoặc Page
+  comment fixture, map sang normalized `inbox.message-received.v1` envelope,
+  giữ Messenger conversation theo Page + sender và comment conversation theo
+  Page + post + root comment. Requirement: `FR-08`, `FR-12`, `FR-09`.
+  Verification: `backend/channel-service` tests passed với 5/5 tests, gồm
+  normalizer fixture tests và controller API tests; manual HTTP smoke trên port
+  `18081` trả normalized Messenger và comment payload đúng topic/source type/
+  external conversation ID.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.

@@ -1,0 +1,11 @@
+{
+  "type": "PAGE_COMMENT",
+  "pageId": "local-page-id",
+  "commenterId": "fb-user-d",
+  "commenterDisplayName": "Pham Thi D",
+  "postId": "post-2026-demo-001",
+  "commentId": "comment-2026-demo-9001",
+  "rootCommentId": "comment-2026-demo-9001",
+  "content": "Gia san pham nay la bao nhieu shop?",
+  "occurredAt": "2026-06-29T02:20:00Z"
+}
