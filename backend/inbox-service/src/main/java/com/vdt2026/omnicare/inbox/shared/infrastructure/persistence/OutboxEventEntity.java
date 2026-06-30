@@ -96,4 +96,37 @@ public class OutboxEventEntity {
         PUBLISHED,
         FAILED
     }
+
+    public UUID id() {
+        return id;
+    }
+
+    public UUID aggregateId() {
+        return aggregateId;
+    }
+
+    public String eventType() {
+        return eventType;
+    }
+
+    public String payload() {
+        return payload;
+    }
+
+    public OutboxStatus status() {
+        return status;
+    }
+
+    public Instant availableAt() {
+        return availableAt;
+    }
+
+    public Instant publishedAt() {
+        return publishedAt;
+    }
+
+    public void markPublished(Instant publishedAt) {
+        this.status = OutboxStatus.PUBLISHED;
+        this.publishedAt = publishedAt;
+    }
 }

@@ -30,6 +30,7 @@ Rules:
 | --- | --- | --- | --- | --- |
 | `inbox.message-received.v1` | Channel service | Inbox service | Normalized inbound Facebook/email message was received. | `FR-09` |
 | `inbox.reply-requested.v1` | Inbox service | Channel service | Agent requested an outbound reply delivery. | `FR-06`, `FR-09` |
+| `inbox.reply-retry-requested.v1` | Inbox service | Channel service | Agent retried a failed outbound reply delivery. | `FR-06`, `FR-09` |
 | `channel.reply-delivery-succeeded.v1` | Channel service | Inbox service | Provider accepted or completed outbound delivery. | `FR-06`, `FR-09` |
 | `channel.reply-delivery-failed.v1` | Channel service | Inbox service | Provider delivery failed and should be visible to the agent. | `FR-06`, `FR-09` |
 
@@ -71,3 +72,29 @@ Facebook conversation key rules:
 - Page comments group by Facebook Page, post, and root comment:
   `facebook:comment:{pageId}:{postId}:{rootCommentId}`.
 - Messenger and comment conversations never merge.
+
+## `inbox.reply-requested.v1`
+
+Inbox service writes outbound reply requests to `outbox_events` in the same
+database transaction that creates the queued outbound message. A scheduled
+publisher sends pending outbox rows to Kafka and marks them `PUBLISHED` only
+after Kafka acknowledges the send.
+
+The Kafka record key is the internal outbound message ID. The envelope uses the
+outbox row ID as `eventId` and `correlationId`.
+
+Payload fields:
+
+```json
+{
+  "messageId": "50000000-0000-0000-0000-000000000001",
+  "conversationId": "40000000-0000-0000-0000-000000000001",
+  "channel": "FACEBOOK",
+  "sourceType": "MESSAGE",
+  "providerAccountId": "local-page-id",
+  "externalConversationId": "messenger:fb-user-a",
+  "content": "Plain text reply"
+}
+```
+
+`inbox.reply-retry-requested.v1` currently uses the same payload shape.

@@ -82,6 +82,16 @@ việc phát sinh.
   conversation cũ, duplicate event và duplicate external message; manual Kafka
   smoke với consumer group mới publish event vào `inbox.message-received.v1` và
   xác nhận PostgreSQL có message `mid.local.inbox.consume.*`.
+- Planned: publish outbound reply requests từ Inbox service. Thêm
+  `OutboxPublishingService`, Kafka publisher adapter và scheduled publisher để
+  lấy `outbox_events` trạng thái `PENDING`, publish JSON envelope ra topic đang
+  lưu trong `event_type` như `inbox.reply-requested.v1`, rồi mark row
+  `PUBLISHED`. Event key là outbound message ID để Channel service có thể xử lý
+  theo message. Requirement: `FR-09`, `FR-06`, `NFR-03`. Verification:
+  `backend/inbox-service` tests passed với 18/18 tests, gồm test envelope
+  `reply-requested`, topic/key/value và status transition; manual Kafka smoke
+  insert một outbox row pending, scheduler publish vào `inbox.reply-requested.v1`
+  và PostgreSQL row chuyển sang `PUBLISHED`.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.
