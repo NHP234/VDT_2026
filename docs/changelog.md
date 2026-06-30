@@ -61,6 +61,15 @@ việc phát sinh.
   invalid signature, missing app secret và unsigned real-mode webhook rejection;
   manual HTTP smoke trên port `18081` xác nhận signed real-mode POST trả `202`
   còn unsigned POST trả `403`.
+- Planned: publish normalized inbound events từ Channel service lên Kafka topic
+  `inbox.message-received.v1`. Facebook simulator sau khi normalize sẽ gọi
+  application port `InboundEventPublisher`; Kafka adapter dùng external
+  conversation ID làm record key để giữ ordering theo conversation; Kafka JSON
+  serializer giữ timestamp dạng ISO 8601 UTC. Requirement: `FR-09`, `FR-08`,
+  `FR-12`. Verification: `backend/channel-service` tests passed với 19/19 tests,
+  gồm test Kafka publisher topic/key/value và controller test xác nhận simulator
+  gọi publisher; manual Kafka smoke consume được event mới từ topic với
+  `occurredAt` dạng `"2026-06-30T02:25:00Z"`.
 - Planned: commit mốc `feat(inbox): add domain schema and authentication`
   (`1fb6b99`) để đóng phần Inbox service schema, seed data, domain policy,
   persistence foundation và backend authentication trước khi làm API kế tiếp.

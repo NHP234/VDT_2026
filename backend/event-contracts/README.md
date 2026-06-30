@@ -39,8 +39,10 @@ ADR chooses a different convention.
 ## `inbox.message-received.v1`
 
 The first checked-in producer path is the Facebook simulator in Channel service.
-It currently returns the normalized event without publishing it to Kafka; Kafka
-publication is tracked as a separate checklist item.
+Channel service publishes the normalized event to Kafka using the external
+conversation ID as the record key, so messages for the same conversation remain
+ordered within a partition. Timestamp fields are serialized as ISO 8601 UTC
+strings, not numeric epoch timestamps.
 
 Payload fields:
 

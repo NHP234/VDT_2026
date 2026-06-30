@@ -65,7 +65,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 ## 6. Kafka, Redis Và Reliability
 
 - [x] Định nghĩa Kafka topics theo format `<domain>.<event>.v<version>`. `FR-09`
-- [ ] Publish inbound normalized events từ Channel service. `FR-09`
+- [x] Publish inbound normalized events từ Channel service. `FR-09`
 - [ ] Consume inbound events idempotently trong Inbox service. `FR-09`, `NFR-03`
 - [ ] Publish outbound reply requests từ Inbox service. `FR-09`
 - [ ] Publish outbound delivery results từ Channel service. `FR-09`

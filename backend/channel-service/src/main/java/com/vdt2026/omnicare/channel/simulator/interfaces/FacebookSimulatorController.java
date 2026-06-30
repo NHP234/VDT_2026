@@ -1,6 +1,7 @@
 package com.vdt2026.omnicare.channel.simulator.interfaces;
 
 import com.vdt2026.omnicare.channel.events.application.EventEnvelope;
+import com.vdt2026.omnicare.channel.events.application.InboundEventPublisher;
 import com.vdt2026.omnicare.channel.events.application.NormalizedInboundMessagePayload;
 import com.vdt2026.omnicare.channel.facebook.application.FacebookInboundNormalizer;
 import jakarta.validation.Valid;
@@ -19,9 +20,11 @@ import org.springframework.util.StringUtils;
 class FacebookSimulatorController {
 
     private final FacebookInboundNormalizer normalizer;
+    private final InboundEventPublisher inboundEventPublisher;
 
-    FacebookSimulatorController(FacebookInboundNormalizer normalizer) {
+    FacebookSimulatorController(FacebookInboundNormalizer normalizer, InboundEventPublisher inboundEventPublisher) {
         this.normalizer = normalizer;
+        this.inboundEventPublisher = inboundEventPublisher;
     }
 
     @PostMapping("/events")
@@ -31,6 +34,7 @@ class FacebookSimulatorController {
     ) {
         String effectiveCorrelationId = StringUtils.hasText(correlationId) ? correlationId : UUID.randomUUID().toString();
         EventEnvelope<NormalizedInboundMessagePayload> event = normalizer.normalize(request.toCommand(), effectiveCorrelationId);
-        return new FacebookSimulatorResponse(normalizer.topic(), false, event);
+        inboundEventPublisher.publish(event);
+        return new FacebookSimulatorResponse(normalizer.topic(), true, event);
     }
 }
