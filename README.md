@@ -106,6 +106,7 @@ Current verified checks:
 | [`docs/frontend-structure.md`](docs/frontend-structure.md) | Frontend structure and rules for the Gemini frontend agent. |
 | [`docs/agent-collaboration.md`](docs/agent-collaboration.md) | Handoff and ownership rules between Codex, Gemini, and the human owner. |
 | [`docs/monitoring-and-operations.md`](docs/monitoring-and-operations.md) | Runtime health, logs, metrics, demo checks, and operational tracking. |
+| [`docs/real-email-demo.md`](docs/real-email-demo.md) | Gmail/SMTP/IMAP setup notes for a real email demo. |
 | [`docs/traceability.md`](docs/traceability.md) | Requirement-to-implementation-to-test traceability table. |
 | [`docs/templates/gemini-frontend-setup-prompt.md`](docs/templates/gemini-frontend-setup-prompt.md) | Ready-to-use prompt for the frontend agent's initial React setup. |
 | [`docs/adr/`](docs/adr/) | Architecture Decision Records. |

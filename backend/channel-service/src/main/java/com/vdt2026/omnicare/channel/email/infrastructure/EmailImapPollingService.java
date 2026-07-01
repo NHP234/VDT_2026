@@ -43,7 +43,9 @@ class EmailImapPollingService {
         @Value("${app.email.imap.password:}") String password,
         @Value("${app.email.imap.folder:INBOX}") String folder,
         @Value("${app.email.imap.protocol:imap}") String protocol,
-        @Value("${app.email.imap.max-messages-per-poll:10}") int maxMessagesPerPoll
+        @Value("${app.email.imap.max-messages-per-poll:10}") int maxMessagesPerPoll,
+        @Value("${app.email.imap.connection-timeout-ms:10000}") int connectionTimeoutMs,
+        @Value("${app.email.imap.timeout-ms:10000}") int timeoutMs
     ) {
         this.mapper = mapper;
         this.normalizer = normalizer;
@@ -56,7 +58,9 @@ class EmailImapPollingService {
             password,
             folder,
             protocol,
-            Math.max(1, maxMessagesPerPoll)
+            Math.max(1, maxMessagesPerPoll),
+            Math.max(1000, connectionTimeoutMs),
+            Math.max(1000, timeoutMs)
         );
     }
 
@@ -71,7 +75,7 @@ class EmailImapPollingService {
     }
 
     int pollOnce() throws MessagingException {
-        Session session = Session.getInstance(new Properties());
+        Session session = Session.getInstance(mailProperties(settings));
         try (Store store = session.getStore(settings.protocol())) {
             store.connect(settings.host(), settings.port(), settings.username(), settings.password());
             Folder folder = store.getFolder(settings.folder());
@@ -94,6 +98,17 @@ class EmailImapPollingService {
                 return processed;
             }
         }
+    }
+
+    static Properties mailProperties(ImapSettings settings) {
+        Properties properties = new Properties();
+        String protocol = settings.protocol();
+        properties.put("mail." + protocol + ".connectiontimeout", Integer.toString(settings.connectionTimeoutMs()));
+        properties.put("mail." + protocol + ".timeout", Integer.toString(settings.timeoutMs()));
+        if ("imaps".equalsIgnoreCase(protocol)) {
+            properties.put("mail.imaps.ssl.enable", "true");
+        }
+        return properties;
     }
 
     private boolean process(Message message) throws MessagingException {
@@ -122,7 +137,9 @@ class EmailImapPollingService {
         String password,
         String folder,
         String protocol,
-        int maxMessagesPerPoll
+        int maxMessagesPerPoll,
+        int connectionTimeoutMs,
+        int timeoutMs
     ) {
     }
 }

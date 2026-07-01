@@ -34,3 +34,4 @@ Thumbs.db
 docker-compose.override.yml
 .docker-cli/
 *.pid
+VDT_2026_Report

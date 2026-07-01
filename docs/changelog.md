@@ -23,6 +23,15 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: chuẩn bị real email demo path trước Facebook real integration. Compose
+  cho phép override SMTP host/port/auth/TLS bằng `.env`; Channel service expose
+  SMTP timeout/auth/STARTTLS/SSL properties và IMAP timeout properties; thêm
+  `docs/real-email-demo.md` với cấu hình Gmail IMAP/SMTP bằng app password; thêm
+  `scripts/watch-real-email-inbox.ps1` để chờ conversation EMAIL thật xuất hiện
+  trong Inbox sau khi mailbox được poll. Requirement: `FR-07`, `FR-12`,
+  `NFR-01`. Verification: pending sau khi có Gmail/mailbox credential thật;
+  local tests/config checks chạy lại sau thay đổi.
+
 - Planned: đóng gói full local demo stack bằng Docker Compose. Thêm Dockerfile
   cho Inbox service, Channel service và frontend nginx static; Compose giờ có
   thể build/chạy PostgreSQL, Redis, Kafka, Mailpit, backend services và
