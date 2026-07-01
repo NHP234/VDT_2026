@@ -12,11 +12,23 @@ reply queueing, retry, and a frontend login/unified inbox workspace.
 
 ## Quick Start
 
-From PowerShell:
+From PowerShell, this starts the full local demo stack through Docker Compose:
 
 ```powershell
 Copy-Item .env.example .env
-.\scripts\dev-up.ps1
+.\scripts\dev-up.ps1 -Build
+```
+
+Then open `http://localhost:5173` and log in with:
+
+```text
+agent@example.test
+change-me-local-only
+```
+
+Run automated checks and smoke flows:
+
+```powershell
 .\scripts\check.ps1
 .\scripts\smoke-cross-service.ps1
 .\scripts\smoke-email-flow.ps1
@@ -32,9 +44,14 @@ Local infrastructure defaults:
 | Kafka | `localhost:29092` |
 | Mailpit SMTP | `localhost:1025` |
 | Mailpit UI | `http://localhost:8025` |
+| Inbox service | `http://localhost:8080` |
+| Channel service | `http://localhost:8081` |
+| Frontend | `http://localhost:5173` |
 
 `scripts/check.ps1` validates Docker Compose, runs both backend Maven Wrapper
 test suites, and runs frontend install/lint/test/build checks.
+
+For source-level debugging, you can still run services outside Docker.
 
 Backend run commands:
 

@@ -63,5 +63,111 @@ services:
       - "${MAILPIT_SMTP_PORT:-1025}:1025"
       - "${MAILPIT_WEB_PORT:-8025}:8025"
 
+  inbox-service:
+    build:
+      context: ./backend/inbox-service
+    image: ${COMPOSE_PROJECT_NAME:-vdt2026}-inbox-service:local
+    container_name: ${COMPOSE_PROJECT_NAME:-vdt2026}-inbox-service
+    environment:
+      INBOX_SERVICE_PORT: 8080
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-omnicare}
+      POSTGRES_USER: ${POSTGRES_USER:-omnicare}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-local-only}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_CONSUMER_RETRY_MAX_ATTEMPTS: ${KAFKA_CONSUMER_RETRY_MAX_ATTEMPTS:-3}
+      KAFKA_CONSUMER_RETRY_BACKOFF_MS: ${KAFKA_CONSUMER_RETRY_BACKOFF_MS:-1000}
+      JWT_SECRET: ${JWT_SECRET:-replace-with-a-long-random-local-secret}
+      JWT_TTL_SECONDS: ${JWT_TTL_SECONDS:-86400}
+      FRONTEND_ALLOWED_ORIGINS: ${FRONTEND_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+      INBOX_KAFKA_CONSUMERS_ENABLED: ${INBOX_KAFKA_CONSUMERS_ENABLED:-true}
+      INBOX_OUTBOX_PUBLISHER_ENABLED: ${INBOX_OUTBOX_PUBLISHER_ENABLED:-true}
+      INBOX_OUTBOX_PUBLISHER_FIXED_DELAY_MS: ${INBOX_OUTBOX_PUBLISHER_FIXED_DELAY_MS:-5000}
+    ports:
+      - "${INBOX_SERVICE_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  channel-service:
+    build:
+      context: ./backend/channel-service
+    image: ${COMPOSE_PROJECT_NAME:-vdt2026}-channel-service:local
+    container_name: ${COMPOSE_PROJECT_NAME:-vdt2026}-channel-service
+    environment:
+      CHANNEL_SERVICE_PORT: 8081
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DEDUP_TTL_SECONDS: ${REDIS_DEDUP_TTL_SECONDS:-86400}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_CONSUMER_RETRY_MAX_ATTEMPTS: ${KAFKA_CONSUMER_RETRY_MAX_ATTEMPTS:-3}
+      KAFKA_CONSUMER_RETRY_BACKOFF_MS: ${KAFKA_CONSUMER_RETRY_BACKOFF_MS:-1000}
+      CHANNEL_KAFKA_CONSUMERS_ENABLED: ${CHANNEL_KAFKA_CONSUMERS_ENABLED:-true}
+      FACEBOOK_MODE: ${FACEBOOK_MODE:-simulator}
+      FACEBOOK_PAGE_ID: ${FACEBOOK_PAGE_ID:-local-page-id}
+      FACEBOOK_APP_SECRET: ${FACEBOOK_APP_SECRET:-}
+      FACEBOOK_VERIFY_TOKEN: ${FACEBOOK_VERIFY_TOKEN:-}
+      FACEBOOK_PAGE_ACCESS_TOKEN: ${FACEBOOK_PAGE_ACCESS_TOKEN:-}
+      FACEBOOK_GRAPH_API_BASE_URL: ${FACEBOOK_GRAPH_API_BASE_URL:-https://graph.facebook.com/v20.0}
+      EMAIL_MODE: ${EMAIL_MODE:-simulator}
+      EMAIL_MAILBOX: ${EMAIL_MAILBOX:-demo@example.test}
+      EMAIL_IMAP_ENABLED: ${EMAIL_IMAP_ENABLED:-false}
+      IMAP_HOST: ${IMAP_HOST:-localhost}
+      IMAP_PORT: ${IMAP_PORT:-1143}
+      IMAP_USERNAME: ${IMAP_USERNAME:-demo@example.test}
+      IMAP_PASSWORD: ${IMAP_PASSWORD:-}
+      IMAP_FOLDER: ${IMAP_FOLDER:-INBOX}
+      IMAP_PROTOCOL: ${IMAP_PROTOCOL:-imap}
+      IMAP_POLL_FIXED_DELAY_MS: ${IMAP_POLL_FIXED_DELAY_MS:-10000}
+      IMAP_MAX_MESSAGES_PER_POLL: ${IMAP_MAX_MESSAGES_PER_POLL:-10}
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_SMTP_ENABLED: ${EMAIL_SMTP_ENABLED:-true}
+      MAIL_FROM: ${MAIL_FROM:-demo@example.test}
+    ports:
+      - "${CHANNEL_SERVICE_PORT:-8081}:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8081/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+    image: ${COMPOSE_PROJECT_NAME:-vdt2026}-frontend:local
+    container_name: ${COMPOSE_PROJECT_NAME:-vdt2026}-frontend
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      inbox-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health | grep -q ok"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
 volumes:
   postgres_data:

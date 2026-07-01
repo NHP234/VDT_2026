@@ -23,6 +23,14 @@ việc phát sinh.
 
 ### Tóm Tắt
 
+- Planned: đóng gói full local demo stack bằng Docker Compose. Thêm Dockerfile
+  cho Inbox service, Channel service và frontend nginx static; Compose giờ có
+  thể build/chạy PostgreSQL, Redis, Kafka, Mailpit, backend services và
+  frontend bằng `.\scripts\dev-up.ps1 -Build`. Requirement: `FR-12`, `NFR-01`.
+  Verification: `.\scripts\dev-up.ps1 -Build` built and started all containers;
+  `.\scripts\smoke-cross-service.ps1` and `.\scripts\smoke-email-flow.ps1`
+  passed against the containerized stack; `.\scripts\check.ps1` passed with
+  Inbox 42/42, Channel 52/52 and frontend 13/13 + production build.
 - Planned: thêm Testcontainers PostgreSQL migration tests cho Inbox service.
   Test chạy Flyway V1/V2 trên PostgreSQL 16 thật, verify seed data và các
   durable uniqueness constraints cho `processed_events.event_id`,

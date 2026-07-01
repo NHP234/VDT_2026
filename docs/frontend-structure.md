@@ -16,6 +16,8 @@ hoặc tính năng ngoài phạm vi khác.
 
 ```text
 frontend/
+|-- Dockerfile
+|-- nginx.conf
 |-- package.json
 |-- package-lock.json
 |-- vite.config.ts
@@ -51,6 +53,10 @@ npm run build
 
 `VITE_API_BASE_URL` cấu hình backend base URL. Nếu không đặt biến này, frontend
 mặc định gọi `http://localhost:8080`.
+
+Docker demo build dùng `frontend/Dockerfile` để compile static assets và serve
+qua nginx. `frontend/nginx.conf` cung cấp SPA fallback và `/health` cho Docker
+Compose healthcheck.
 
 ## Màn Hình Bắt Buộc
 

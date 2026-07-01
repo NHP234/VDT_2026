@@ -13,7 +13,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Thêm `.env.example` cho hạ tầng local và credential dịch vụ. `NFR-01`, `NFR-04`
 - [x] Thêm Docker Compose cho PostgreSQL, Kafka, Redis và Mailpit. `FR-07`, `FR-09`, `FR-10`, `NFR-01`
 - [x] Thêm lệnh format, lint và test cho backend/frontend. `NFR-05`
-- [~] Ghi lệnh setup, run, test và demo trong `README.md`. `NFR-01`, `FR-12`
+- [x] Ghi lệnh setup, run, test và demo trong `README.md`. `NFR-01`, `FR-12`
 
 ## 1. Nền Tảng Backend
 
@@ -78,7 +78,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Thêm correlation IDs xuyên suốt HTTP, logs và Kafka events. `FR-11`, `NFR-03`
 - [x] Expose health endpoints cho backend services. `FR-11`
 - [x] Expose counters cho inbound, duplicate, sent và failed events. `FR-11`
-- [~] Thêm demo reset và run scripts. `FR-12`, `NFR-01`
+- [x] Thêm demo reset và run scripts. `FR-12`, `NFR-01`
 - [x] Ghi operational checks trong `docs/monitoring-and-operations.md`. `FR-11`, `FR-12`
 
 ## 8. Tests Và Quality

@@ -15,6 +15,7 @@ ADR ghi lại quyết định.
 ```text
 backend/
 |-- inbox-service/
+|   |-- Dockerfile
 |   |-- mvnw
 |   |-- pom.xml
 |   |-- src/main/java/.../inbox/
@@ -28,6 +29,7 @@ backend/
 |   |   `-- db/migration/
 |   `-- src/test/java/
 |-- channel-service/
+|   |-- Dockerfile
 |   |-- mvnw
 |   |-- pom.xml
 |   |-- src/main/java/.../channel/
@@ -43,6 +45,11 @@ backend/
 `-- event-contracts/
     `-- README.md
 ```
+
+`docker-compose.yml` builds both backend Dockerfiles for the local demo stack.
+The containerized services use internal Compose hostnames such as `postgres`,
+`redis`, `kafka` and `mailpit`; source-level development can still run through
+the Maven Wrapper on the host.
 
 ## Mẫu Package
 
