@@ -197,6 +197,30 @@ describe("Inbox Component Suite", () => {
         );
       });
     });
+
+    it("renders status tab buttons with counts and filters conversations when clicked", async () => {
+      renderWithProviders(<ConversationList onSelect={() => {}} />);
+
+      // Verify status tabs render
+      await waitFor(() => {
+        expect(screen.getByTestId("status-tabs-row")).toBeInTheDocument();
+      });
+
+      expect(screen.getByLabelText("Tất cả trạng thái")).toBeInTheDocument();
+      expect(screen.getByLabelText("Trạng thái Open")).toBeInTheDocument();
+      expect(screen.getByLabelText("Trạng thái Pending")).toBeInTheDocument();
+      expect(screen.getByLabelText("Trạng thái Resolved")).toBeInTheDocument();
+
+      // Click on "Pending" tab
+      const pendingTab = screen.getByLabelText("Trạng thái Pending");
+      fireEvent.click(pendingTab);
+
+      await waitFor(() => {
+        expect(conversationsApi.list).toHaveBeenCalledWith(
+          expect.objectContaining({ status: "PENDING" }),
+        );
+      });
+    });
   });
 
   describe("ConversationDetail", () => {

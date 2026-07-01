@@ -931,3 +931,94 @@ body {
   height: 16px;
   animation: spin 0.6s linear infinite;
 }
+
+/* ==========================================
+   Inbox Header / Tab Counts Styling
+   ========================================== */
+.status-tabs-row {
+  display: flex;
+  background-color: var(--color-bg-hover);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.status-tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.status-tab-btn:hover {
+  background-color: rgba(15, 23, 42, 0.04);
+  color: var(--color-text-primary);
+}
+
+.status-tab-btn.active {
+  background-color: var(--color-bg-panel);
+  color: var(--color-accent);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.status-tab-btn .tab-label {
+  font-size: 11px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-tab-btn .tab-count {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-secondary);
+  min-width: 22px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.status-tab-btn.active .tab-count {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+/* Specific tab active states for custom colored highlights */
+.status-tab-btn.active.open {
+  color: var(--status-open-text);
+}
+.status-tab-btn.active.open .tab-count {
+  background-color: var(--status-open-bg);
+  color: var(--status-open-text);
+}
+
+.status-tab-btn.active.pending {
+  color: var(--status-pending-text);
+}
+.status-tab-btn.active.pending .tab-count {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.status-tab-btn.active.resolved {
+  color: var(--status-resolved-text);
+}
+.status-tab-btn.active.resolved .tab-count {
+  background-color: var(--status-resolved-bg);
+  color: var(--status-resolved-text);
+}

@@ -38,6 +38,82 @@ export const ConversationList: React.FC<ConversationListProps> = ({
     queryFn: agentsApi.list,
   });
 
+  // Counts queries for the status tabs
+  const { data: allCount = 0 } = useQuery({
+    queryKey: [
+      "conversations-count",
+      { status: "", channel, assignee, search: debouncedSearch },
+    ],
+    queryFn: async () => {
+      const res = await conversationsApi.list({
+        page: 0,
+        size: 1,
+        channel: channel || undefined,
+        assignee: assignee || undefined,
+        search: debouncedSearch || undefined,
+      });
+      return res.totalElements;
+    },
+    refetchInterval: 5000,
+  });
+
+  const { data: openCount = 0 } = useQuery({
+    queryKey: [
+      "conversations-count",
+      { status: "OPEN", channel, assignee, search: debouncedSearch },
+    ],
+    queryFn: async () => {
+      const res = await conversationsApi.list({
+        page: 0,
+        size: 1,
+        status: "OPEN",
+        channel: channel || undefined,
+        assignee: assignee || undefined,
+        search: debouncedSearch || undefined,
+      });
+      return res.totalElements;
+    },
+    refetchInterval: 5000,
+  });
+
+  const { data: pendingCount = 0 } = useQuery({
+    queryKey: [
+      "conversations-count",
+      { status: "PENDING", channel, assignee, search: debouncedSearch },
+    ],
+    queryFn: async () => {
+      const res = await conversationsApi.list({
+        page: 0,
+        size: 1,
+        status: "PENDING",
+        channel: channel || undefined,
+        assignee: assignee || undefined,
+        search: debouncedSearch || undefined,
+      });
+      return res.totalElements;
+    },
+    refetchInterval: 5000,
+  });
+
+  const { data: resolvedCount = 0 } = useQuery({
+    queryKey: [
+      "conversations-count",
+      { status: "RESOLVED", channel, assignee, search: debouncedSearch },
+    ],
+    queryFn: async () => {
+      const res = await conversationsApi.list({
+        page: 0,
+        size: 1,
+        status: "RESOLVED",
+        channel: channel || undefined,
+        assignee: assignee || undefined,
+        search: debouncedSearch || undefined,
+      });
+      return res.totalElements;
+    },
+    refetchInterval: 5000,
+  });
+
   // Fetch conversations based on state
   const {
     data: convoPage,
@@ -59,6 +135,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({
         assignee: assignee || undefined,
         search: debouncedSearch || undefined,
       }),
+    refetchInterval: 5000, // Auto-refresh fallback polling
   });
 
   const handleFilterChange = <T extends string>(
@@ -107,6 +184,45 @@ export const ConversationList: React.FC<ConversationListProps> = ({
             onChange={(e) => setSearch(e.target.value)}
           />
           <Search size={16} className="search-icon" />
+        </div>
+
+        <div className="status-tabs-row" data-testid="status-tabs-row">
+          <button
+            type="button"
+            className={`status-tab-btn ${status === "" ? "active" : ""}`}
+            onClick={() => handleFilterChange<ConversationStatus | "">(setStatus, "")}
+            aria-label="Tất cả trạng thái"
+          >
+            <span className="tab-label">Tất cả</span>
+            <span className="tab-count">{allCount}</span>
+          </button>
+          <button
+            type="button"
+            className={`status-tab-btn open ${status === "OPEN" ? "active" : ""}`}
+            onClick={() => handleFilterChange<ConversationStatus | "">(setStatus, "OPEN")}
+            aria-label="Trạng thái Open"
+          >
+            <span className="tab-label">Open</span>
+            <span className="tab-count">{openCount}</span>
+          </button>
+          <button
+            type="button"
+            className={`status-tab-btn pending ${status === "PENDING" ? "active" : ""}`}
+            onClick={() => handleFilterChange<ConversationStatus | "">(setStatus, "PENDING")}
+            aria-label="Trạng thái Pending"
+          >
+            <span className="tab-label">Pending</span>
+            <span className="tab-count">{pendingCount}</span>
+          </button>
+          <button
+            type="button"
+            className={`status-tab-btn resolved ${status === "RESOLVED" ? "active" : ""}`}
+            onClick={() => handleFilterChange<ConversationStatus | "">(setStatus, "RESOLVED")}
+            aria-label="Trạng thái Resolved"
+          >
+            <span className="tab-label">Resolved</span>
+            <span className="tab-count">{resolvedCount}</span>
+          </button>
         </div>
 
         <div className="filters-row">

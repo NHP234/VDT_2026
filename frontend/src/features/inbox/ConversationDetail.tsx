@@ -31,6 +31,7 @@ export const ConversationDetail: React.FC<ConversationDetailProps> = ({
     queryKey: ["conversation", selectedId],
     queryFn: () => (selectedId ? conversationsApi.get(selectedId) : null),
     enabled: !!selectedId,
+    refetchInterval: 5000, // Auto-refresh fallback polling
   });
 
   // Reply Mutation

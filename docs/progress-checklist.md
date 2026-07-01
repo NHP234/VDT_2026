@@ -43,6 +43,7 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 - [x] Triển khai thao tác assignment, status, reply và retry. `FR-04`, `FR-05`, `FR-06`
 - [x] Triển khai loading, empty, error và failed-delivery states. `FR-02`, `FR-03`, `FR-06`
 - [x] Đảm bảo không render trực tiếp external HTML. `FR-03`, `NFR-04`
+- [x] Triển khai bộ đếm số lượng trạng thái (OPEN, PENDING, RESOLVED) và tự động cập nhật (refetchInterval). `FR-02`, `FR-03`
 
 ## 4. Facebook Adapter
 
@@ -105,5 +106,5 @@ Ký hiệu trạng thái: `[ ]` chưa bắt đầu, `[~]` đang làm, `[x]` đã
 
 Không bắt đầu các mục này cho đến khi mọi MUST item ở trên đã verified.
 
-- [ ] Inbox header counts theo `OPEN`, `PENDING`, `RESOLVED`.
+- [x] Inbox header counts theo `OPEN`, `PENDING`, `RESOLVED`.
 - [ ] Server-sent events để tự động refresh inbox.

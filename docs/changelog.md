@@ -36,8 +36,15 @@ việc phát sinh.
   không làm PowerShell 7 fail khi exit code thật vẫn là `0`. Reason: cần giữ
   local check reproducible sau khi Maven/Mockito ghi warning ra stderr.
   Requirement: `NFR-01`, `NFR-05`.
-- Verification: `.\scripts\check.ps1` passed with Inbox 42/42, Channel 52/52,
-  frontend 12/12 + production build.
+- Planned: triển khai tính năng bổ sung (optional checklists) cho frontend:
+  hiển thị bộ đếm trạng thái hội thoại (`Tất cả`, `Open`, `Pending`,
+  `Resolved`) trên Inbox, thêm fallback polling 5 giây cho danh sách/chi tiết
+  hội thoại, và bổ sung unit test cho status tabs/filter. Requirement:
+  `FR-02`, `FR-03`, `NFR-05`.
+- Verification: `npm run lint --if-present`, `npm run test --if-present -- --run`
+  passed with frontend 13/13 tests, and `npm run build --if-present` passed.
+  Full `.\scripts\check.ps1` also passed with Inbox 42/42, Channel 52/52,
+  frontend 13/13 tests and production build.
 
 ### Rủi Ro Hoặc Follow-up
 
@@ -45,6 +52,7 @@ việc phát sinh.
 - Frontend check pass trên Node v23.10.0 nhưng npm có cảnh báo engine cho một
   dependency ESLint; nếu muốn môi trường ổn định hơn, dùng Node LTS theo
   `frontend/package.json`/tooling recommendation.
+- Frontend hiện dùng fallback polling, chưa triển khai Server-Sent Events.
 
 ## 2026-06-30
 
