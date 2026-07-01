@@ -31,6 +31,10 @@ việc phát sinh.
   trong Inbox sau khi mailbox được poll. Requirement: `FR-07`, `FR-12`,
   `NFR-01`. Verification: pending sau khi có Gmail/mailbox credential thật;
   local tests/config checks chạy lại sau thay đổi.
+- Planned: thêm `MAIL_REPLY_TO` cho SMTP email replies để khách reply vào email
+  do OmniCare gửi vẫn quay về mailbox/plus-address đang được IMAP poll, thay vì
+  quay về địa chỉ Gmail gốc. Requirement: `FR-07`. Verification: pending sau
+  rebuild và test Gmail reply mới.
 
 - Planned: đóng gói full local demo stack bằng Docker Compose. Thêm Dockerfile
   cho Inbox service, Channel service và frontend nginx static; Compose giờ có

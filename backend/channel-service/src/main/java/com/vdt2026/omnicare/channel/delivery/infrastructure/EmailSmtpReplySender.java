@@ -20,13 +20,16 @@ class EmailSmtpReplySender implements OutboundReplySender {
 
     private final JavaMailSender mailSender;
     private final String mailFrom;
+    private final String mailReplyTo;
 
     EmailSmtpReplySender(
         JavaMailSender mailSender,
-        @Value("${app.email.mail-from:demo@example.test}") String mailFrom
+        @Value("${app.email.mail-from:demo@example.test}") String mailFrom,
+        @Value("${app.email.mail-reply-to:${app.email.mail-from:demo@example.test}}") String mailReplyTo
     ) {
         this.mailSender = mailSender;
         this.mailFrom = mailFrom;
+        this.mailReplyTo = mailReplyTo;
     }
 
     @Override
@@ -42,6 +45,9 @@ class EmailSmtpReplySender implements OutboundReplySender {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             message.setFrom(new InternetAddress(mailFrom));
+            if (StringUtils.hasText(mailReplyTo)) {
+                message.setReplyTo(InternetAddress.parse(mailReplyTo));
+            }
             message.setRecipients(MimeMessage.RecipientType.TO, payload.externalIdentityId());
             message.setSubject(replySubject(payload.subject()));
             message.setText(payload.content());

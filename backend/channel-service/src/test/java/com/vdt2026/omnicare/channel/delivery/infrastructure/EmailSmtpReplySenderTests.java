@@ -23,7 +23,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 class EmailSmtpReplySenderTests {
 
     private final JavaMailSender mailSender = mock(JavaMailSender.class);
-    private final EmailSmtpReplySender sender = new EmailSmtpReplySender(mailSender, "demo@example.test");
+    private final EmailSmtpReplySender sender = new EmailSmtpReplySender(
+        mailSender,
+        "demo@example.test",
+        "demo+omnicare@example.test"
+    );
 
     @Test
     void sendsPlainTextEmailWithReplyThreadHeaders() throws Exception {
@@ -35,6 +39,7 @@ class EmailSmtpReplySenderTests {
         verify(mailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getFrom()[0].toString()).isEqualTo("demo@example.test");
+        assertThat(message.getReplyTo()[0].toString()).isEqualTo("demo+omnicare@example.test");
         assertThat(message.getRecipients(Message.RecipientType.TO)[0].toString()).isEqualTo("tran.b@example.test");
         assertThat(message.getSubject()).isEqualTo("Re: Can ho tro don hang #42");
         assertThat(message.getHeader("In-Reply-To", null)).isEqualTo("<email-demo-1001@example.test>");

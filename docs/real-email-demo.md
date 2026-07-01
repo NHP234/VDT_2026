@@ -61,6 +61,7 @@ SMTP_STARTTLS_ENABLE=true
 SMTP_STARTTLS_REQUIRED=true
 SMTP_SSL_ENABLE=false
 MAIL_FROM=your-demo-mailbox@gmail.com
+MAIL_REPLY_TO=your-demo-mailbox+omnicare@gmail.com
 ```
 
 Nếu dùng SMTP SSL port `465`, đổi:
@@ -104,6 +105,9 @@ Mở UI:
 ## Lưu Ý Khi Demo
 
 - IMAP poll mặc định mỗi 10 giây, nên email có thể mất vài giây mới xuất hiện.
+- `MAIL_REPLY_TO` nên trỏ về địa chỉ được filter/label, ví dụ
+  `your-demo-mailbox+omnicare@gmail.com`, để khách reply vào email do OmniCare
+  gửi vẫn quay lại đúng folder IMAP demo.
 - Gmail App Password có thể bị revoke khi đổi password Google.
 - Nếu không thấy App Password, tài khoản có thể thuộc organization, dùng security
   key-only 2FA hoặc Advanced Protection.

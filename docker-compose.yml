@@ -139,6 +139,7 @@ services:
       SMTP_SSL_ENABLE: ${SMTP_SSL_ENABLE:-false}
       EMAIL_SMTP_ENABLED: ${EMAIL_SMTP_ENABLED:-true}
       MAIL_FROM: ${MAIL_FROM:-demo@example.test}
+      MAIL_REPLY_TO: ${MAIL_REPLY_TO:-${MAIL_FROM:-demo@example.test}}
     ports:
       - "${CHANNEL_SERVICE_PORT:-8081}:8081"
     depends_on:
