@@ -59,6 +59,40 @@ class EmailInboundMessageMapperTests {
     }
 
     @Test
+    void stripsGmailQuotedReplyHistoryFromPlainTextBody() throws Exception {
+        MimeMessage message = message();
+        message.setText("""
+            same to you
+
+            On Wed, Jul 1, 2026 at 9:45 PM <demo@example.test> wrote:
+
+            > previous agent reply
+            >
+            """);
+
+        EmailInboundEventCommand command = mapper.map(message, "demo@example.test");
+
+        assertThat(command.textContent()).isEqualTo("same to you");
+    }
+
+    @Test
+    void keepsInlineQuotedTextWhenMessageContinuesAfterwards() throws Exception {
+        MimeMessage message = message();
+        message.setText("""
+            Please check this part:
+            > quoted line from my document
+            and confirm the final value.
+            """);
+
+        EmailInboundEventCommand command = mapper.map(message, "demo@example.test");
+
+        assertThat(command.textContent()).isEqualTo("""
+            Please check this part:
+            > quoted line from my document
+            and confirm the final value.""");
+    }
+
+    @Test
     void rejectsMessageWithoutMessageId() throws Exception {
         MimeMessage message = new MimeMessage(Session.getInstance(new Properties()));
         message.setFrom(new InternetAddress("tran.b@example.test", "Tran Thi B"));

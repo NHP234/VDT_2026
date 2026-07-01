@@ -35,6 +35,10 @@ việc phát sinh.
   do OmniCare gửi vẫn quay về mailbox/plus-address đang được IMAP poll, thay vì
   quay về địa chỉ Gmail gốc. Requirement: `FR-07`. Verification: pending sau
   rebuild và test Gmail reply mới.
+- Planned: sửa email inbound parser để strip phần quoted reply history kiểu
+  Gmail/Outlook khỏi plain-text body trước khi publish inbound event, tránh UI
+  hiển thị lại lịch sử email cũ trong mỗi tin nhắn mới. Requirement: `FR-07`.
+  Verification: `backend/channel-service` `EmailInboundMessageMapperTests`.
 
 - Planned: đóng gói full local demo stack bằng Docker Compose. Thêm Dockerfile
   cho Inbox service, Channel service và frontend nginx static; Compose giờ có

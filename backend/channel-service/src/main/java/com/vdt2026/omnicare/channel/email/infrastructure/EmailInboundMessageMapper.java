@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -25,7 +26,7 @@ class EmailInboundMessageMapper {
         try {
             InternetAddress sender = sender(message);
             String messageId = header(message, "Message-ID");
-            String textContent = plainText(message);
+            String textContent = stripQuotedReply(plainText(message));
             requireHasText(messageId, "Email messageId is required");
             requireHasText(textContent, "Email textContent is required");
             return new EmailInboundEventCommand(
@@ -125,6 +126,69 @@ class EmailInboundMessageMapper {
             }
         }
         return null;
+    }
+
+    private String stripQuotedReply(String text) {
+        if (!StringUtils.hasText(text)) {
+            return text;
+        }
+        String normalized = text.replace("\r\n", "\n").replace('\r', '\n');
+        List<String> lines = Arrays.asList(normalized.split("\n", -1));
+        int quotedStart = quotedReplyStart(lines);
+        String candidate = quotedStart < 0
+            ? normalized
+            : String.join("\n", lines.subList(0, quotedStart));
+        String trimmedCandidate = trimBlankLines(candidate);
+        if (StringUtils.hasText(trimmedCandidate)) {
+            return trimmedCandidate;
+        }
+        return trimBlankLines(normalized);
+    }
+
+    private int quotedReplyStart(List<String> lines) {
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i).trim();
+            if (!StringUtils.hasText(line)) {
+                continue;
+            }
+            if (isQuotedReplyHeader(line) || isLikelyQuotedBlock(lines, i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean isQuotedReplyHeader(String line) {
+        String lower = line.toLowerCase(Locale.ROOT);
+        return "-----original message-----".equals(lower)
+            || (lower.startsWith("on ") && lower.endsWith(" wrote:"))
+            || (lower.contains("@") && (lower.endsWith(" wrote:") || lower.endsWith(" vi\u1ebft:")));
+    }
+
+    private boolean isLikelyQuotedBlock(List<String> lines, int startIndex) {
+        if (startIndex == 0 || !lines.get(startIndex).trim().startsWith(">")) {
+            return false;
+        }
+        for (int i = startIndex; i < lines.size(); i++) {
+            String line = lines.get(i).trim();
+            if (StringUtils.hasText(line) && !line.startsWith(">")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String trimBlankLines(String text) {
+        String[] lines = text.split("\n", -1);
+        int start = 0;
+        int end = lines.length;
+        while (start < end && !StringUtils.hasText(lines[start])) {
+            start++;
+        }
+        while (end > start && !StringUtils.hasText(lines[end - 1])) {
+            end--;
+        }
+        return String.join("\n", Arrays.copyOfRange(lines, start, end));
     }
 
     private void requireHasText(String value, String message) {
