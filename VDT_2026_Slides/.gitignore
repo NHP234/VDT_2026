@@ -1,0 +1,9 @@
+# Ignore compilation output and temporary build artifacts
+exports/
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz
