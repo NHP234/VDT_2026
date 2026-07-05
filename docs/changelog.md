@@ -19,6 +19,29 @@ việc phát sinh.
 - Việc vẫn cần chú ý.
 ```
 
+## 2026-07-04
+
+### Tóm Tắt
+
+- Planned: Lồng 10 sơ đồ kiến trúc và nghiệp vụ từ file Draw.io PDF (`omnicare-architecture.drawio.pdf` và `omnicare-domain-operations.drawio.pdf`) vào báo cáo LaTeX `VDT_2026_Report/main.tex`.
+  - Tách và chèn trực tiếp các trang cụ thể vào đúng phần giới thiệu/thiết kế/tin cậy/operations tương ứng (sử dụng tùy chọn `[page=...]` của `\includegraphics`).
+  - Dọn dẹp và xóa các placeholder bị trùng lặp của sơ đồ.
+  Requirement: `FR-12` (Báo cáo, slides và sơ đồ).
+  Verification: Chạy script `build.ps1` để biên dịch XeLaTeX thành công ra tệp `main.pdf` 19 trang tại `VDT_2026_Report/exports/main.pdf`.
+- Planned: Triển khai bộ phân tích (parser) JSON Webhook thực tế cho Facebook trong `channel-service`.
+  - Parse tin nhắn Messenger (messaging), lọc bỏ tin nhắn echo để chống lặp tin nhắn.
+  - Parse bình luận trên Trang (changes/feed), xác định ID bình luận cha (parent/root id) phục vụ việc nhóm hội thoại.
+  - Bổ sung 3 unit tests trong `FacebookWebhookControllerTests.java` xác thực việc parse tin nhắn, bình luận và lọc echo thành công.
+  Requirement: `FR-08` (Facebook Integration).
+  Verification: Cấu hình biến môi trường `DOCKER_HOST="npipe:////./pipe/docker_engine"` và chạy thành công script kiểm chứng toàn cục `.\scripts\check.ps1` vượt qua toàn bộ:
+  - inbox-service: 42/42 tests passed (bao gồm các bài test PostgreSQL migration thực tế trên Testcontainers).
+  - channel-service: 57/57 tests passed (bao gồm 8/8 tests cho cổng Webhook Facebook thật mới thêm).
+  - frontend: 13/13 tests passed, linter sạch và đóng gói thành công.
+
+### Rủi Ro Hoặc Follow-up
+
+- Không có. Báo cáo biên dịch bình thường và đã sẵn sàng.
+
 ## 2026-07-01
 
 ### Tóm Tắt

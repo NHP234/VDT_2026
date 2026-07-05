@@ -174,5 +174,20 @@ services:
       timeout: 5s
       retries: 10
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-vdt2026}-ngrok
+    restart: unless-stopped
+    command:
+      - "http"
+      - "channel-service:8081"
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    ports:
+      - "${NGROK_PORT:-4040}:4040"
+    depends_on:
+      channel-service:
+        condition: service_healthy
+
 volumes:
   postgres_data:
