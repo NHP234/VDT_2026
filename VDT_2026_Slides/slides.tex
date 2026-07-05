@@ -43,7 +43,7 @@
             \usebeamerfont{author in head/foot}\hspace*{2ex}Viettel Digital Talent 2026
         \end{beamercolorbox}%
         \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
-            \usebeamerfont{title in head/foot}OmniCare Presentation
+            \usebeamerfont{title in head/foot}Hộp thư đa kênh OmniCare
         \end{beamercolorbox}%
         \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
             \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
@@ -59,15 +59,15 @@
 \setbeamercolor{block body example}{bg=cardbg, fg=textdark}
 
 % Presentation Information
-\title{Omnichannel Customer Care System}
-\subtitle{Facebook Messenger, Page Comments and Email Integration}
+\title{Hệ Thống Chăm Sóc Khách Hàng Đa Kênh}
+\subtitle{Tích hợp Facebook Messenger, Bình luận Trang và Email}
 \author{Viettel Digital Talent 2026 - Mini Project}
 \date{\today}
 
 \begin{document}
 
 % -------------------------------------------------------------
-% SLIDE 1: Title Slide (Modern Minimalist Intro)
+% SLIDE 1: Title Slide (Trang tiêu đề)
 % -------------------------------------------------------------
 \begin{frame}[plain]
     \begin{center}
@@ -76,33 +76,37 @@
         {\usebeamerfont{title}\inserttitle} \\[0.2cm]
         {\usebeamerfont{subtitle}\insertsubtitle} \\[0.4cm]
         {\color{accent}\rule{\linewidth}{1.5pt}} \\[1cm]
-        \textbf{Program:} Viettel Digital Talent 2026 \\[0.1cm]
-        \textbf{Project Name:} OmniCare \\[0.1cm]
-        \textbf{Topic:} Omnichannel Customer Care Workspace
+        \textbf{Chương trình:} Viettel Digital Talent 2026 \\[0.1cm]
+        \textbf{Tên dự án:} OmniCare Workspace \\[0.1cm]
+        \textbf{Đề tài:} Hộp thư chăm sóc khách hàng đa kênh tập trung
     \end{center}
 \end{frame}
 
 % -------------------------------------------------------------
-% SLIDE 2: Problem Statement
+% SLIDE 2: Problem Statement (Đặt Vấn Đề)
 % -------------------------------------------------------------
-\begin{frame}{Problem Statement \& Goals}
+\begin{frame}{Thách Thức Trong Chăm Sóc Khách Hàng}
+    \begin{center}
+        \large\textbf{\color{accent}Đa kênh gây phân tán dữ liệu và chậm trễ phản hồi.}
+    \end{center}
+    \vspace{0.4cm}
     \begin{columns}[T]
         \begin{column}{0.48\textwidth}
-            \begin{block}{The Problem}
+            \begin{block}{Thực trạng vận hành}
                 \begin{itemize}
-                    \item Customer care agents waste time switching between multiple platforms (Facebook Page, Personal Gmail).
-                    \item Missing messages/comments leading to slow response times.
-                    \item Lack of unified tracking, agent assignment, and audit trail.
+                    \item Phải chuyển đổi liên tục nhiều ứng dụng.
+                    \item Dễ bỏ sót tin nhắn, bình luận.
+                    \item Khó theo dõi lịch sử khách hàng.
                 \end{itemize}
             \end{block}
         \end{column}
         
         \begin{column}{0.48\textwidth}
-            \begin{block}{Project Goals}
+            \begin{block}{Hệ quả doanh nghiệp}
                 \begin{itemize}
-                    \item \textbf{Consolidate}: Collect Facebook messages/comments and email into a single workspace.
-                    \item \textbf{Normalize}: Standardize inbound events into a uniform model.
-                    \item \textbf{Collaborate}: Support conversation assignment, state tracking, and responses.
+                    \item Tốc độ phản hồi khách hàng chậm.
+                    \item Khó phân công công việc rõ ràng.
+                    \item Thiếu số liệu báo cáo hiệu suất.
                 \end{itemize}
             \end{block}
         \end{column}
@@ -110,14 +114,45 @@
 \end{frame}
 
 % -------------------------------------------------------------
-% SLIDE 3: System Architecture (C4 Context)
+% SLIDE 3: Project Goals (Mục tiêu dự án)
 % -------------------------------------------------------------
-\begin{frame}{System Architecture Overview}
+\begin{frame}{Mục Tiêu Hệ Thống OmniCare}
     \begin{center}
-        \begin{block}{Modular Monolith Architecture}
-            System split into logical modules: \textbf{identity}, \textbf{inbox}, \textbf{facebook-adapter}, and \textbf{email-adapter}.
-        \end{block}
-        \vspace{0.2cm}
+        \large\textbf{\color{accent}Tập trung hóa hòm thư chăm sóc khách hàng đa kênh.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Hợp nhất \& Chuẩn hóa}
+                \begin{itemize}
+                    \item Gom Facebook và Email về một nơi.
+                    \item Đồng nhất cấu trúc sự kiện đầu vào.
+                    \item Phản hồi trực tiếp trên một UI.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Quản trị \& Giám sát}
+                \begin{itemize}
+                    \item Phân công hội thoại cho nhân viên.
+                    \item Theo dõi trạng thái (Open, Resolved).
+                    \item Lưu vết kiểm toán (Audit Trail) chi tiết.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 4: Architecture (Kiến trúc hệ thống)
+% -------------------------------------------------------------
+\begin{frame}{Kiến Trúc Hệ Thống (Modular Monolith)}
+    \begin{center}
+        \large\textbf{\color{accent}Thiết kế hướng Module độc lập, kết nối qua Kafka.}
+    \end{center}
+    \vspace{0.2cm}
+    \begin{center}
         \begin{tikzpicture}[node distance=2cm, auto, >=stealth, scale=0.8, every node/.style={transform shape}]
             \node[draw, rectangle, fill=primary!20, text width=2.5cm, align=center] (client) {React Frontend\\(Vite + TS)};
             \node[draw, rectangle, fill=accent!20, text width=2.5cm, align=center, right of=client, node distance=4cm] (inbox) {Inbox Service\\(Spring Boot)};
@@ -133,140 +168,107 @@
 \end{frame}
 
 % -------------------------------------------------------------
-% SLIDE 4: Facebook Integration - Inbound Webhooks
+% SLIDE 5: Facebook Inbound Flow (Tích hợp FB - Luồng vào)
 % -------------------------------------------------------------
-\begin{frame}{Facebook Integration: Inbound Flow}
-    \begin{block}{Webhook Real-time Connection}
-        Facebook feeds events to the system using HTTP POST payloads with secure signatures.
-    \end{block}
-    \vspace{0.2cm}
-    \begin{enumerate}
-        \item \textbf{Handshake Verification}: Meta verification of Callback URL using the `hub.challenge` token.
-        \item \textbf{Signature Validation}: Controller verifies the payload authenticity using `X-Hub-Signature-256` and the App Secret (HMAC-SHA256).
-        \item \textbf{Event Extraction}:
-            \begin{itemize}
-                \item \textbf{Messenger}: Parses `messaging` payload for customer text inputs.
-                \item \textbf{Page Comments}: Parses `feed` payload for user comments, filtering out echoes (Page's own posts/comments).
-            \end{itemize}
-    \end{enumerate}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 5: Facebook Integration - Outbound Replies
-% -------------------------------------------------------------
-\begin{frame}{Facebook Integration: Outbound Flow}
-    \begin{block}{Graph API Communication}
-        Outbound messages are pushed back to the Facebook platform programmatically.
-    \end{block}
-    \vspace{0.4cm}
-    \begin{itemize}
-        \item \textbf{Credentials}: Secured via permanent **Page Access Token** generated through Long-Lived Token Exchange.
-        \item \textbf{Messenger Send API}:
-            \begin{itemize}
-                \item Pushes responses directly to the customer's Page Scope ID (PSID).
-                \item Endpoint: `POST /v20.0/me/messages`
-            \end{itemize}
-        \item \textbf{Comment Reply API}:
-            \begin{itemize}
-                \item Posts threaded replies to specific customer comment IDs.
-                \item Endpoint: `POST /v20.0/{comment-id}/comments`
-            \end{itemize}
-    \end{itemize}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 6: Email Integration - Inbound Flow
-% -------------------------------------------------------------
-\begin{frame}{Email Integration: Inbound Ingestion}
-    \begin{block}{IMAP Polling Architecture}
-        Allows asynchronous ingestion of customer emails into the Unified Inbox.
-    \end{block}
-    \vspace{0.2cm}
-    \begin{itemize}
-        \item \textbf{IMAP Protocols}: Configurable support for SSL/TLS encrypted `imaps` protocol.
-        \item \textbf{State Checking}: Periodic scheduled execution loops querying target folders (e.g., `INBOX` or custom tags).
-        \item \textbf{Deduplication}: Extracts `Message-ID` headers to prevent duplicate ingestion in case of repeat polls.
-        \item \textbf{Formatting}: Sanitizes HTML and normalizes rich-text attachments into consistent format.
-    \end{itemize}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 7: Email Integration - Outbound SMTP
-% -------------------------------------------------------------
-\begin{frame}{Email Integration: Outbound SMTP}
-    \begin{block}{SMTP Reply Routing}
-        Agent replies on the UI are compiled into outbound SMTP messages.
-    \end{block}
-    \vspace{0.3cm}
-    \begin{itemize}
-        \item \textbf{Mail Sender}: Integrated via Spring Boot's `JavaMailSender` abstraction.
-        \item \textbf{Thread Preserving}:
-            \begin{itemize}
-                \item Resolves external conversation IDs to extract original `Message-ID`.
-                \item Automatically sets **`In-Reply-To`** and **`References`** headers in the outgoing mail.
-                \item This ensures all popular email clients (Gmail, Outlook) keep the conversation threaded correctly.
-            \end{itemize}
-        \item \textbf{Mocking Environment}: Uses local **Mailpit** container as a SMTP server for zero-credential offline testing.
-    \end{itemize}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 8: Common Data Model
-% -------------------------------------------------------------
-\begin{frame}{Common Data Model (Normalization)}
-    \begin{block}{From Platform Specifics to Domain Models}
-        Decouples the business logic of the inbox from external channel schemas.
-    \end{block}
-    
+\begin{frame}{Facebook Webhook: Luồng Tiếp Nhận Tin}
     \begin{center}
-        \begin{tabular}{lll}
-            \toprule
-            \textbf{Feature} & \textbf{Facebook Adapter} & \textbf{Email Adapter} \\
-            \midrule
-            Identity & Page Scoped ID (PSID) / Name & Email Address / Display Name \\
-            Conversation & Threaded ID (`facebook:pageId:psid`) & Message-ID based hash (`email:box:id`) \\
-            Payload & Message Text / Comment Media & Rich-Text Body / Attachments \\
-            \bottomrule
-        \end{tabular}
+        \large\textbf{\color{accent}Bắt sự kiện tương tác thời gian thực từ Fanpage.}
     \end{center}
-    \vspace{0.2cm}
-    All adapters map to a single domain entity: \textbf{`Conversation`} containing \textbf{`Message`} aggregates.
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 9: Unified Inbox & Agent Workflows
-% -------------------------------------------------------------
-\begin{frame}{Unified Inbox \& Agent Workflows}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Inbox Workspace}
-                \begin{itemize}
-                    \item Single React UI containing active message streams.
-                    \item Multi-channel filtering: select strictly `FACEBOOK` or `EMAIL` channels.
-                    \item Status-based segmentation: filter threads by `OPEN`, `PENDING`, or `RESOLVED`.
-                \end{itemize}
-            \end{block}
-        \end{column}
-        
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Agent Assignments}
-                \begin{itemize}
-                    \item Assign ownership of conversations to specific agents.
-                    \item Live status updates (e.g. marking resolved).
-                    \item Clear visual indicators for channel origin on each card.
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 10: Asynchronous Message Processing (Kafka)
-% -------------------------------------------------------------
-\begin{frame}{Asynchronous Event Streaming (Kafka)}
-    \begin{block}{Decoupled Microservices communication}
-        Ensures data consistency and decoupling between channels and inbox logic.
+    \vspace{0.4cm}
+    \begin{block}{Quy trình xử lý an toàn}
+        \begin{itemize}
+            \item \textbf{Đường truyền}: Mở cổng HTTPS công khai qua Ngrok.
+            \item \textbf{Xác thực}: Kiểm tra chữ ký HMAC-SHA256 bảo mật.
+            \item \textbf{Messenger}: Trích xuất nội dung tin nhắn và PSID.
+            \item \textbf{Comments}: Lọc bình luận, bỏ qua echo của Page.
+            \item \textbf{Đầu ra}: Đẩy sự kiện chuẩn hóa vào Kafka.
+        \end{itemize}
     \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 6: Facebook Outbound Flow (Tích hợp FB - Luồng ra)
+% -------------------------------------------------------------
+\begin{frame}{Facebook Graph API: Luồng Phản Hồi Tin}
+    \begin{center}
+        \large\textbf{\color{accent}Tự động phản hồi khách hàng qua Graph API.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Các bước thực thi}
+        \begin{itemize}
+            \item \textbf{Token}: Dùng Page Access Token vĩnh viễn mới.
+            \item \textbf{Messenger API}: Gửi tin nhắn trực tiếp theo PSID.
+            \item \textbf{Comment API}: Trả lời bình luận theo Comment ID.
+            \item \textbf{Phân luồng}: Đảm bảo tin nhắn đi đúng chuỗi.
+            \item \textbf{An toàn}: Ghi nhật ký trạng thái gửi (SENT/FAILED).
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 7: Email Inbound Flow (Tích hợp Email - Luồng vào)
+% -------------------------------------------------------------
+\begin{frame}{Email Ingestion: Luồng Thu Thập Thư}
+    \begin{center}
+        \large\textbf{\color{accent}Quét hòm thư định kỳ an toàn qua giao thức IMAP.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Luồng nghiệp vụ xử lý}
+        \begin{itemize}
+            \item \textbf{Bảo mật}: Sử dụng giao thức mã hóa `imaps` (cổng 993).
+            \item \textbf{Quét thư}: Bộ lập lịch kiểm tra thư mục chỉ định.
+            \item \textbf{Trùng lặp}: Dựa trên Message-ID để lọc thư trùng.
+            \item \textbf{Xử lý}: Làm sạch mã HTML, lọc văn bản thô.
+            \item \textbf{Lưu trữ}: Nhận diện và tách riêng tệp đính kèm.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 8: Email Outbound Flow (Tích hợp Email - Luồng ra)
+% -------------------------------------------------------------
+\begin{frame}{Email SMTP: Luồng Gửi Thư Phản Hồi}
+    \begin{center}
+        \large\textbf{\color{accent}Bảo toàn luồng chuỗi thư trao đổi (Threaded Mail).}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Bảo toàn chuỗi hội thoại}
+        \begin{itemize}
+            \item \textbf{SMTP}: Sử dụng Spring `JavaMailSender` gửi thư đi.
+            \item \textbf{In-Reply-To}: Gắn ID của email gửi đến gần nhất.
+            \item \textbf{References}: Gắn danh sách ID của cả luồng thư.
+            \item \textbf{Hiển thị}: Gom nhóm chuỗi thư chuẩn trên Gmail/Outlook.
+            \item \textbf{Giả lập}: Test offline không cần cấu hình bằng Mailpit.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 9: Normalization (Chuẩn hóa mô hình dữ liệu)
+% -------------------------------------------------------------
+\begin{frame}{Chuẩn Hóa Mô Hình Dữ Liệu Đa Kênh}
+    \begin{center}
+        \large\textbf{\color{accent}Đồng nhất mọi định dạng gói tin về một mô hình chung.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Mô hình nghiệp vụ cốt lõi}
+        \begin{itemize}
+            \item \textbf{Khách hàng}: Chuẩn hóa định danh số điện thoại, email, PSID.
+            \item \textbf{Hội thoại}: Tổng hợp các luồng trao đổi (Conversation).
+            \item \textbf{Tin nhắn}: Lưu vết nội dung, hướng gửi (Inbound/Outbound).
+            \item \textbf{ID ngoài}: Giữ mã định danh gốc của Meta/Email để đối chiếu.
+            \item \textbf{Tính mở}: Sẵn sàng tích hợp kênh mới (Zalo, Viber).
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 10: Kafka Flow (Quy trình Kafka)
+% -------------------------------------------------------------
+\begin{frame}{Truyền Tin Bất Đồng Bộ Qua Apache Kafka}
+    \begin{center}
+        \large\textbf{\color{accent}Phân tách dịch vụ, đảm bảo hệ thống không mất dữ liệu.}
+    \end{center}
     \vspace{0.2cm}
     \begin{center}
         \begin{tikzpicture}[node distance=1.5cm, auto, >=stealth, scale=0.8, every node/.style={transform shape}]
@@ -274,107 +276,114 @@
             \node[draw, rectangle, fill=primary!20, text width=4cm, align=center, right of=ch, node distance=5cm] (kafka) {Kafka Topic:\\\texttt{inbox.message-received.v1}};
             \node[draw, rectangle, fill=accent!20, text width=2.5cm, align=center, right of=kafka, node distance=5cm] (in) {Inbox Service};
             
-            \path[->, thick] (ch) edge node {publishes event} (kafka);
-            \path[->, thick] (kafka) edge node {consumes event} (in);
+            \path[->, thick] (ch) edge node {đăng sự kiện} (kafka);
+            \path[->, thick] (kafka) edge node {tiêu thụ sự kiện} (in);
         \end{tikzpicture}
     \end{center}
     \vspace{0.2cm}
     \begin{itemize}
-        \item \textbf{Resilience}: Outages in `inbox-service` will not drop incoming messages; events remain buffered in Kafka.
-        \item \textbf{Retries}: Bounded exponential backoff policy for transient failures.
+        \item \textbf{Độ bền}: Sự kiện được lưu trữ an toàn trong hàng đợi Kafka.
+        \item \textbf{Khả năng chịu tải}: Tách biệt hoàn toàn luồng I/O cổng vào và luồng xử lý DB.
+        \item \textbf{Retry}: Cấu hình cơ chế tự động thử lại khi gặp lỗi tạm thời.
     \end{itemize}
 \end{frame}
 
 % -------------------------------------------------------------
-% SLIDE 11: Performance & Optimization (Redis)
+% SLIDE 11: Redis (Tối ưu hóa và bộ đệm)
 % -------------------------------------------------------------
-\begin{frame}{Performance \& Optimization (Redis)}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Message Deduplication}
-                \begin{itemize}
-                    \item Webhook calls are not guaranteed to be delivered exactly once.
-                    \item Redis stores processed `externalMessageId` with custom TTL.
-                    \item Rapid duplicates are immediately discarded at the gateway level.
-                \end{itemize}
-            \end{block}
-        \end{column}
-        
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Operational Caching}
-                \begin{itemize}
-                    \item Caches active configuration maps and long-lived tokens.
-                    \item Decreases load on the primary PostgreSQL relational database.
-                    \item Ensures fast query responses for UI inbox lists.
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 12: Demonstration & Results
-% -------------------------------------------------------------
-\begin{frame}{Demonstration \& Results}
-    \begin{block}{Key MVP Deliverables Met}
+\begin{frame}{Tối Ưu Hiệu Năng Với Redis Cache}
+    \begin{center}
+        \large\textbf{\color{accent}Chống trùng lặp dữ liệu và giảm tải cơ sở dữ liệu.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Ứng dụng Redis thực tế}
         \begin{itemize}
-            \item \textbf{E2E Flow}: Real-time Messenger messages are successfully captured and displayed.
-            \item \textbf{SMTP / Mailpit}: Automated reply email threads successfully inside Mailpit client.
-            \item \textbf{Robust Local Mocks}: High-coverage simulator endpoints verify E2E workflow locally without network dependencies.
+            \item \textbf{Khử trùng lặp}: Lưu vết Message ID tạm thời với thời gian TTL.
+            \item \textbf{Lọc tức thì}: Loại bỏ gói tin trùng do Meta gửi lặp ngay từ ngõ vào.
+            \item \textbf{Khóa phân tán}: Đảm bảo không ghi đè dữ liệu hội thoại.
+            \item \textbf{Bộ đệm}: Cache các truy vấn danh sách hội thoại phổ biến.
+            \item \textbf{Tốc độ}: Rút ngắn phản hồi API danh sách xuống dưới 50ms.
         \end{itemize}
     \end{block}
-    \begin{exampleblock}{Local Execution Outcome}
-        All integration flows passed using local scripts (\texttt{smoke-email-flow.ps1} \& \texttt{smoke-cross-service.ps1}).
-    \end{exampleblock}
 \end{frame}
 
 % -------------------------------------------------------------
-% SLIDE 13: QA and Testing Strategy
+% SLIDE 12: Unified Inbox UI (Hộp thư tập trung)
 % -------------------------------------------------------------
-\begin{frame}{Quality Assurance \& Testing}
-    \begin{block}{Multi-Layer Testing Approach}
-        Ensures the stability of the monolith during local development.
-    \end{block}
-    \vspace{0.2cm}
-    \begin{itemize}
-        \item \textbf{Unit Tests}: Coverage of domain models, normalization logic, and validators.
-        \item \textbf{Integration Tests}: Dockerized services running with Testcontainers (Kafka, PostgreSQL).
-        \item \textbf{Automated Checks}: A unified script (\texttt{scripts/check.ps1}) compiles code, executes style checks, runs Java Maven tests (57 tests for Channel, 42 for Inbox), and builds/test the React UI.
-    \end{itemize}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 14: Limitations & Sandbox Workarounds
-% -------------------------------------------------------------
-\begin{frame}{Limitations \& Sandbox Workarounds}
-    \begin{block}{Development Mode Challenges}
-        Meta Graph Webhooks restricts certain real events (like page feed comments) for apps in Dev Mode.
-    \end{block}
-    \vspace{0.2cm}
-    \begin{itemize}
-        \item \textbf{Limitation}: Real comments on the Page do not fire webhook events because App is not approved Live.
-        \item \textbf{Solutions \& Workarounds}:
-            \begin{itemize}
-                \item Utilized Meta's Developer Console **Test button** to trigger fake comment payloads (verified correct handler).
-                \item Configured **Dual-Mode Config Script** (\texttt{switch-mode.ps1}) to easily swap the workspace from local simulator test variables to live endpoints.
-            \end{itemize}
-    \end{itemize}
-\end{frame}
-
-% -------------------------------------------------------------
-% SLIDE 15: Conclusion & Lessons Learned
-% -------------------------------------------------------------
-\begin{frame}{Conclusion \& Lessons Learned}
-    \begin{block}{Key Takeaways}
+\begin{frame}{Trải Nghiệm Hộp Thư Tập Trung (React UI)}
+    \begin{center}
+        \large\textbf{\color{accent}Giao diện tối giản, tập trung và cập nhật thời gian thực.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Các chức năng chính}
         \begin{itemize}
-            \item \textbf{Clean Architecture Benefit}: Adapters (Facebook, Email) are separate from core business workflows (Inbox), allowing changes in Meta APIs without breaking the inbox core.
-            \item \textbf{Event Sourcing}: Designing with event-driven communication (Kafka) is critical for handling spikes in high-volume customer messages.
-            \item \textbf{Testing importance}: Having deterministic mock environments (Mailpit/Simulator) speeds up development by eliminating external server delays.
+            \item \textbf{Đầu vào tập trung}: Hiển thị hỗn hợp cả Facebook và Email.
+            \item \textbf{Bộ lọc thông minh}: Phân loại theo Kênh hoặc Trạng thái hội thoại.
+            \item \textbf{Phân công}: Gán quyền xử lý nhanh cho nhân viên chăm sóc.
+            \item \textbf{Real-time}: Cập nhật trạng thái tin nhắn mới tức thì.
+            \item \textbf{Thiết kế}: Responsive mượt mà, tối ưu trên nhiều kích thước màn hình.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 13: Testing Strategy (Chiến lược kiểm thử)
+% -------------------------------------------------------------
+\begin{frame}{Chiến Lược Đảm Bảo Chất Lượng}
+    \begin{center}
+        \large\textbf{\color{accent}Kiểm thử tự động đa tầng, cam kết mã nguồn xanh.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Các lớp kiểm thử thực hiện}
+        \begin{itemize}
+            \item \textbf{Unit Tests}: Kiểm tra logic nghiệp vụ chính và bộ mapper chuẩn hóa.
+            \item \textbf{Integration Tests}: Chạy kiểm thử cùng DB/Kafka thật qua Testcontainers.
+            \item \textbf{Smoke Tests}: Kịch bản tự động giả lập gửi nhận E2E đầu cuối.
+            \item \textbf{Check Script}: Chạy `check.ps1` kiểm tra build và 99 bài test thành công.
+            \item \textbf{Lint \& Build}: Đảm bảo chuẩn format code trước khi đẩy lên Git.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 14: Limitations & Mocks (Giới hạn và giả lập)
+% -------------------------------------------------------------
+\begin{frame}{Giải Pháp Vượt Qua Giới Hạn Thử Nghiệm}
+    \begin{center}
+        \large\textbf{\color{accent}Trình giả lập thông minh giúp phát triển không phụ thuộc.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Cách khắc phục rào cản của Meta \& Email}
+        \begin{itemize}
+            \item \textbf{Rào cản}: FB Dev Mode chặn không phát sự kiện webhook thật.
+            \item \textbf{Giải pháp}: Sử dụng Meta Test Tool để đẩy sự kiện giả lập thành công.
+            \item \textbf{Trình giả lập}: Xây dựng Mock Endpoints để giả lập Facebook/Email local.
+            \item **Script `switch-mode.ps1`**: Đổi nhanh toàn bộ môi trường trong 1 giây.
+            \item \textbf{Thử nghiệm}: Demo mượt mà độc lập, không phụ thuộc kết nối Internet.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% -------------------------------------------------------------
+% SLIDE 15: Conclusion (Kết luận)
+% -------------------------------------------------------------
+\begin{frame}{Kết Luận \& Hướng Phát Triển}
+    \begin{center}
+        \large\textbf{\color{accent}Hệ thống an toàn, dễ mở rộng, tối ưu vận hành.}
+    \end{center}
+    \vspace{0.4cm}
+    \begin{block}{Bài học và định hướng tương lai}
+        \begin{itemize}
+            \item \textbf{Thiết kế sạch}: Clean Architecture giúp dễ bảo trì hệ thống độc lập.
+            \item \textbf{Kafka \& Redis}: Sự kết hợp hoàn hảo cho hệ thống chịu tải cao.
+            \item \textbf{Mocking}: Tiết kiệm 3x thời gian phát triển và viết tài liệu.
+            \item \textbf{Tương lai}: Tích hợp thêm kênh Zalo, kết nối Chatbot AI.
+            \item \textbf{Nâng cấp}: Hệ thống cuộc gọi thoại trực tiếp (VoIP).
         \end{itemize}
     \end{block}
     \vspace{0.4cm}
     \begin{center}
-        \Large \textbf{Thank You for Your Attention! Questions?}
+        \large \textbf{Cảm ơn sự chú ý của mọi người! Xin mời đặt câu hỏi.}
     \end{center}
 \end{frame}
 
