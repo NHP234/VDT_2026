@@ -496,11 +496,11 @@
         \begin{column}{0.53\textwidth}
             \vspace{0.8cm}
             \begin{center}
-                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                \begin{tikzpicture}[scale=0.8, transform shape, node distance=1.2cm, auto, >=stealth]
                     \node[block, fill=primary!5] (real) {Real APIs\\(Gmail / Meta)};
-                    \node[block, right=of real, node distance=1.8cm, fill=red!10, draw=red] (block) {Blocked\\(Sandbox / Dev)};
-                    \node[block, below=of real, node distance=1.3cm, fill=accent!10, draw=accent] (mocks) {OmniCare Mocks\\(Mailpit / Simulator)};
-                    \node[block, left=of mocks, node distance=1.8cm, fill=accent!20, draw=accent] (ok) {Passed E2E\\(Local Demo)};
+                    \node[block, right=of real, node distance=1.0cm, fill=red!10, draw=red] (block) {Blocked\\(Sandbox / Dev)};
+                    \node[block, below=of real, node distance=1.2cm, fill=accent!10, draw=accent] (mocks) {OmniCare Mocks\\(Mailpit / Simulator)};
+                    \node[block, left=of mocks, node distance=1.0cm, fill=accent!20, draw=accent] (ok) {Passed E2E\\(Local Demo)};
                     
                     \draw[arrow] (real) -- (block);
                     \draw[arrow] (real) -- node[right, font=\scriptsize] {Override} (mocks);
