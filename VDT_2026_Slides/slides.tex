@@ -62,7 +62,7 @@
 \tikzset{
     block/.style={draw, rectangle, rounded corners=3pt, fill=cardbg, line width=1pt, draw=primary, text width=2.3cm, align=center, minimum height=1cm, font=\bfseries\small},
     accentblock/.style={block, draw=accent, fill=accent!5, text=primary},
-    datablock/.style={draw, cylinder, shape border rotate=90, minimum height=1cm, minimum width=1.5cm, fill=primary!5, draw=primary, font=\bfseries\small},
+    datablock/.style={draw, cylinder, shape border rotate=90, aspect=0.2, fill=primary!5, draw=primary, font=\bfseries\small, align=center, minimum width=2.2cm, minimum height=1.1cm},
     arrow/.style={-{Latex[scale=1.2]}, thick, draw=primary!80},
     accentarrow/.style={arrow, draw=accent, thick}
 }
@@ -170,7 +170,7 @@
             \node[block, right=of channel, node distance=2.5cm, fill=black!5] (redis) {Redis Cache};
             
             \draw[arrow] (ui) -- node[above, font=\scriptsize] {REST} (channel);
-            \draw[arrow] (ui) |- node[below, pos=0.3, font=\scriptsize] {REST} (inbox);
+            \draw[arrow] (ui) |- node[left, pos=0.3, font=\scriptsize] {REST} (inbox);
             \draw[arrow, <->, dashed, draw=accent] (channel) -- node[right, font=\scriptsize] {Kafka} (inbox);
             \draw[arrow] (inbox) -- node[above, font=\scriptsize] {JPA} (db);
             \draw[arrow] (channel) -- node[above, font=\scriptsize] {Cache} (redis);
