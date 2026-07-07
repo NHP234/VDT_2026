@@ -421,15 +421,15 @@
         \begin{column}{0.53\textwidth}
             \vspace{0.8cm}
             \begin{center}
-                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                \begin{tikzpicture}[scale=0.8, transform shape, node distance=1.2cm, auto, >=stealth]
                     \node[block, fill=primary!5] (webhook) {Webhook /\\API Call};
-                    \node[block, right=of webhook, node distance=1.8cm, fill=accent!10, draw=accent] (redis) {Redis Check\\(Exists ID?)};
-                    \node[block, below=of redis, node distance=1.3cm] (save) {Save DB\\(Process)};
-                    \node[block, left=of save, node distance=1.8cm, fill=red!10, draw=red] (discard) {Discard\\(Duplicate)};
+                    \node[block, right=of webhook, node distance=1.0cm, fill=accent!10, draw=accent] (redis) {Redis Check\\(Exists ID?)};
+                    \node[block, right=of redis, node distance=1.0cm, fill=red!10, draw=red] (discard) {Discard\\(Duplicate)};
+                    \node[block, below=of redis, node distance=1.2cm] (save) {Save DB\\(Process)};
                     
                     \draw[arrow] (webhook) -- (redis);
+                    \draw[arrow] (redis) -- node[above, font=\scriptsize] {Yes} (discard);
                     \draw[arrow] (redis) -- node[right, font=\scriptsize] {No} (save);
-                    \draw[arrow] (redis) -| node[above, pos=0.3, font=\scriptsize] {Yes} (discard);
                 \end{tikzpicture}
             \end{center}
         \end{column}
