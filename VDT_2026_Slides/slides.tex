@@ -149,21 +149,11 @@
 % -------------------------------------------------------------
 \begin{frame}{Kiến Trúc Hệ Thống (Modular Monolith)}
     \begin{center}
-        \large\textbf{\color{accent}Thiết kế hướng Module độc lập, kết nối qua Kafka.}
+        \large\textbf{\color{accent}Thiết kế hướng Module độc lập, phân rã Container.}
     \end{center}
-    \vspace{0.2cm}
+    \vspace{0.1cm}
     \begin{center}
-        \begin{tikzpicture}[node distance=2cm, auto, >=stealth, scale=0.8, every node/.style={transform shape}]
-            \node[draw, rectangle, fill=primary!20, text width=2.5cm, align=center] (client) {React Frontend\\(Vite + TS)};
-            \node[draw, rectangle, fill=accent!20, text width=2.5cm, align=center, right of=client, node distance=4cm] (inbox) {Inbox Service\\(Spring Boot)};
-            \node[draw, rectangle, fill=accent!20, text width=2.5cm, align=center, above of=inbox, node distance=2cm] (channel) {Channel Service\\(Spring Boot)};
-            \node[draw, cylinder, fill=gray!20, text width=1.5cm, align=center, shape border rotate=90, right of=inbox, node distance=3.5cm] (db) {PostgreSQL};
-            
-            \path[->, thick] (client) edge node {REST} (inbox);
-            \path[->, thick] (client) edge[bend left=15] node {REST} (channel);
-            \path[<->, thick] (inbox) edge node {Kafka / Redis} (channel);
-            \path[->, thick] (inbox) edge node {JPA} (db);
-        \end{tikzpicture}
+        \includegraphics[page=2, height=0.68\paperheight]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
     \end{center}
 \end{frame}
 
@@ -174,16 +164,24 @@
     \begin{center}
         \large\textbf{\color{accent}Bắt sự kiện tương tác thời gian thực từ Fanpage.}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Quy trình xử lý an toàn}
-        \begin{itemize}
-            \item \textbf{Đường truyền}: Mở cổng HTTPS công khai qua Ngrok.
-            \item \textbf{Xác thực}: Kiểm tra chữ ký HMAC-SHA256 bảo mật.
-            \item \textbf{Messenger}: Trích xuất nội dung tin nhắn và PSID.
-            \item \textbf{Comments}: Lọc bình luận, bỏ qua echo của Page.
-            \item \textbf{Đầu ra}: Đẩy sự kiện chuẩn hóa vào Kafka.
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Các bước xử lý an toàn}
+                \begin{itemize}
+                    \item \textbf{Ngrok}: Mở cổng HTTPS công khai local.
+                    \item \textbf{Xác thực}: Kiểm tra chữ ký HMAC-SHA256.
+                    \item \textbf{Messenger}: Nhận tin nhắn kèm PSID.
+                    \item \textbf{Comments}: Nhận bình luận, lọc echo.
+                    \item \textbf{Đầu ra}: Đẩy sự kiện chuẩn hóa vào Kafka.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=3, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -193,16 +191,24 @@
     \begin{center}
         \large\textbf{\color{accent}Tự động phản hồi khách hàng qua Graph API.}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Các bước thực thi}
-        \begin{itemize}
-            \item \textbf{Token}: Dùng Page Access Token vĩnh viễn mới.
-            \item \textbf{Messenger API}: Gửi tin nhắn trực tiếp theo PSID.
-            \item \textbf{Comment API}: Trả lời bình luận theo Comment ID.
-            \item \textbf{Phân luồng}: Đảm bảo tin nhắn đi đúng chuỗi.
-            \item \textbf{An toàn}: Ghi nhật ký trạng thái gửi (SENT/FAILED).
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Các bước thực thi}
+                \begin{itemize}
+                    \item \textbf{Token}: Page Access Token vĩnh viễn.
+                    \item \textbf{Messenger API}: Gửi trực tiếp theo PSID.
+                    \item \textbf{Comment API}: Gửi theo ID bình luận.
+                    \item \textbf{Phân luồng}: Đi đúng chuỗi tin tương tác.
+                    \item \textbf{An toàn}: Ghi nhận trạng thái gửi (SENT).
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=4, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -212,16 +218,24 @@
     \begin{center}
         \large\textbf{\color{accent}Quét hòm thư định kỳ an toàn qua giao thức IMAP.}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Luồng nghiệp vụ xử lý}
-        \begin{itemize}
-            \item \textbf{Bảo mật}: Sử dụng giao thức mã hóa `imaps` (cổng 993).
-            \item \textbf{Quét thư}: Bộ lập lịch kiểm tra thư mục chỉ định.
-            \item \textbf{Trùng lặp}: Dựa trên Message-ID để lọc thư trùng.
-            \item \textbf{Xử lý}: Làm sạch mã HTML, lọc văn bản thô.
-            \item \textbf{Lưu trữ}: Nhận diện và tách riêng tệp đính kèm.
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Luồng nghiệp vụ xử lý}
+                \begin{itemize}
+                    \item \textbf{Bảo mật}: Sử dụng giao thức mã hóa `imaps`.
+                    \item \textbf{Quét thư}: Scheduler định kỳ kiểm tra folder.
+                    \item \textbf{Trùng lặp}: Lọc trùng bằng Message-ID.
+                    \item \textbf{Xử lý}: Làm sạch HTML, lọc text thô.
+                    \item \textbf{Đính kèm}: Nhận diện và tách riêng file.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=5, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -231,16 +245,24 @@
     \begin{center}
         \large\textbf{\color{accent}Bảo toàn luồng chuỗi thư trao đổi (Threaded Mail).}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Bảo toàn chuỗi hội thoại}
-        \begin{itemize}
-            \item \textbf{SMTP}: Sử dụng Spring `JavaMailSender` gửi thư đi.
-            \item \textbf{In-Reply-To}: Gắn ID của email gửi đến gần nhất.
-            \item \textbf{References}: Gắn danh sách ID của cả luồng thư.
-            \item \textbf{Hiển thị}: Gom nhóm chuỗi thư chuẩn trên Gmail/Outlook.
-            \item \textbf{Giả lập}: Test offline không cần cấu hình bằng Mailpit.
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Thiết lập chuỗi hội thoại}
+                \begin{itemize}
+                    \item \textbf{SMTP}: Dùng Spring `JavaMailSender`.
+                    \item \textbf{In-Reply-To}: Gắn ID email gần nhất.
+                    \item \textbf{References}: Gắn ID của cả luồng thư.
+                    \item \textbf{Gom nhóm}: Đảm bảo hội thoại thống nhất.
+                    \item \textbf{Offline}: Sử dụng Mailpit để giả lập SMTP.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=2, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -250,16 +272,24 @@
     \begin{center}
         \large\textbf{\color{accent}Đồng nhất mọi định dạng gói tin về một mô hình chung.}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Mô hình nghiệp vụ cốt lõi}
-        \begin{itemize}
-            \item \textbf{Khách hàng}: Chuẩn hóa định danh số điện thoại, email, PSID.
-            \item \textbf{Hội thoại}: Tổng hợp các luồng trao đổi (Conversation).
-            \item \textbf{Tin nhắn}: Lưu vết nội dung, hướng gửi (Inbound/Outbound).
-            \item \textbf{ID ngoài}: Giữ mã định danh gốc của Meta/Email để đối chiếu.
-            \item \textbf{Tính mở}: Sẵn sàng tích hợp kênh mới (Zalo, Viber).
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Mô hình nghiệp vụ cốt lõi}
+                \begin{itemize}
+                    \item \textbf{Khách hàng}: Đồng nhất Email, Phone, PSID.
+                    \item \textbf{Hội thoại}: Tổng hợp luồng trao đổi (Conversation).
+                    \item \textbf{Tin nhắn}: Lưu vết nội dung và hướng gửi.
+                    \item \textbf{ID ngoài}: Giữ mã định danh gốc Meta/Email.
+                    \item \textbf{Tính mở}: Sẵn sàng tích hợp Zalo, Viber.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=1, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -269,23 +299,24 @@
     \begin{center}
         \large\textbf{\color{accent}Phân tách dịch vụ, đảm bảo hệ thống không mất dữ liệu.}
     \end{center}
-    \vspace{0.2cm}
-    \begin{center}
-        \begin{tikzpicture}[node distance=1.5cm, auto, >=stealth, scale=0.8, every node/.style={transform shape}]
-            \node[draw, rectangle, fill=accent!20, text width=2.5cm, align=center] (ch) {Channel Service};
-            \node[draw, rectangle, fill=primary!20, text width=4cm, align=center, right of=ch, node distance=5cm] (kafka) {Kafka Topic:\\\texttt{inbox.message-received.v1}};
-            \node[draw, rectangle, fill=accent!20, text width=2.5cm, align=center, right of=kafka, node distance=5cm] (in) {Inbox Service};
-            
-            \path[->, thick] (ch) edge node {đăng sự kiện} (kafka);
-            \path[->, thick] (kafka) edge node {tiêu thụ sự kiện} (in);
-        \end{tikzpicture}
-    \end{center}
-    \vspace{0.2cm}
-    \begin{itemize}
-        \item \textbf{Độ bền}: Sự kiện được lưu trữ an toàn trong hàng đợi Kafka.
-        \item \textbf{Khả năng chịu tải}: Tách biệt hoàn toàn luồng I/O cổng vào và luồng xử lý DB.
-        \item \textbf{Retry}: Cấu hình cơ chế tự động thử lại khi gặp lỗi tạm thời.
-    \end{itemize}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Tính năng nổi bật}
+                \begin{itemize}
+                    \item \textbf{Độc lập}: Tách biệt Channel và Inbox service.
+                    \item \textbf{Tốc độ}: Phản hồi webhook ngay lập tức.
+                    \item \textbf{Bất đồng bộ}: Consumer xử lý thong thả sau.
+                    \item \textbf{Tin cậy}: Không mất tin khi Inbox service sập.
+                    \item \textbf{Retry}: Cơ chế tự động thử lại khi lỗi DB.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=4, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -295,16 +326,24 @@
     \begin{center}
         \large\textbf{\color{accent}Chống trùng lặp dữ liệu và giảm tải cơ sở dữ liệu.}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Ứng dụng Redis thực tế}
-        \begin{itemize}
-            \item \textbf{Khử trùng lặp}: Lưu vết Message ID tạm thời với thời gian TTL.
-            \item \textbf{Lọc tức thì}: Loại bỏ gói tin trùng do Meta gửi lặp ngay từ ngõ vào.
-            \item \textbf{Khóa phân tán}: Đảm bảo không ghi đè dữ liệu hội thoại.
-            \item \textbf{Bộ đệm}: Cache các truy vấn danh sách hội thoại phổ biến.
-            \item \textbf{Tốc độ}: Rút ngắn phản hồi API danh sách xuống dưới 50ms.
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Ứng dụng Redis thực tế}
+                \begin{itemize}
+                    \item \textbf{Chống trùng}: Lưu vết Message ID với TTL.
+                    \item \textbf{Tức thì}: Chặn gói tin lặp từ gateway.
+                    \item \textbf{Nhất quán}: Dùng khóa phân tán ghi dữ liệu.
+                    \item \textbf{Bộ đệm}: Cache các truy vấn hội thoại chính.
+                    \item \textbf{Tốc độ}: Rút ngắn phản hồi API dưới 50ms.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=3, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
@@ -352,16 +391,24 @@
     \begin{center}
         \large\textbf{\color{accent}Trình giả lập thông minh giúp phát triển không phụ thuộc.}
     \end{center}
-    \vspace{0.4cm}
-    \begin{block}{Cách khắc phục rào cản của Meta \& Email}
-        \begin{itemize}
-            \item \textbf{Rào cản}: FB Dev Mode chặn không phát sự kiện webhook thật.
-            \item \textbf{Giải pháp}: Sử dụng Meta Test Tool để đẩy sự kiện giả lập thành công.
-            \item \textbf{Trình giả lập}: Xây dựng Mock Endpoints để giả lập Facebook/Email local.
-            \item **Script `switch-mode.ps1`**: Đổi nhanh toàn bộ môi trường trong 1 giây.
-            \item \textbf{Thử nghiệm}: Demo mượt mà độc lập, không phụ thuộc kết nối Internet.
-        \end{itemize}
-    \end{block}
+    \begin{columns}[T]
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Vượt rào cản Sandbox}
+                \begin{itemize}
+                    \item \textbf{Hạn chế}: FB Dev Mode chặn webhook thật.
+                    \item \textbf{Giải pháp}: Dùng console test tool đẩy tin mẫu.
+                    \item \textbf{Giả lập}: Dựng mock endpoints cho FB và Email.
+                    \item \textbf{Lệnh nhanh}: Dùng `switch-mode.ps1` đổi môi trường.
+                    \item \textbf{Lợi ích}: Chạy demo độc lập không cần internet.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.53\textwidth}
+            \begin{center}
+                \includegraphics[page=5, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+            \end{center}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 % -------------------------------------------------------------
