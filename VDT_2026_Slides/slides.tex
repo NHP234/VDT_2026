@@ -348,11 +348,11 @@
         \begin{column}{0.53\textwidth}
             \vspace{0.8cm}
             \begin{center}
-                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                \begin{tikzpicture}[scale=0.8, transform shape, node distance=1.2cm, auto, >=stealth]
                     \node[block, fill=accent!10, draw=accent] (fb) {Facebook Event\\(JSON Payload)};
                     \node[block, below=of fb, node distance=0.6cm, fill=primary!5] (mail) {Email Message\\(Mime Structure)};
-                    \node[block, right=of fb, node distance=2.2cm, yshift=-0.8cm, fill=accent!20, draw=accent, text width=2.4cm] (norm) {Normalizer\\(Common Model)};
-                    \node[block, right=of norm, node distance=2.2cm, text width=2.4cm] (domain) {Conversation /\\Message Entities};
+                    \node[block, right=of fb, node distance=1.1cm, yshift=-0.8cm, fill=accent!20, draw=accent, text width=2.4cm] (norm) {Normalizer\\(Common Model)};
+                    \node[block, right=of norm, node distance=1.1cm, text width=2.4cm] (domain) {Conversation /\\Message Entities};
                     
                     \draw[arrow] (fb) -- (norm);
                     \draw[arrow] (mail) -- (norm);
