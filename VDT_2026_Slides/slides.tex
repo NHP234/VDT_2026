@@ -5,7 +5,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{shapes.geometric, positioning, arrows.meta}
+\usetikzlibrary{shapes.geometric, positioning, arrows.meta, backgrounds, fit}
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{color}
@@ -57,6 +57,15 @@
 \setbeamercolor{block body}{bg=cardbg, fg=textdark}
 \setbeamercolor{block title example}{bg=accent!10, fg=accent}
 \setbeamercolor{block body example}{bg=cardbg, fg=textdark}
+
+% TikZ Common Styles for Slide Diagrams
+\tikzset{
+    block/.style={draw, rectangle, rounded corners=3pt, fill=cardbg, line width=1pt, draw=primary, text width=2.3cm, align=center, minimum height=1cm, font=\bfseries\small},
+    accentblock/.style={block, draw=accent, fill=accent!5, text=primary},
+    datablock/.style={draw, cylinder, shape border rotate=90, minimum height=1cm, minimum width=1.5cm, fill=primary!5, draw=primary, font=\bfseries\small},
+    arrow/.style={-{Latex[scale=1.2]}, thick, draw=primary!80},
+    accentarrow/.style={arrow, draw=accent, thick}
+}
 
 % Presentation Information
 \title{Hệ Thống Chăm Sóc Khách Hàng Đa Kênh}
@@ -151,9 +160,21 @@
     \begin{center}
         \large\textbf{\color{accent}Thiết kế hướng Module độc lập, phân rã Container.}
     \end{center}
-    \vspace{0.1cm}
+    \vspace{0.6cm}
     \begin{center}
-        \includegraphics[page=2, height=0.68\paperheight]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+        \begin{tikzpicture}[node distance=1.5cm, auto, >=stealth]
+            \node[block, fill=accent!10, draw=accent] (ui) {React UI\\(Port 5173)};
+            \node[block, right=of ui, node distance=2.5cm] (channel) {Channel Svc\\(Port 8081)};
+            \node[block, below=of channel, node distance=1.5cm] (inbox) {Inbox Svc\\(Port 8080)};
+            \node[datablock, right=of inbox, node distance=2.5cm] (db) {PostgreSQL};
+            \node[block, right=of channel, node distance=2.5cm, fill=black!5] (redis) {Redis Cache};
+            
+            \draw[arrow] (ui) -- node[above, font=\scriptsize] {REST} (channel);
+            \draw[arrow] (ui) |- node[below, pos=0.3, font=\scriptsize] {REST} (inbox);
+            \draw[arrow, <->, dashed, draw=accent] (channel) -- node[right, font=\scriptsize] {Kafka} (inbox);
+            \draw[arrow] (inbox) -- node[above, font=\scriptsize] {JPA} (db);
+            \draw[arrow] (channel) -- node[above, font=\scriptsize] {Cache} (redis);
+        \end{tikzpicture}
     \end{center}
 \end{frame}
 
@@ -177,8 +198,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=3, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=primary!5] (fb) {Meta Webhook\\(Sự kiện Page)};
+                    \node[block, right=of fb, node distance=1.8cm, fill=accent!10, draw=accent] (ngrok) {Ngrok Tunnel\\(Expose Port)};
+                    \node[block, below=of ngrok, node distance=1.3cm] (ctrl) {Webhook Ctrl\\(Verify \& Sign)};
+                    \node[block, left=of ctrl, node distance=1.8cm, fill=accent!10, draw=accent] (kafka) {Kafka Broker\\(Queue Topic)};
+                    
+                    \draw[arrow] (fb) -- (ngrok);
+                    \draw[arrow] (ngrok) -- (ctrl);
+                    \draw[arrow] (ctrl) -- node[above, font=\scriptsize] {Publish} (kafka);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -204,8 +235,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=4, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=primary!5] (inbox) {Inbox Service\\(Reply Action)};
+                    \node[block, right=of inbox, node distance=1.8cm, fill=accent!10, draw=accent] (kafka) {Kafka\\(reply-requested)};
+                    \node[block, below=of kafka, node distance=1.3cm] (channel) {Channel Svc\\(Graph Client)};
+                    \node[block, left=of channel, node distance=1.8cm, fill=accent!10, draw=accent] (meta) {Meta Platform\\(Graph API)};
+                    
+                    \draw[arrow] (inbox) -- (kafka);
+                    \draw[arrow] (kafka) -- (channel);
+                    \draw[arrow] (channel) -- node[above, font=\scriptsize] {Send} (meta);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -231,8 +272,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=5, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-architecture.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=primary!5] (gmail) {Gmail Server\\(IMAP Folder)};
+                    \node[block, right=of gmail, node distance=1.8cm, fill=accent!10, draw=accent] (poll) {IMAP Poller\\(Fixed Delay)};
+                    \node[block, below=of poll, node distance=1.3cm] (map) {Normalizer\\(HTML Clean)};
+                    \node[block, left=of map, node distance=1.8cm, fill=accent!10, draw=accent] (kafka) {Kafka Broker\\(Queue Ingest)};
+                    
+                    \draw[arrow] (gmail) -- node[above, font=\scriptsize] {Fetch} (poll);
+                    \draw[arrow] (poll) -- (map);
+                    \draw[arrow] (map) -- (kafka);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -258,8 +309,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=2, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=primary!5] (in) {Inbox Service\\(Reply Submit)};
+                    \node[block, right=of in, node distance=1.8cm, fill=accent!10, draw=accent] (outbox) {Outbox Svc\\(Transactional)};
+                    \node[block, below=of outbox, node distance=1.3cm] (smtp) {SMTP Sender\\(Spring Mail)};
+                    \node[block, left=of smtp, node distance=1.8cm, fill=accent!10, draw=accent] (target) {Mailpit / SMTP\\(Thread Headers)};
+                    
+                    \draw[arrow] (in) -- (outbox);
+                    \draw[arrow] (outbox) -- (smtp);
+                    \draw[arrow] (smtp) -- node[above, font=\scriptsize] {Send} (target);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -285,8 +346,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=1, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=accent!10, draw=accent] (fb) {Facebook Event\\(JSON Payload)};
+                    \node[block, below=of fb, node distance=0.6cm, fill=primary!5] (mail) {Email Message\\(Mime Structure)};
+                    \node[block, right=of fb, node distance=2.2cm, yshift=-0.8cm, fill=accent!20, draw=accent, text width=2.4cm] (norm) {Normalizer\\(Common Model)};
+                    \node[block, right=of norm, node distance=2.2cm, text width=2.4cm] (domain) {Conversation /\\Message Entities};
+                    
+                    \draw[arrow] (fb) -- (norm);
+                    \draw[arrow] (mail) -- (norm);
+                    \draw[arrow] (norm) -- (domain);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -312,8 +383,17 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=4, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.5cm, auto, >=stealth]
+                    \node[block, fill=accent!10, draw=accent] (producer) {Producer\\(Channel Svc)};
+                    \node[block, right=of producer, node distance=2.2cm, fill=primary!10, text width=2cm] (kafka) {Kafka\\Topic};
+                    \node[block, below=of kafka, node distance=1.3cm] (consumer) {Consumer\\(Inbox Svc)};
+                    
+                    \draw[arrow] (producer) -- node[above, font=\scriptsize] {Publish} (kafka);
+                    \draw[arrow] (kafka) -- node[right, font=\scriptsize] {Subscribe} (consumer);
+                    \draw[arrow, bend left=45, draw=accent] (consumer) to node[left, font=\scriptsize] {Retry Loop} (kafka);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -339,8 +419,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=3, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=primary!5] (webhook) {Webhook /\\API Call};
+                    \node[block, right=of webhook, node distance=1.8cm, fill=accent!10, draw=accent] (redis) {Redis Check\\(Exists ID?)};
+                    \node[block, below=of redis, node distance=1.3cm] (save) {Save DB\\(Process)};
+                    \node[block, left=of save, node distance=1.8cm, fill=red!10, draw=red] (discard) {Discard\\(Duplicate)};
+                    
+                    \draw[arrow] (webhook) -- (redis);
+                    \draw[arrow] (redis) -- node[right, font=\scriptsize] {No} (save);
+                    \draw[arrow] (redis) -| node[above, pos=0.3, font=\scriptsize] {Yes} (discard);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
@@ -404,8 +494,18 @@
             \end{block}
         \end{column}
         \begin{column}{0.53\textwidth}
+            \vspace{0.8cm}
             \begin{center}
-                \includegraphics[page=5, width=\textwidth]{../VDT_2026_Report/hinhve/omnicare-domain-operations.drawio.pdf}
+                \begin{tikzpicture}[node distance=1.2cm, auto, >=stealth]
+                    \node[block, fill=primary!5] (real) {Real APIs\\(Gmail / Meta)};
+                    \node[block, right=of real, node distance=1.8cm, fill=red!10, draw=red] (block) {Blocked\\(Sandbox / Dev)};
+                    \node[block, below=of real, node distance=1.3cm, fill=accent!10, draw=accent] (mocks) {OmniCare Mocks\\(Mailpit / Simulator)};
+                    \node[block, left=of mocks, node distance=1.8cm, fill=accent!20, draw=accent] (ok) {Passed E2E\\(Local Demo)};
+                    
+                    \draw[arrow] (real) -- (block);
+                    \draw[arrow] (real) -- node[right, font=\scriptsize] {Override} (mocks);
+                    \draw[arrow] (mocks) -- (ok);
+                \end{tikzpicture}
             \end{center}
         \end{column}
     \end{columns}
