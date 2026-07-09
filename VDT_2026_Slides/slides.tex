@@ -167,7 +167,6 @@
             \node[datablock, right=of inbox, node distance=2.5cm] (db) {PostgreSQL};
             \node[block, right=of channel, node distance=2.5cm, fill=black!5] (redis) {Redis Cache};
             
-            \draw[arrow] (ui) -- node[above, font=\scriptsize] {REST} (channel);
             \draw[arrow] (ui) |- node[left, pos=0.3, font=\scriptsize] {REST} (inbox);
             \draw[arrow, <->, dashed, draw=accent] (channel) -- node[right, font=\scriptsize] {Kafka} (inbox);
             \draw[arrow] (inbox) -- node[above, font=\scriptsize] {JPA} (db);
